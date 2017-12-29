@@ -3,20 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Person : MonoBehaviour{
-    public int movementSpeed;
-    public int jumpPower;
-    public int attackDamage;
-    public int health;
+    public float movementSpeed;
+    public float jumpPower;
+    public float attackDamage;
+    public float health;
     // is the player facing right
     private bool facingRight = false;
     public float moveX;
     //
     private Rigidbody2D personRB;
     // jump parameters
-    public bool isGrounded;
-    public Transform groundCheck;
-    public float groundRadius = 0.2f;
-    public LayerMask whatIsGround;
+    public bool isGrounded = false;
 
     private void Start()
     {
@@ -25,10 +22,8 @@ public class Person : MonoBehaviour{
 
     public void Jump()
     {
-        Debug.Log(isGrounded);
-        if (isGrounded)
+        if(isGrounded)
         {
-            Debug.Log("Jump");
             personRB.AddForce(new Vector2(0, jumpPower));
         }
     }
@@ -58,4 +53,11 @@ public class Person : MonoBehaviour{
         return personRB;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
 }

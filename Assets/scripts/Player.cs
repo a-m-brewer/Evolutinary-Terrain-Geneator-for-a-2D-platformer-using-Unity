@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : Person {
 
     public Player() {
-        movementSpeed = 10;
-        jumpPower = 1250;
+        movementSpeed = 10f;
+        jumpPower = 600f;
     }
 }
