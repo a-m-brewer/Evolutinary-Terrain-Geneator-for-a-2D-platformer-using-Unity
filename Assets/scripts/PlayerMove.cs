@@ -16,15 +16,18 @@ public class PlayerMove : Player
     {
         moveX = Input.GetAxis("Horizontal");
 
-        if (Input.GetButtonDown("Jump"))
+        if (!GetIsTrapped())
         {
-            Jump();
-            isGrounded = false;
-        }
+            if (Input.GetButtonDown("Jump"))
+            {
+                Jump();
+                isGrounded = false;
+            }
 
-        // Player direction
-        DirectionCheck();
-        // Physics
-        GetRigidBody().velocity = new Vector2(moveX * movementSpeed, GetRigidBody().velocity.y);
+            // Player direction
+            DirectionCheck();
+            // Physics
+            GetRigidBody().velocity = new Vector2(moveX * movementSpeed, GetRigidBody().velocity.y);
+        }
     }
 }
