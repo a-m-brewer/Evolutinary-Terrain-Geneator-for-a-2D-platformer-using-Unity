@@ -5,12 +5,17 @@ using UnityEngine;
 public class Player : Person {
 
     private int playerScore = 0;
+    private float invisibleTimeAfterDamage = 2f;
     private bool isTrapped = false;
 
-    public Player() {
+    public Animator anim;
+
+    private void Start()
+    {
         movementSpeed = 10f;
         jumpPower = 600f;
         health = 3;
+        anim = GetComponent<Animator>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -53,5 +58,30 @@ public class Player : Person {
         isTrapped = false;
         collision.gameObject.SetActive(false);
         Debug.Log("stop");
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+
+        if (collision.collider.CompareTag("Enemy"))
+        {
+            StartCoroutine(TriggerHurtAnimation(collision.collider));
+
+            Hurt(1f);
+        }
+    }
+
+    IEnumerator TriggerHurtAnimation(Collider2D collider)
+    {
+        // Start Animation
+        anim.SetBool("Damaged", true);
+        // Wait For Invisiblity to end
+        yield return new WaitForSeconds(invisibleTimeAfterDamage);
+        // Stop blinking reenable collison
+        anim.SetBool("Damaged", false);
     }
 }

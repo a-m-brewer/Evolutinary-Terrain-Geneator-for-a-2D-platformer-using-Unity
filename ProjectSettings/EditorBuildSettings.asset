@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Prototype.unity
+    guid: 6fbd3ef2124080e448d065fe822eae43
+  - enabled: 1
+    path: Assets/MapGeneratorTesting.unity
+    guid: f01f095e0de7c5041bc8dc63c6b46260

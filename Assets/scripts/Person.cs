@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Person : MonoBehaviour{
     public float movementSpeed;
@@ -11,13 +12,19 @@ public class Person : MonoBehaviour{
     private bool facingRight = false;
     public float moveX;
     //
-    private Rigidbody2D personRB;
+    public Rigidbody2D personRB;
     // jump parameters
     public bool isGrounded = false;
 
     private void Start()
     {
+        // somthing wrong with this for enemy
         personRB = GetComponent<Rigidbody2D>();
+
+        if (personRB == null)
+        {
+            Debug.Log("whoops");
+        }
     }
 
     public void Jump()
@@ -53,11 +60,18 @@ public class Person : MonoBehaviour{
         return personRB;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void Hurt(float damageToGive)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        health -= damageToGive;
+        if (health <= 0)
         {
-            isGrounded = true;
+            string currSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currSceneName);
         }
+    }
+
+    public void GiveHealth(float healthToGive)
+    {
+        health += healthToGive;
     }
 }

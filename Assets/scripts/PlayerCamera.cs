@@ -17,7 +17,7 @@ public class PlayerCamera : MonoBehaviour {
 
     private void LateUpdate()
     {
-        MoveCamera();
+        //MoveCamera();
     }
 
     // locks the camera to the  edges set of the level
