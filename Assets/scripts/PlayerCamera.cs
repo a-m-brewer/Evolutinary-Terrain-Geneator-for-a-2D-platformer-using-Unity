@@ -5,26 +5,18 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour {
 
     public GameObject player;
-    public float xMinCamera;
-    public float xMaxCamera;
-    public float yMinCamera;
-    public float yMaxCamera;
+    Vector3 offset;
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        offset = transform.position - player.transform.position;
     }
 
     private void LateUpdate()
     {
-        MoveCamera();
+        transform.position = player.transform.position + offset;
     }
 
     // locks the camera to the  edges set of the level
-    void MoveCamera()
-    {
-        float x = Mathf.Clamp(player.transform.position.x, xMinCamera, xMaxCamera);
-        float y = Mathf.Clamp(player.transform.position.y, yMinCamera, yMaxCamera);
-        gameObject.transform.position = new Vector3(x, y, gameObject.transform.position.z);
-    }
+
 }

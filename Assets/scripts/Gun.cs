@@ -8,8 +8,7 @@ public class Gun : MonoBehaviour {
     public float damage = 1f;
     public float bulletSpeed = 15f;
     public LayerMask canHit;
-
-    float timeToFire = 0f;
+    private float timeToFire = 0f;
     float timeToSpawnEffect = 0f;
     Transform firePoint;
     Transform gun;
