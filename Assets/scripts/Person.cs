@@ -16,6 +16,8 @@ public class Person : MonoBehaviour{
     // jump parameters
     public bool isGrounded = false;
 
+    private string badGuyTag;
+
     private void Start()
     {
         // somthing wrong with this for enemy
@@ -65,13 +67,36 @@ public class Person : MonoBehaviour{
         health -= damageToGive;
         if (health <= 0)
         {
-            string currSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currSceneName);
+            if (gameObject.tag == "Player")
+            {
+                string currSceneName = SceneManager.GetActiveScene().name;
+                SceneManager.LoadScene(currSceneName);
+            }
+            if(gameObject.tag == "Enemy")
+            {
+                Destroy(gameObject);
+            }
         }
+        Debug.Log(health);
     }
 
     public void GiveHealth(float healthToGive)
     {
         health += healthToGive;
+    }
+
+    public bool GetFacingRight()
+    {
+        return facingRight;
+    }
+
+    public string GetBadGuyTag()
+    {
+        return badGuyTag;
+    }
+
+    public void SetBadGuyTag(string t)
+    {
+        badGuyTag = t;
     }
 }

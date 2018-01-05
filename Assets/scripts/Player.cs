@@ -16,6 +16,8 @@ public class Player : Person {
         jumpPower = 600f;
         health = 3;
         anim = GetComponent<Animator>();
+
+        SetBadGuyTag("Enemy");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

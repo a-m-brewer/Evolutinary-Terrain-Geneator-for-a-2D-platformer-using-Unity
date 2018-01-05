@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour {
 
-    private GameObject player;
+    public GameObject player;
     public float xMinCamera;
     public float xMaxCamera;
     public float yMinCamera;
@@ -17,7 +17,7 @@ public class PlayerCamera : MonoBehaviour {
 
     private void LateUpdate()
     {
-        //MoveCamera();
+        MoveCamera();
     }
 
     // locks the camera to the  edges set of the level

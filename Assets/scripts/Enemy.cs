@@ -36,11 +36,13 @@ public class Enemy : Person, IDifficulty {
 
         enemyWidth = sr.bounds.extents.x;
         enemyHeight = sr.bounds.extents.y;
+
+        SetBadGuyTag("Player");
     }
 
     private void FixedUpdate()
     {
-        Vector2 frontOfEnemy = (enemyTransform.position.ToVector2() - Vector2.up) - enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * enemyHeight;
+        Vector2 frontOfEnemy = (enemyTransform.position.ToVector2() - Vector2.up) + enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * enemyHeight;
 
         isGrounded = EnemyIsGrounded(frontOfEnemy);
 
@@ -51,13 +53,17 @@ public class Enemy : Person, IDifficulty {
             RotateEnemy();
         }
 
+        DirectionCheck();
+
         EnemyMove();
+
+        gameObject.transform.GetChild(0).GetComponent<Gun>().Shoot();
     }
 
     private void EnemyMove()
     {
         Vector2 enemyVelocity = GetRigidBody().velocity;
-        enemyVelocity.x = enemyTransform.right.x * -movementSpeed;
+        enemyVelocity.x = enemyTransform.right.x * movementSpeed;
         GetRigidBody().velocity = enemyVelocity;
     }
 
@@ -69,8 +75,8 @@ public class Enemy : Person, IDifficulty {
 
     private bool EnemyIsBlocked(Vector2 foe)
     {
-        Debug.DrawLine(foe, foe - enemyTransform.right.ToVector2() * 0.2f, Color.white);
-        return Physics2D.Linecast(foe, foe - enemyTransform.right.ToVector2() * 0.02f, enemyMask);
+        Debug.DrawLine(foe, foe + enemyTransform.right.ToVector2() * 0.2f, Color.white);
+        return Physics2D.Linecast(foe, foe + enemyTransform.right.ToVector2() * 0.02f, enemyMask);
     }
 
     private void RotateEnemy()
