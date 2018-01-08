@@ -85,6 +85,11 @@ public class Person : MonoBehaviour{
         health += healthToGive;
     }
 
+    public float GetHealth()
+    {
+        return health;
+    }
+
     public bool GetFacingRight()
     {
         return facingRight;

@@ -35,6 +35,7 @@ public class Player : Person {
         
         if (collision.gameObject.CompareTag("Trap") && collision.transform.GetComponent<Trap>().GetIsTriggerable())
         {
+            Hurt(1f);
             IEnumerator coroutine = TriggerTrap(collision);
             StartCoroutine(coroutine);
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIHealth : MonoBehaviour {
+public class UIPlayerScore : MonoBehaviour {
 
     private Text mytext;
     public Player player;
@@ -16,6 +16,6 @@ public class UIHealth : MonoBehaviour {
 
     private void Update()
     {
-        mytext.text = player.GetHealth().ToString();
+        mytext.text = player.GetScore().ToString();
     }
 }
