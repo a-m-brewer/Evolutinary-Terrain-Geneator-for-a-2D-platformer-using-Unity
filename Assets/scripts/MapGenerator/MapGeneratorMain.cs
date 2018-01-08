@@ -85,8 +85,8 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             for (int y = 0; y < roomSizeY; y++)
             {
                 // place the tile
-                //Vector3 tilePos = new Vector3(-roomSizeX / 2 + 0.5f + x, -roomSizeY / 2 + 0.5f + y, 0);
-                Vector3 tilePos = new Vector3(x + rOffset, y, 0);
+                Vector3 tilePos = new Vector3((-roomSizeX / 2 + 0.5f + x) + rOffset , -roomSizeY / 2 + 0.5f + y, 0);
+                //Vector3 tilePos = new Vector3(x + rOffset, y, 0);
                 Transform newTile;
                 int mappos = ColRowToArrayIndex(x, y);
 
