@@ -32,12 +32,13 @@ public class Player : Person {
                 Debug.Log(GetScore());
             }
         }
-
+        
         if (collision.gameObject.CompareTag("Trap") && collision.transform.GetComponent<Trap>().GetIsTriggerable())
         {
             IEnumerator coroutine = TriggerTrap(collision);
             StartCoroutine(coroutine);
         }
+        
     }
 
     public int GetScore()

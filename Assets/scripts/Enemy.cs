@@ -17,19 +17,24 @@ public class Enemy : Person, IDifficulty {
     {
         get
         {
-            return this.difficulty;
+            return difficulty;
         }
 
         set
         {
-            this.difficulty = value;
+            difficulty = value;
         }
+    }
+
+    private void Awake()
+    {
+        // For some reason this needs to be in awake
+        DifficultyScore = 10;
     }
 
     // Use this for initialization
     private void Start()
     {
-        DifficultyScore = 10;
         movementSpeed = 4;
         enemyTransform = this.transform;
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
@@ -86,5 +91,11 @@ public class Enemy : Person, IDifficulty {
         Vector3 currentRotation = enemyTransform.eulerAngles;
         currentRotation.y += 180;
         enemyTransform.eulerAngles = currentRotation;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision.collider.name + " " + gameObject.name);
+
     }
 }

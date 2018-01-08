@@ -2,15 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapGeneratorMain : MonoBehaviour {
+public class MapGeneratorMain : MonoBehaviour, IDifficulty {
 
     private const int roomSizeX = 24;
     private const int roomSizeY = 10;
     private const int numRooms = 4;
 
     public Transform[] mapTiles = new Transform[4];
+    GameObject[] enemies;
 
     private int[] mapdata;
+
+    private int difficutly;
+
+    public int DifficultyScore
+    {
+        get
+        {
+            return difficutly;
+        }
+
+        set
+        {
+            difficutly = value;
+        }
+    }
 
     public MapGeneratorMain()
     {
@@ -33,6 +49,7 @@ public class MapGeneratorMain : MonoBehaviour {
     private void Start()
     {
         GenerateMap();
+        AddEnemiesToDifficulty();
     }
 
     private int ColRowToArrayIndex(int x, int y)
@@ -72,7 +89,6 @@ public class MapGeneratorMain : MonoBehaviour {
                 Vector3 tilePos = new Vector3(x + rOffset, y, 0);
                 Transform newTile;
                 int mappos = ColRowToArrayIndex(x, y);
-                Debug.Log("x: " + x + " y: " + y + " id: " + roomData[mappos]);
 
                 int toInstantiate = 0;
 
@@ -97,7 +113,28 @@ public class MapGeneratorMain : MonoBehaviour {
                 newTile.localScale = Vector3.one;
                 // add to the list of map tiles
                 newTile.parent = i_mapRoomHolder;
+
+                AddToDifficulty(newTile);
             }
         }
     }
+
+    void AddToDifficulty(Transform t)
+    {
+        if (t.gameObject.GetComponent<IDifficulty>() != null)
+        {
+            DifficultyScore += t.GetComponent<IDifficulty>().DifficultyScore;
+            Debug.Log(DifficultyScore + " " + t.gameObject.name);                       
+        }
+    }
+
+    void AddEnemiesToDifficulty()
+    {
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach(GameObject e in enemies)
+        {
+            AddToDifficulty(e.transform);
+        }
+    }
+
 }

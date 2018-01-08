@@ -5,9 +5,8 @@ using UnityEngine;
 public class Trap : Triggerable, IDifficulty
 {
 
-    private void Start()
+    private void Awake()
     {
-        DifficultyScore = 5;
+        DifficultyScore = 5;    
     }
-
 }

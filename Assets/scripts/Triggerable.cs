@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Triggerable : MonoBehaviour, IDifficulty {
 
-    private int difficulty;
+    public int difficulty;
     private bool triggerable = true;
 
     public int DifficultyScore
     {
         get
         {
-            return this.difficulty;
+            return difficulty;
         }
 
         set
         {
-            this.difficulty = value;
+            difficulty = value;
         }
     }
 

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Coin : Triggerable{
 
-    public void Start()
+    // DIFFICUTLY SCORE MUST ALWAYS BE IN AWAKE 
+    public void Awake()
     {
-        DifficultyScore = 0;
+        DifficultyScore = 1;
     }
+    
 }
