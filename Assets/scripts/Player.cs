@@ -24,12 +24,16 @@ public class Player : Person {
     {
         if (collision.gameObject.CompareTag("PickUp"))
         {
-            IncreaseScore(10);
-            Debug.Log(GetScore());
-            collision.gameObject.SetActive(false);
+
+            if (collision.transform.gameObject.GetComponent<Coin>().GetIsTriggerable())
+            {
+                IncreaseScore(10);
+                collision.transform.gameObject.GetComponent<Coin>().ReplaceTile("Coin", "Background");
+                Debug.Log(GetScore());
+            }
         }
 
-        if (collision.gameObject.CompareTag("Trap"))
+        if (collision.gameObject.CompareTag("Trap") && collision.transform.GetComponent<Trap>().GetIsTriggerable())
         {
             IEnumerator coroutine = TriggerTrap(collision);
             StartCoroutine(coroutine);
@@ -58,7 +62,7 @@ public class Player : Person {
         isTrapped = true;
         yield return new WaitForSeconds(2f);
         isTrapped = false;
-        collision.gameObject.SetActive(false);
+        collision.gameObject.GetComponent<Triggerable>().ReplaceTile("Trap", "Background");
         Debug.Log("stop");
     }
 

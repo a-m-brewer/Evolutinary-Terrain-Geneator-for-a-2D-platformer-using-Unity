@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+/*
 [CustomEditor (typeof(MapGeneratorMain))]
 public class MapEditor : Editor {
 
@@ -15,3 +15,4 @@ public class MapEditor : Editor {
         map.GenerateMap();
     }
 }
+*/
