@@ -4,31 +4,28 @@ using UnityEngine;
 
 public class MapGeneratorMain : MonoBehaviour {
 
-    private const int mapSizeX = 10;
-    private const int mapSizeY = 10;
+    private const int roomSizeX = 24;
+    private const int roomSizeY = 10;
+    private const int numRooms = 4;
 
-    public Transform background;
-    public Transform ground;
+    public Transform[] mapTiles = new Transform[4];
 
     private int[] mapdata;
-
-    [Range(0,1)]
-    public float outlinePercent;
 
     public MapGeneratorMain()
     {
 
-        mapdata = new int[mapSizeX * mapSizeY] {
-            1,1,1,1,1,1,1,1,1,1,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,1,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,
+        mapdata = new int[roomSizeX * roomSizeY] {
+            1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,1,2,3,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         };
     }
 
@@ -40,7 +37,7 @@ public class MapGeneratorMain : MonoBehaviour {
 
     private int ColRowToArrayIndex(int x, int y)
     {
-        return x + mapSizeX * y;
+        return x + roomSizeX * y;
     }
 
     public void GenerateMap()
@@ -56,32 +53,50 @@ public class MapGeneratorMain : MonoBehaviour {
         Transform mapHolder = new GameObject(holderName).transform;
         mapHolder.parent = transform;
 
-        for (int x = 0; x < mapSizeX; x++)
+        for (int i = 0; i < numRooms; i++)
         {
-            for (int y = 0; y < mapSizeY; y++)
+            GenerateRoom(i, mapHolder, mapdata);
+        }
+        
+    }
+
+    private void GenerateRoom(int room, Transform i_mapRoomHolder, int[] roomData) 
+    {
+        int rOffset = room * roomSizeX;
+        for (int x = 0; x < roomSizeX + 0; x++)
+        {
+            for (int y = 0; y < roomSizeY; y++)
             {
                 // place the tile
-                Vector3 tilePos = new Vector3(-mapSizeX/2 + 0.5f + x, -mapSizeY/2 + 0.5f + y, 0);
+                //Vector3 tilePos = new Vector3(-roomSizeX / 2 + 0.5f + x, -roomSizeY / 2 + 0.5f + y, 0);
+                Vector3 tilePos = new Vector3(x + rOffset, y, 0);
                 Transform newTile;
-                int mappos = ColRowToArrayIndex(x,y);
-                Debug.Log("x: " + x + " y: " + y + " id: " + mapdata[mappos]);
-                if (mapdata[mappos] == 0) 
-                {
-                    newTile = Instantiate(background, tilePos, Quaternion.Euler(Vector3.right)) as Transform;
-                    // add the gap by making the tile smaller
-                    newTile.localScale = Vector3.one * (1 - outlinePercent);
-                    // add to the list of map tiles
-                    newTile.parent = mapHolder;
+                int mappos = ColRowToArrayIndex(x, y);
+                Debug.Log("x: " + x + " y: " + y + " id: " + roomData[mappos]);
 
-                } else if (mapdata[mappos] == 1)
-                {
-                    newTile = Instantiate(ground, tilePos, Quaternion.Euler(Vector3.right)) as Transform;
-                    // add the gap by making the tile smaller
-                    newTile.localScale = Vector3.one * (1 - outlinePercent);
-                    // add to the list of map tiles
-                    newTile.parent = mapHolder;
+                int toInstantiate = 0;
 
+                switch (roomData[mappos])
+                {
+                    case 0:
+                        toInstantiate = 0;
+                        break;
+                    case 1:
+                        toInstantiate = 1;
+                        break;
+                    case 2:
+                        toInstantiate = 2;
+                        break;
+                    case 3:
+                        toInstantiate = 3;
+                        break;
                 }
+
+                newTile = Instantiate(mapTiles[toInstantiate], tilePos, Quaternion.Euler(Vector3.right)) as Transform;
+                // add the gap by making the tile smaller
+                newTile.localScale = Vector3.one;
+                // add to the list of map tiles
+                newTile.parent = i_mapRoomHolder;
             }
         }
     }

@@ -56,8 +56,10 @@ public class Enemy : Person, IDifficulty {
         DirectionCheck();
 
         EnemyMove();
-
-        gameObject.transform.GetChild(0).GetComponent<Gun>().Shoot();
+        if (gameObject.transform.childCount > 0)
+        {
+            gameObject.transform.GetChild(0).GetComponent<Gun>().Shoot();
+        }        
     }
 
     private void EnemyMove()
