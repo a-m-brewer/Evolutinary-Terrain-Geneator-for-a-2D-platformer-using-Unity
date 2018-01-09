@@ -10,7 +10,7 @@ public class Enemy : Person, IDifficulty {
     private float enemyWidth;
     private float enemyHeight;
 
-    private bool isBlocked = false;
+    public bool isBlocked = false;
 
 
     public int DifficultyScore
@@ -82,20 +82,15 @@ public class Enemy : Person, IDifficulty {
 
     private bool EnemyIsBlocked(Vector2 foe)
     {
-        Debug.DrawLine(foe, foe + enemyTransform.right.ToVector2() * 0.2f, Color.white);
-        return Physics2D.Linecast(foe, foe + enemyTransform.right.ToVector2() * 0.02f, enemyMask);
+        Debug.DrawLine(foe, foe + enemyTransform.right.ToVector2() * 0.3f, Color.white);
+        return Physics2D.Linecast(foe, foe + enemyTransform.right.ToVector2() * 0.03f, enemyMask);
     }
 
     private void RotateEnemy()
     {
         Vector3 currentRotation = enemyTransform.eulerAngles;
-        currentRotation.y += 180;
+        currentRotation.y += 180f;
         enemyTransform.eulerAngles = currentRotation;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log(collision.collider.name + " " + gameObject.name);
-
-    }
 }

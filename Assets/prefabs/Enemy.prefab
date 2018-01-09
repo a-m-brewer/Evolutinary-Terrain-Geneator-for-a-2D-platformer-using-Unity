@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4528658340606736}
   - component: {fileID: 212042031634148084}
   - component: {fileID: 50396469927778604}
-  - component: {fileID: 61774095347481156}
   - component: {fileID: 114652326915901146}
+  - component: {fileID: 70559657253782520}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1663524583343052}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.50043, y: 2.9037013, z: 0}
+  m_LocalPosition: {x: 9.993385, y: 3.0882144, z: 0}
   m_LocalScale: {x: 0.98, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -56,15 +56,15 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: fc3244b133e568941ae374226be44f9e, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
---- !u!61 &61774095347481156
-BoxCollider2D:
+--- !u!70 &70559657253782520
+CapsuleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -76,18 +76,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 2}
-    newSize: {x: 1, y: 2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1, y: 2}
-  m_EdgeRadius: 0
+  m_Direction: 0
 --- !u!114 &114652326915901146
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,6 +99,7 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 4294966783
+  isBlocked: 0
 --- !u!212 &212042031634148084
 SpriteRenderer:
   m_ObjectHideFlags: 1

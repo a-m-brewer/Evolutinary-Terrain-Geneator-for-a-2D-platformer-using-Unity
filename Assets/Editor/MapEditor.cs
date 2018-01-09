@@ -11,7 +11,7 @@ public class MapEditor : Editor {
         base.OnInspectorGUI();
 
         MapGeneratorMain map = target as MapGeneratorMain;
-
-        map.GenerateMap();
+        Vector2 roomSize = new Vector2(24,10);
+        map.GenerateMap(roomSize);
     }
 }
