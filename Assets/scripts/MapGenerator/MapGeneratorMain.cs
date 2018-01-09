@@ -52,11 +52,6 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         CalculateDifficulty();
     }
 
-    private int ColRowToArrayIndex(int x, int y)
-    {
-        return x + roomSizeX * y;
-    }
-
     public void GenerateMap(Vector2 rSize)
     {
         // set the name of the game object to group map tiles with
@@ -72,10 +67,9 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         
         for (int i = 0; i < numRooms; i++)
         {
-            //GenerateRoom(i, mapHolder, mapdata);
-            Vector3 rPos = new Vector3(0, 0, 0);
+            Vector3 rPos = new Vector3(i, 0, 0);
             Transform newRoom;
-            newRoom = Instantiate(room,  rPos,Quaternion.Euler(Vector3.right));
+            newRoom = Instantiate(room, rPos,Quaternion.Euler(Vector3.right));
             newRoom.parent = mapHolder;
             newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, mapdata);
             Debug.Log(newRoom.GetComponent<RoomGenerator>().DifficultyScore);

@@ -37,7 +37,8 @@ public class Person : MonoBehaviour{
         }
     }
 
-    void FlipPlayer()
+    // test done
+    public void FlipPlayer()
     {
         facingRight = !facingRight;
         Vector2 localScale = gameObject.transform.localScale;

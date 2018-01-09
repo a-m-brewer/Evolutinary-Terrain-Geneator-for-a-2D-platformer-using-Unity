@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - Bullet
   - Room
+  - TestPerson
   layers:
   - Default
   - TransparentFX
