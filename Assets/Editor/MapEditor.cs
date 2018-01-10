@@ -12,7 +12,7 @@ public class MapEditor : Editor {
 
         MapGeneratorMain myScript = (MapGeneratorMain)target;
 
-        myScript.mapdata = myScript.LoadMaps(myScript.mapDataText);
+        myScript.roomData = myScript.LoadMaps(myScript.mapDataText);
 
         if (GUILayout.Button("Generate Level"))
         {

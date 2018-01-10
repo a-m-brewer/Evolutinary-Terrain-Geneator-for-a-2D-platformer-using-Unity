@@ -16,8 +16,18 @@ public class LevelSelector {
                 difficulty += TileInformation.difficultyScores[roomData[i]];
             }
         }
-        Debug.Log("In Method " + difficulty);
-
         return difficulty;
+    }
+
+    public int[] CalculateDifficultyOfEachRoom(int[][] allRoomsData, Transform[] tileTypes)
+    {
+        int[] diffScores = new int[allRoomsData.Length];
+
+        for (int i = 0; i < allRoomsData.Length; i++)
+        {
+            diffScores[i] = CalculateRoomDifficulty(allRoomsData[i], tileTypes);
+        }
+
+        return diffScores;
     }
 }

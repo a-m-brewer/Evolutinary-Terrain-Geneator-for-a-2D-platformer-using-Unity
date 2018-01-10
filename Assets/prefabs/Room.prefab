@@ -51,8 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6556eaf87f495247951887a2f9132bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapTiles:
+  roomTiles:
   - {fileID: 4550381460584706, guid: 72510ba1bc15f6e408d57588083e90f2, type: 2}
   - {fileID: 4478012701693580, guid: 6e5d6ec2a2fe4634a9c01010a5b1e9b7, type: 2}
   - {fileID: 4492821806844952, guid: 3078a7d64a463284f824d722d6311de1, type: 2}
   - {fileID: 4909193074020562, guid: 8c5b3f4cf3168094996f8ee35810ede1, type: 2}
+  - {fileID: 4528658340606736, guid: bee9026b3e3f5934092f944bb44fe424, type: 2}
+  - {fileID: 4831356983850558, guid: aac0b584a0d61b24b9d2468ebefe0c98, type: 2}

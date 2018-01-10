@@ -12,7 +12,8 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
 
     public Transform room;
 
-    public int[][] mapdata;
+    public int[][] roomData;
+    public int[] roomScores;
 
     private int difficutly;
     public int DifficultyScore
@@ -27,17 +28,14 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             difficutly = value;
         }
     }
-
-    public TextAsset mapDataText;
-    public string[] testData;
-    public string[][] testData2;
-
-    public int mapTargetDifficulty;
     LevelSelector levelSelector = new LevelSelector();
+    public TextAsset mapDataText;
+    public int mapTargetDifficulty;
 
     private void Start()
     {
-        mapdata = LoadMaps(mapDataText);
+        roomData = LoadMaps(mapDataText);
+        roomScores = levelSelector.CalculateDifficultyOfEachRoom(roomData, room.GetComponent<RoomGenerator>().GetRoomTiles());
         rSize = new Vector2(roomSizeX, roomSizeY);
         GenerateMap(rSize);
         CalculateDifficulty();
@@ -62,7 +60,7 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             Transform newRoom;
             newRoom = Instantiate(room, rPos,Quaternion.Euler(Vector3.right));
             newRoom.parent = mapHolder;
-            newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, mapdata[i]);
+            newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, roomData[i]);
         }
              
     }
@@ -114,5 +112,4 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         }
         return levelsInt;
     }
-
 }
