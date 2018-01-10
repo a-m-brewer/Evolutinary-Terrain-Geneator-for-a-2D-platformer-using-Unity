@@ -7,7 +7,7 @@ public class Coin : Triggerable{
     // DIFFICUTLY SCORE MUST ALWAYS BE IN AWAKE 
     public void Awake()
     {
-        DifficultyScore = 1;
+        DifficultyScore = TileInformation.difficultyScores[2];
     }
     
 }

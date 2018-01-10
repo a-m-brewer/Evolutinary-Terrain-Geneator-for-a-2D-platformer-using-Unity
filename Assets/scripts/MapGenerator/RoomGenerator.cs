@@ -100,5 +100,10 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
         return SpawnNewTileInRoom(roomTiles[0], tilePosition, parentTransform);
     }
 
+
+    public Transform[] GetRoomTiles()
+    {
+        return roomTiles;
+    }
 }
 

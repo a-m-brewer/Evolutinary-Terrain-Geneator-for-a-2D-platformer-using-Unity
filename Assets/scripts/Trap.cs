@@ -7,6 +7,6 @@ public class Trap : Triggerable, IDifficulty
 
     private void Awake()
     {
-        DifficultyScore = 5;    
+        DifficultyScore = TileInformation.difficultyScores[3];    
     }
 }

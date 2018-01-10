@@ -12,7 +12,7 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
 
     public Transform room;
 
-    private int[] mapdata;
+    public int[][] mapdata;
 
     private int difficutly;
     public int DifficultyScore
@@ -28,25 +28,16 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         }
     }
 
-    public MapGeneratorMain()
-    {
-        mapdata = new int[roomSizeX * roomSizeY] {
-            1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        };
-    }
+    public TextAsset mapDataText;
+    public string[] testData;
+    public string[][] testData2;
 
+    public int mapTargetDifficulty;
+    LevelSelector levelSelector = new LevelSelector();
 
     private void Start()
     {
+        mapdata = LoadMaps(mapDataText);
         rSize = new Vector2(roomSizeX, roomSizeY);
         GenerateMap(rSize);
         CalculateDifficulty();
@@ -71,7 +62,7 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             Transform newRoom;
             newRoom = Instantiate(room, rPos,Quaternion.Euler(Vector3.right));
             newRoom.parent = mapHolder;
-            newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, mapdata);
+            newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, mapdata[i]);
         }
              
     }
@@ -97,6 +88,31 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         {
             AddToDifficulty(c.transform);
         }
+    }
+
+    public int[][] LoadMaps(TextAsset inFile)
+    {
+        string[][] levels = new string[1][];
+        int[][] levelsInt = new int[1][];
+
+        if(inFile != null)
+        {
+            string[] wholeLevels = (inFile.text.Split('.'));
+            levels = new string[wholeLevels.Length][];
+            levelsInt = new int[wholeLevels.Length][];
+
+            for (int i = 0; i < wholeLevels.Length; i++)
+            {
+                levels[i] =  wholeLevels[i].Split(',');
+                levelsInt[i] = new int[levels[i].Length];
+                for (int j = 0; j < levels[i].Length; j++)
+                {
+                    int.TryParse(levels[i][j], out levelsInt[i][j]);
+                }
+            }
+
+        }
+        return levelsInt;
     }
 
 }

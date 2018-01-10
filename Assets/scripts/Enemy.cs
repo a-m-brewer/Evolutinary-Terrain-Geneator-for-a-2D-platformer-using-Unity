@@ -12,7 +12,6 @@ public class Enemy : Person, IDifficulty {
 
     public bool isBlocked = false;
 
-
     public int DifficultyScore
     {
         get
@@ -29,7 +28,7 @@ public class Enemy : Person, IDifficulty {
     private void Awake()
     {
         // For some reason this needs to be in awake
-        DifficultyScore = 10;
+        DifficultyScore = TileInformation.difficultyScores[4];
     }
 
     // Use this for initialization

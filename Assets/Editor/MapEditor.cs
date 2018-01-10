@@ -8,10 +8,15 @@ public class MapEditor : Editor {
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        DrawDefaultInspector();
 
-        MapGeneratorMain map = target as MapGeneratorMain;
-        Vector2 roomSize = new Vector2(24,10);
-        map.GenerateMap(roomSize);
+        MapGeneratorMain myScript = (MapGeneratorMain)target;
+
+        myScript.mapdata = myScript.LoadMaps(myScript.mapDataText);
+
+        if (GUILayout.Button("Generate Level"))
+        {
+            myScript.GenerateMap(new Vector2(24, 10));
+        }
     }
 }
