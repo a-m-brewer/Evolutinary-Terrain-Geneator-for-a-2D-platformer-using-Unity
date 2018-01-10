@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour, IDifficulty
 {
-    public Transform[] mapTiles = new Transform[4];
+    public Transform[] roomTiles = new Transform[6];
 
     private int difficutly;
     public int DifficultyScore
@@ -44,13 +44,19 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
 
                 int mappos = ColRowToArrayIndex(x, y, size.x);
 
-                int toInstantiate = TileTypeToSpawn(roomData[mappos]);
+                int toInstantiate = roomData[mappos];
 
-                Transform newTile = SpawnNewTileInRoom(mapTiles[toInstantiate], tilePos, mapHolder);
+                if (NeedsBackgroundTile(toInstantiate))
+                {
+                    InstatiateBackground(tilePos, mapHolder);
+                }
+
+                Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
 
                 AddToDifficulty(newTile);
             }
         }
+
     }
 
     private Transform SpawnNewTileInRoom(Transform maptile, Vector3 tilePosition, Transform parentTransform)
@@ -80,25 +86,18 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
         return x + (int) roomSizeX * y;
     }
 
-    private int TileTypeToSpawn(int mapDataIndex)
+    private bool NeedsBackgroundTile(int mapTileID)
     {
-        int toInstantiate = 0;
-        switch (mapDataIndex)
+        if (mapTileID == 4 || mapTileID == 5)
         {
-            case 0:
-                toInstantiate = 0;
-                break;
-            case 1:
-                toInstantiate = 1;
-                break;
-            case 2:
-                toInstantiate = 2;
-                break;
-            case 3:
-                toInstantiate = 3;
-                break;
+            return true;
         }
-        return toInstantiate;
+        return false;
+    }
+
+    private Transform InstatiateBackground(Vector3 tilePosition, Transform parentTransform)
+    {
+        return SpawnNewTileInRoom(roomTiles[0], tilePosition, parentTransform);
     }
 
 }
