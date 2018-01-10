@@ -40,7 +40,7 @@ public class Gun : MonoBehaviour {
 
     void HandleShootingInput()
     {
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && !transform.parent.gameObject.GetComponent<Player>().GetIsTrapped())
         {
             Shoot();
         }
