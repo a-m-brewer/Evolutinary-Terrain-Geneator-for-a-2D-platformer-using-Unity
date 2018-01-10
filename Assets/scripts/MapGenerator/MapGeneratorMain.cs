@@ -34,8 +34,8 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,
-            0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -72,7 +72,6 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             newRoom = Instantiate(room, rPos,Quaternion.Euler(Vector3.right));
             newRoom.parent = mapHolder;
             newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, mapdata);
-            Debug.Log(newRoom.GetComponent<RoomGenerator>().DifficultyScore);
         }
              
     }
@@ -80,7 +79,6 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
     void CalculateDifficulty()
     {
         AddComponentWithTagToDifficulty("Room");
-        AddComponentWithTagToDifficulty("Enemy");
     }
 
     void AddToDifficulty(Transform t)
