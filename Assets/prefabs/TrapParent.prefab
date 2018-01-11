@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4686591253681192}
   - component: {fileID: 212268572382607630}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Trap
   m_TagString: Trap
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4737318688977002}
   - component: {fileID: 212347960461633640}
   - component: {fileID: 114330870734131164}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4909193074020562}
   - component: {fileID: 61905667227868840}
   - component: {fileID: 114397942643872994}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TrapParent
   m_TagString: Trap
   m_Icon: {fileID: 0}

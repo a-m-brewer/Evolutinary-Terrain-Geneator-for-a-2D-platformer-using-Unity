@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4492821806844952}
   - component: {fileID: 114485397498101862}
   - component: {fileID: 61941992930864696}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CoinParent
   m_TagString: PickUp
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4582861262824446}
   - component: {fileID: 212805685977965234}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Coin
   m_TagString: PickUp
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4564020628933554}
   - component: {fileID: 212789719506038536}
   - component: {fileID: 114130317968790316}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}

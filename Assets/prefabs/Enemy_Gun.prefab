@@ -158,8 +158,9 @@ MonoBehaviour:
   isGrounded: 0
   enemyMask:
     serializedVersion: 2
-    m_Bits: 4294966783
-  isBlocked: 0
+    m_Bits: 4294964735
+  isBlockedBot: 0
+  isBlockedTop: 0
 --- !u!114 &114948785649089046
 MonoBehaviour:
   m_ObjectHideFlags: 1

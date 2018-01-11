@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour, IDifficulty
 {
-    public Transform[] roomTiles = new Transform[6];
+    public Transform[] roomTiles = new Transform[7];
 
     private int difficutly;
     public int DifficultyScore
@@ -56,6 +56,8 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
                 AddToDifficulty(newTile);
             }
         }
+
+        Debug.Log(DifficultyScore);
 
     }
 
