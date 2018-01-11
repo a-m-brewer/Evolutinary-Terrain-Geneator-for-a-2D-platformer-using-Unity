@@ -40,7 +40,15 @@ public class Gun : MonoBehaviour {
 
     void HandleShootingInput()
     {
-        if (Input.GetButton("Fire1") && !transform.parent.gameObject.GetComponent<Player>().GetIsTrapped())
+        bool isGrounded = transform.parent.gameObject.GetComponent<Person>().isGrounded;
+        bool isPlayer = (transform.parent.gameObject.GetComponent<PlayerMove>() != null);
+        bool playerIsFreeToMove = true;
+        if (isPlayer)
+        {
+            playerIsFreeToMove = !transform.parent.gameObject.GetComponent<PlayerMove>().GetIsTrapped();
+        }
+        
+        if (Input.GetButton("Fire1") && playerIsFreeToMove && isGrounded)
         {
             Shoot();
         }

@@ -13,7 +13,7 @@ public class Player : Person {
     private void Start()
     {
         movementSpeed = 10f;
-        jumpPower = 600f;
+        jumpPower = 700f;
         health = 3;
         anim = GetComponent<Animator>();
 
