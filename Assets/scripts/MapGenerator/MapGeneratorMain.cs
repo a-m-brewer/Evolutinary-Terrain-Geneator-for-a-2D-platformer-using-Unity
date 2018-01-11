@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MapGeneratorMain : MonoBehaviour, IDifficulty {
 
@@ -12,8 +13,8 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
 
     public Transform room;
 
-    public int[][] roomData;
-    public int[] roomScores;
+    public int[][] allTemplateRoomData;
+    public int[][] chosenMap;
 
     private int difficutly;
     public int DifficultyScore
@@ -30,12 +31,17 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
     }
     LevelSelector levelSelector = new LevelSelector();
     public TextAsset mapDataText;
+
     public int mapTargetDifficulty;
+    public int actualDifficultyScore;
 
     private void Start()
     {
-        roomData = LoadMaps(mapDataText);
-        roomScores = levelSelector.CalculateDifficultyOfEachRoom(roomData, room.GetComponent<RoomGenerator>().GetRoomTiles());
+        allTemplateRoomData = LoadMaps(mapDataText);
+
+        chosenMap = levelSelector.SelectMap(allTemplateRoomData, numRooms, mapTargetDifficulty, room);
+        actualDifficultyScore =  levelSelector.DifficultyScoreOfMap(chosenMap, room.GetComponent<RoomGenerator>().GetRoomTiles());
+
         rSize = new Vector2(roomSizeX, roomSizeY);
         GenerateMap(rSize);
         CalculateDifficulty();
@@ -60,7 +66,7 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             Transform newRoom;
             newRoom = Instantiate(room, rPos,Quaternion.Euler(Vector3.right));
             newRoom.parent = mapHolder;
-            newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, roomData[i]);
+            newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, chosenMap[i]);
         }
              
     }
@@ -75,7 +81,6 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         if (t.gameObject.GetComponent<IDifficulty>() != null)
         {
             DifficultyScore += t.GetComponent<IDifficulty>().DifficultyScore;
-            Debug.Log(DifficultyScore + " " + t.gameObject.name);                       
         }
     }
 

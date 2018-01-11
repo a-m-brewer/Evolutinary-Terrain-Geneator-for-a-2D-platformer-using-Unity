@@ -77,7 +77,6 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
         if (t.gameObject.GetComponent<IDifficulty>() != null)
         {
             DifficultyScore += t.GetComponent<IDifficulty>().DifficultyScore;
-            Debug.Log(DifficultyScore + " " + t.gameObject.name);
         }
     }
 

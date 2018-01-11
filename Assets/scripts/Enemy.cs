@@ -10,7 +10,8 @@ public class Enemy : Person, IDifficulty {
     private float enemyWidth;
     private float enemyHeight;
 
-    public bool isBlocked = false;
+    public bool isBlockedBot = false;
+    public bool isBlockedTop = false;
 
     public int DifficultyScore
     {
@@ -46,13 +47,15 @@ public class Enemy : Person, IDifficulty {
 
     private void FixedUpdate()
     {
-        Vector2 frontOfEnemy = (enemyTransform.position.ToVector2() - Vector2.up) + enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * enemyHeight;
+        Vector2 frontOfEnemyBot = (enemyTransform.position.ToVector2() - Vector2.up) + enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * (enemyHeight * 0.75f);
+        Vector2 frontOfEnemyTop = (enemyTransform.position.ToVector2() - Vector2.up) + enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * (enemyHeight * 1.5f);
 
-        isGrounded = EnemyIsGrounded(frontOfEnemy);
+        isGrounded = EnemyIsGrounded(frontOfEnemyBot);
 
-        isBlocked = EnemyIsBlocked(frontOfEnemy);
+        isBlockedBot = EnemyIsBlocked(frontOfEnemyBot);
+        isBlockedTop = EnemyIsBlocked(frontOfEnemyTop);
 
-        if (!isGrounded || isBlocked)
+        if (!isGrounded || (isBlockedBot || isBlockedTop))
         {
             RotateEnemy();
         }

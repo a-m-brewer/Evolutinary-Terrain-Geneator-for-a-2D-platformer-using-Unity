@@ -16,6 +16,7 @@ public class UIDifficultyScore : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        mytext.text = map.DifficultyScore.ToString();
+        //mytext.text = map.DifficultyScore.ToString();
+        mytext.text = "Target Difficulty: " + map.mapTargetDifficulty + " Actual Difficulty: " + map.actualDifficultyScore;
 	}
 }
