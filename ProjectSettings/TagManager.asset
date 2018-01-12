@@ -14,6 +14,7 @@ TagManager:
   - Flag
   - PlayerBullet
   - EnemyBullet
+  - Wall
   layers:
   - Default
   - TransparentFX

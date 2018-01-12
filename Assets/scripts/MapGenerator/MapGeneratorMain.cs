@@ -130,19 +130,32 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         flagPlace.parent = holder;
     }
 
-    void CreateAndPlaceBorder(string name, Vector2 pos, Vector2 size)
+    void CreateAndPlaceBorder(string name, Vector2 pos, Vector2 size, Transform parent)
     {
         GameObject newGO = new GameObject();
         newGO.AddComponent<BoxCollider2D>();
         newGO.name = name;
         newGO.transform.position = new Vector3(pos.x, pos.y, 0);
         newGO.transform.localScale = new Vector3(size.x, size.y, 1f);
+        newGO.transform.parent = parent;
     }
 
     void PlaceBorders()
     {
-        CreateAndPlaceBorder("leftWall", new Vector2(-1f, 5f), new Vector2(1f, roomSizeY));
-        CreateAndPlaceBorder("topWall", new Vector2((roomSizeX * numRooms) / 2, roomSizeY), new Vector2((roomSizeX * numRooms), 1f));
-        CreateAndPlaceBorder("rightWall", new Vector2((roomSizeX * numRooms), 5f), new Vector2(1f, roomSizeY));
+
+        // set the name of the game object to group map tiles with
+        string holderName = "Borders";
+        // Each time the map generates destroy the old game objects
+        if (transform.Find(holderName))
+        {
+            DestroyImmediate(transform.Find(holderName).gameObject);
+        }
+        // create the new holder
+        Transform mapHolder = new GameObject(holderName).transform;
+        mapHolder.parent = transform;
+
+        CreateAndPlaceBorder("leftWall", new Vector2(-1f, 5f), new Vector2(1f, roomSizeY), mapHolder);
+        CreateAndPlaceBorder("topWall", new Vector2((roomSizeX * numRooms) / 2, roomSizeY), new Vector2((roomSizeX * numRooms), 1f), mapHolder);
+        CreateAndPlaceBorder("rightWall", new Vector2((roomSizeX * numRooms), 5f), new Vector2(1f, roomSizeY), mapHolder);
     }
 }

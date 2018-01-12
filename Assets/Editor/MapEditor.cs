@@ -12,11 +12,11 @@ public class MapEditor : Editor {
 
         MapGeneratorMain myScript = (MapGeneratorMain)target;
 
-        myScript.allTemplateRoomData = myScript.LoadMaps(myScript.mapDataText);
+        Vector2 rSize = myScript.rSize;
 
         if (GUILayout.Button("Generate Level"))
         {
-            myScript.GenerateMap(new Vector2(24, 10));
+            myScript.GenerateMap(rSize);
         }
     }
 }
