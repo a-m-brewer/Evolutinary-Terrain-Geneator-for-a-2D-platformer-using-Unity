@@ -8,6 +8,7 @@ public class Person : MonoBehaviour{
     public float jumpPower;
     public float attackDamage;
     public float health;
+    private float originalHealth;
     // is the player facing right
     private bool facingRight = false;
     public float moveX;
@@ -17,7 +18,10 @@ public class Person : MonoBehaviour{
     public float damageAnimationTime = 2f;
     // jump parameters
     public bool isGrounded = false;
+    public bool levelEnded = false;
     private string badGuyTag;
+
+    public MapGeneratorMain map;
 
     private void Start()
     {
@@ -35,8 +39,6 @@ public class Person : MonoBehaviour{
         {
             Hurt(health);
         }
-        
-
     }
 
     public void Jump()
@@ -80,8 +82,9 @@ public class Person : MonoBehaviour{
         {
             if (gameObject.tag == "Player")
             {
-                string currSceneName = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(currSceneName);
+                //string currSceneName = SceneManager.GetActiveScene().name;
+                //SceneManager.LoadScene(currSceneName);
+                RestartMap();
             }
             if(gameObject.tag == "Enemy")
             {
@@ -103,6 +106,11 @@ public class Person : MonoBehaviour{
         anim.SetBool("Damaged", false);
     }
 
+    private void RestartMap()
+    {
+        levelEnded = true;
+    }
+
     public void GiveHealth(float healthToGive)
     {
         health += healthToGive;
@@ -111,6 +119,11 @@ public class Person : MonoBehaviour{
     public float GetHealth()
     {
         return health;
+    }
+
+    public void ResetHealth()
+    {
+        health = originalHealth;
     }
 
     public bool GetFacingRight()
@@ -126,5 +139,15 @@ public class Person : MonoBehaviour{
     public void SetBadGuyTag(string t)
     {
         badGuyTag = t;
+    }
+
+    public void SetOriginalHealth(float ihealth)
+    {
+        originalHealth = ihealth;
+    }
+
+    public float GetOriginalHealth()
+    {
+        return originalHealth;
     }
 }

@@ -116,6 +116,8 @@ MonoBehaviour:
   anim: {fileID: 95761818543166464}
   damageAnimationTime: 2
   isGrounded: 0
+  levelEnded: 0
+  map: {fileID: 114759044413422614, guid: c96ecb25b616c8947b42a10ad3993489, type: 2}
   enemyMask:
     serializedVersion: 2
     m_Bits: 4294964735

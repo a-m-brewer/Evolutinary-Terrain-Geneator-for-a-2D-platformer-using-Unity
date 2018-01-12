@@ -13,6 +13,8 @@ public class Player : Person {
         jumpPower = 700f;
         health = 3;
         SetBadGuyTag("Enemy");
+        SetOriginalHealth(health);
+        levelEnded = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -37,6 +39,7 @@ public class Player : Person {
 
         if (collision.gameObject.CompareTag("Flag"))
         {
+            levelEnded = true;
             Debug.Log("Hit End Flag");
         }
         

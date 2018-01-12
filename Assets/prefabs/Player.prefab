@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 114747494650986166}
   m_Layer: 8
   m_Name: Gun
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,8 +70,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1052031687626968}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.84000015, y: 1.4899998, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 3.0002055, y: 1.4974754, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children:
   - {fileID: 4506753741537800}
   m_Father: {fileID: 0}
@@ -168,13 +168,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 10
-  jumpPower: 800
+  jumpPower: 700
   attackDamage: 0
-  health: 3
-  moveX: 0
+  health: 0
+  moveX: 0.053642005
   personRB: {fileID: 50497977745244670}
-  isGrounded: 0
   anim: {fileID: 95522527270009752}
+  damageAnimationTime: 2
+  isGrounded: 1
+  map: {fileID: 0}
+  levelEnded: 0
 --- !u!114 &114747494650986166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -186,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0072878f87716b41a0c9f4e81f76865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 1
+  fireRate: 2
   damage: 1
   bulletSpeed: 15
   canHit:

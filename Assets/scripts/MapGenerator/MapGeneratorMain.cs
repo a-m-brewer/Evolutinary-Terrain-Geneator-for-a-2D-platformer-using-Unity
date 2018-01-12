@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class MapGeneratorMain : MonoBehaviour, IDifficulty {
 
@@ -39,9 +38,6 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
     {
         allTemplateRoomData = LoadMaps(mapDataText);
 
-        chosenMap = levelSelector.SelectMap(allTemplateRoomData, numRooms, mapTargetDifficulty, room);
-        actualDifficultyScore =  levelSelector.DifficultyScoreOfMap(chosenMap, room.GetComponent<RoomGenerator>().GetRoomTiles());
-
         rSize = new Vector2(roomSizeX, roomSizeY);
 
         GenerateMap(rSize);
@@ -50,6 +46,9 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
 
     public void GenerateMap(Vector2 rSize)
     {
+        chosenMap = levelSelector.SelectMap(allTemplateRoomData, numRooms, mapTargetDifficulty, room);
+        actualDifficultyScore = levelSelector.DifficultyScoreOfMap(chosenMap, room.GetComponent<RoomGenerator>().GetRoomTiles());
+
         // set the name of the game object to group map tiles with
         string holderName = "MapGen";
         // Each time the map generates destroy the old game objects
