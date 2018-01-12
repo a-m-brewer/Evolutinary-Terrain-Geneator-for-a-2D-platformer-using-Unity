@@ -117,11 +117,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4046583679410792, guid: 1ead474eb75dc9a41977f90b2d8fa18a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4046583679410792, guid: 1ead474eb75dc9a41977f90b2d8fa18a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.4899998
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4046583679410792, guid: 1ead474eb75dc9a41977f90b2d8fa18a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -146,6 +146,11 @@ Prefab:
     - target: {fileID: 4046583679410792, guid: 1ead474eb75dc9a41977f90b2d8fa18a, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747494650986166, guid: 1ead474eb75dc9a41977f90b2d8fa18a,
+        type: 2}
+      propertyPath: fireRate
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ead474eb75dc9a41977f90b2d8fa18a, type: 2}
@@ -274,11 +279,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998917294659484, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 9.94
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4998917294659484, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 4.47
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 4998917294659484, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
       propertyPath: m_LocalPosition.z
@@ -308,7 +313,27 @@ Prefab:
         type: 2}
       propertyPath: player
       value: 
-      objectReference: {fileID: 752829168}
+      objectReference: {fileID: 752829174}
+    - target: {fileID: 114794322317970868, guid: ba140c56a36530c4ea6d01ea99213eff,
+        type: 2}
+      propertyPath: map
+      value: 
+      objectReference: {fileID: 1770419791}
+    - target: {fileID: 20298796874711254, guid: ba140c56a36530c4ea6d01ea99213eff,
+        type: 2}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20298796874711254, guid: ba140c56a36530c4ea6d01ea99213eff,
+        type: 2}
+      propertyPath: m_BackGroundColor.g
+      value: 0.98823535
+      objectReference: {fileID: 0}
+    - target: {fileID: 20298796874711254, guid: ba140c56a36530c4ea6d01ea99213eff,
+        type: 2}
+      propertyPath: m_BackGroundColor.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
   m_IsPrefabParent: 0
@@ -341,17 +366,17 @@ Transform:
   m_Father: {fileID: 1770419792}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &752829168 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1052031687626968, guid: 1ead474eb75dc9a41977f90b2d8fa18a,
-    type: 2}
-  m_PrefabInternal: {fileID: 289882187}
 --- !u!114 &752829171 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114734256395325630, guid: 1ead474eb75dc9a41977f90b2d8fa18a,
     type: 2}
   m_PrefabInternal: {fileID: 289882187}
   m_Script: {fileID: 11500000, guid: 3748d92594705234da79bc33c3b5bb73, type: 3}
+--- !u!4 &752829174 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4046583679410792, guid: 1ead474eb75dc9a41977f90b2d8fa18a,
+    type: 2}
+  m_PrefabInternal: {fileID: 289882187}
 --- !u!1001 &1138626459
 Prefab:
   m_ObjectHideFlags: 0
@@ -423,9 +448,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7345495c7e916479053f316fb13e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rSize: {x: 0, y: 0}
   room: {fileID: 4685865141860372, guid: 5397490ec6661634595082af800a2348, type: 2}
+  endFlag: {fileID: 4780800557752168, guid: 580be6483ff3ff74da24bc2c5f11415f, type: 2}
   mapDataText: {fileID: 4900000, guid: 47d755e849465994f8a077eb7fdfd810, type: 3}
-  mapTargetDifficulty: 90
+  mapTargetDifficulty: 70
   actualDifficultyScore: 0
 --- !u!4 &1770419792
 Transform:

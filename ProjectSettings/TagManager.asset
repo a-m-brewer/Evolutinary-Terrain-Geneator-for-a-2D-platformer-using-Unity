@@ -11,6 +11,9 @@ TagManager:
   - Bullet
   - Room
   - TestPerson
+  - Flag
+  - PlayerBullet
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

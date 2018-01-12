@@ -13,6 +13,8 @@ public class Enemy : Person, IDifficulty {
     public bool isBlockedBot = false;
     public bool isBlockedTop = false;
 
+    private bool hasGun = false;
+
     public int DifficultyScore
     {
         get
@@ -28,8 +30,15 @@ public class Enemy : Person, IDifficulty {
 
     private void Awake()
     {
+        hasGun = (gameObject.transform.childCount > 0);
         // For some reason this needs to be in awake
-        DifficultyScore = TileInformation.difficultyScores[4];
+        if (hasGun)
+        {
+            DifficultyScore = TileInformation.difficultyScores[5];
+        } else
+        {
+            DifficultyScore = TileInformation.difficultyScores[4];
+        }
     }
 
     // Use this for initialization
@@ -63,7 +72,7 @@ public class Enemy : Person, IDifficulty {
         DirectionCheck();
 
         EnemyMove();
-        if (gameObject.transform.childCount > 0)
+        if (hasGun)
         {
             gameObject.transform.GetChild(0).GetComponent<Gun>().Shoot();
         }        

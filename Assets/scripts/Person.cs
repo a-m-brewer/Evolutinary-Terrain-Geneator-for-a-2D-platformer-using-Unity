@@ -13,20 +13,30 @@ public class Person : MonoBehaviour{
     public float moveX;
     //
     public Rigidbody2D personRB;
+    public Animator anim;
+    public float damageAnimationTime = 2f;
     // jump parameters
     public bool isGrounded = false;
-
     private string badGuyTag;
 
     private void Start()
     {
         // somthing wrong with this for enemy
         personRB = GetComponent<Rigidbody2D>();
-
-        if (personRB == null)
+        if (personRB == null || anim == null)
         {
             Debug.Log("whoops");
         }
+    }
+
+    public void FixedUpdate()
+    {
+        if (personRB.position.y < (-1f))
+        {
+            Hurt(health);
+        }
+        
+
     }
 
     public void Jump()
@@ -78,7 +88,19 @@ public class Person : MonoBehaviour{
                 Destroy(gameObject);
             }
         }
+        StartCoroutine(TriggerHurtAnimation());
         Debug.Log(health);
+    }
+
+    public IEnumerator TriggerHurtAnimation()
+    {
+        Debug.Log("actually happens " + gameObject.tag);
+        // Start Animation
+        anim.SetBool("Damaged", true);
+        // Wait For Invisiblity to end
+        yield return new WaitForSeconds(damageAnimationTime);
+        // Stop blinking reenable collison
+        anim.SetBool("Damaged", false);
     }
 
     public void GiveHealth(float healthToGive)

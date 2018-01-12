@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 50396469927778604}
   - component: {fileID: 114652326915901146}
   - component: {fileID: 70559657253782520}
+  - component: {fileID: 95761818543166464}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1663524583343052}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.993385, y: 3.0882144, z: 0}
+  m_LocalPosition: {x: 5.6974196, y: -1.5809598, z: 0}
   m_LocalScale: {x: 0.98, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,6 +79,23 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!95 &95761818543166464
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663524583343052}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 264552b1c7d43134b9657c2378a09dcf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114652326915901146
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -92,9 +110,11 @@ MonoBehaviour:
   movementSpeed: 6
   jumpPower: 600
   attackDamage: 1
-  health: 1
+  health: 2
   moveX: 0
   personRB: {fileID: 50396469927778604}
+  anim: {fileID: 95761818543166464}
+  damageAnimationTime: 2
   isGrounded: 0
   enemyMask:
     serializedVersion: 2

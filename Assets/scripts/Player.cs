@@ -5,18 +5,13 @@ using UnityEngine;
 public class Player : Person {
 
     private int playerScore = 0;
-    private float invisibleTimeAfterDamage = 2f;
     private bool isTrapped = false;
-
-    public Animator anim;
 
     private void Start()
     {
         movementSpeed = 10f;
         jumpPower = 700f;
         health = 3;
-        anim = GetComponent<Animator>();
-
         SetBadGuyTag("Enemy");
     }
 
@@ -38,6 +33,11 @@ public class Player : Person {
             Hurt(1f);
             IEnumerator coroutine = TriggerTrap(collision);
             StartCoroutine(coroutine);
+        }
+
+        if (collision.gameObject.CompareTag("Flag"))
+        {
+            Debug.Log("Hit End Flag");
         }
         
     }
@@ -77,19 +77,7 @@ public class Player : Person {
 
         if (collision.collider.CompareTag("Enemy"))
         {
-            StartCoroutine(TriggerHurtAnimation(collision.collider));
-
             Hurt(1f);
         }
-    }
-
-    IEnumerator TriggerHurtAnimation(Collider2D collider)
-    {
-        // Start Animation
-        anim.SetBool("Damaged", true);
-        // Wait For Invisiblity to end
-        yield return new WaitForSeconds(invisibleTimeAfterDamage);
-        // Stop blinking reenable collison
-        anim.SetBool("Damaged", false);
     }
 }

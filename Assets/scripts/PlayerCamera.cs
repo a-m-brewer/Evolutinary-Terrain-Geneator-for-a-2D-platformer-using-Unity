@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour {
 
-    public GameObject player;
-    Vector3 offset;
+    public Transform player;
+    public MapGeneratorMain map;
+    public float speed = 10f;
+    public Vector3 offset;
 
-    private void Start()
+    private Vector3 ogOffset;
+
+    public void Awake()
     {
-        offset = transform.position - player.transform.position;
+        ogOffset = offset;
     }
 
     private void LateUpdate()
     {
-        transform.position = player.transform.position + offset;
-    }
+        Vector3 desiredPos = new Vector3((player.position.x + offset.x), transform.position.y, transform.position.z);
+        Vector3 smoothedPos = Vector3.Lerp(transform.position, desiredPos, speed * Time.deltaTime);
 
-    // locks the camera to the  edges set of the level
+        transform.position = smoothedPos;      
+    }
 
 }
