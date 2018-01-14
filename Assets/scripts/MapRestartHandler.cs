@@ -82,6 +82,7 @@ public class MapRestartHandler : MonoBehaviour {
         player.transform.position = new Vector3(3f, 1.5f, player.transform.position.z);
         map.GenerateMap(new Vector2(24f, 10f));
         player.ResetHealth();
+        player.ResetScore();
         Pause(false);
     }
 

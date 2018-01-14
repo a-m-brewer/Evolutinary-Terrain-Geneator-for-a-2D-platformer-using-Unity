@@ -33,6 +33,7 @@ public class Player : Person {
         if (collision.gameObject.CompareTag("Trap") && collision.transform.GetComponent<Trap>().GetIsTriggerable())
         {
             Hurt(1f);
+            StartCoroutine(TriggerHurtAnimation());
             IEnumerator coroutine = TriggerTrap(collision);
             StartCoroutine(coroutine);
         }
@@ -50,9 +51,14 @@ public class Player : Person {
         return playerScore;
     }
 
-    private void IncreaseScore(int PointsToAdd)
+    public void IncreaseScore(int PointsToAdd)
     {
         playerScore += PointsToAdd; 
+    }
+
+    public void ResetScore()
+    {
+        playerScore = 0;
     }
 
     public bool GetIsTrapped()
@@ -81,6 +87,7 @@ public class Player : Person {
         if (collision.collider.CompareTag("Enemy"))
         {
             Hurt(1f);
+            StartCoroutine(TriggerHurtAnimation());
         }
     }
 }

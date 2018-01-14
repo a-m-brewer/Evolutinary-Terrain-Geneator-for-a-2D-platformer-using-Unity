@@ -35,7 +35,7 @@ public class Person : MonoBehaviour{
 
     public void FixedUpdate()
     {
-        if (personRB.position.y < (-1f))
+        if (PesonIsBellowMap())
         {
             Hurt(health);
         }
@@ -82,8 +82,6 @@ public class Person : MonoBehaviour{
         {
             if (gameObject.tag == "Player")
             {
-                //string currSceneName = SceneManager.GetActiveScene().name;
-                //SceneManager.LoadScene(currSceneName);
                 RestartMap();
             }
             if(gameObject.tag == "Enemy")
@@ -91,8 +89,6 @@ public class Person : MonoBehaviour{
                 Destroy(gameObject);
             }
         }
-        StartCoroutine(TriggerHurtAnimation());
-        Debug.Log(health);
     }
 
     public IEnumerator TriggerHurtAnimation()
@@ -104,6 +100,11 @@ public class Person : MonoBehaviour{
         yield return new WaitForSeconds(damageAnimationTime);
         // Stop blinking reenable collison
         anim.SetBool("Damaged", false);
+    }
+
+    public bool PesonIsBellowMap()
+    {
+        return transform.position.y < (-1.5f);
     }
 
     private void RestartMap()

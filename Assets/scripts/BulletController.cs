@@ -7,6 +7,7 @@ public class BulletController : MonoBehaviour {
     private float damage = 0f;
     private string tagOfParent;
     private string badGuyTag;
+    private Player player;
     
 
     // Use this for initialization
@@ -18,6 +19,10 @@ public class BulletController : MonoBehaviour {
             if (badGuyTag == "Enemy")
             {
                 collider.GetComponent<Enemy>().Hurt(damage);
+                if (collider.GetComponent<Enemy>().GetHealth() <= 0)
+                {
+                    player.IncreaseScore(5);   
+                }
             } else if (badGuyTag == "Player")
             {
                 collider.GetComponent<PlayerMove>().Hurt(damage);
@@ -25,6 +30,8 @@ public class BulletController : MonoBehaviour {
             {
                 Debug.Log("Wrong tag " + badGuyTag);
             }
+
+            collider.GetComponent<MonoBehaviour>().StartCoroutine(collider.GetComponent<Person>().TriggerHurtAnimation());
             
             Destroy(gameObject);
         }
@@ -52,5 +59,15 @@ public class BulletController : MonoBehaviour {
     public void SetBadGuyTag(string t)
     {
         badGuyTag = t;
+    }
+
+    public void SetPlayer(Player p)
+    {
+        player = p;
+    }
+
+    public Player GetPlayer()
+    {
+        return player;
     }
 }
