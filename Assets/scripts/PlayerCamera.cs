@@ -9,13 +9,6 @@ public class PlayerCamera : MonoBehaviour {
     public float speed = 10f;
     public Vector3 offset;
 
-    private Vector3 ogOffset;
-
-    public void Awake()
-    {
-        ogOffset = offset;
-    }
-
     private void LateUpdate()
     {
         Vector3 desiredPos = new Vector3((player.position.x + offset.x), transform.position.y, transform.position.z);

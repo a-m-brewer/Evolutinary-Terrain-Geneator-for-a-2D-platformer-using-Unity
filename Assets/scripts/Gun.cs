@@ -33,6 +33,7 @@ public class Gun : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         HandleShootingInput();
 
         fliped = transform.parent.gameObject.GetComponent<Person>().GetFacingRight();
@@ -40,7 +41,7 @@ public class Gun : MonoBehaviour {
 
     void HandleShootingInput()
     {
-        bool isGrounded = transform.parent.gameObject.GetComponent<Person>().isGrounded;
+        //bool isGrounded = transform.parent.gameObject.GetComponent<Person>().isGrounded;
         bool isPlayer = (transform.parent.gameObject.GetComponent<PlayerMove>() != null);
         bool playerIsFreeToMove = true;
         if (isPlayer)
@@ -48,7 +49,7 @@ public class Gun : MonoBehaviour {
             playerIsFreeToMove = !transform.parent.gameObject.GetComponent<PlayerMove>().GetIsTrapped();
         }
         
-        if (Input.GetButton("Fire1") && playerIsFreeToMove && isGrounded)
+        if (Input.GetButton("Fire1") && playerIsFreeToMove) // && isGrounded)
         {
             Shoot();
         }
