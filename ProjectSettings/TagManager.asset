@@ -28,9 +28,9 @@ TagManager:
   - Enemy
   - Ground
   - Item
-  - 
-  - 
-  - 
+  - Bullet
+  - Camera
+  - Barrier
   - 
   - 
   - 

@@ -8,12 +8,10 @@ public class BulletController : MonoBehaviour {
     private string tagOfParent;
     private string badGuyTag;
     private Player player;
-    
 
     // Use this for initialization
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        
         if (collider.tag == badGuyTag)
         {
             if (badGuyTag == "Enemy")
@@ -36,12 +34,12 @@ public class BulletController : MonoBehaviour {
             Destroy(gameObject);
         }
 
-
-        if (collider.tag != tagOfParent && collider.tag != badGuyTag && collider.tag != "Bullet")  
+        
+        if (collider.tag != tagOfParent && collider.tag != badGuyTag && collider.tag != "Bullet")
         {
             Destroy(gameObject);
         }
-        
+
 
         Destroy(gameObject, 2f);
     }
@@ -51,14 +49,29 @@ public class BulletController : MonoBehaviour {
         damage = d;
     }
 
+    public float GetDamage()
+    {
+        return damage;
+    }
+
     public void SetTagOfParent(string s)
     {
         tagOfParent = s;
     }
 
+    public string GetTagOfParent()
+    {
+        return tagOfParent;
+    }
+
     public void SetBadGuyTag(string t)
     {
         badGuyTag = t;
+    }
+
+    public string GetBadGuyTag()
+    {
+        return badGuyTag;
     }
 
     public void SetPlayer(Player p)

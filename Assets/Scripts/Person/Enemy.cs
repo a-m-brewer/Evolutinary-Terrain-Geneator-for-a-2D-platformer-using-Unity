@@ -54,7 +54,7 @@ public class Enemy : Person, IDifficulty {
         SetBadGuyTag("Player");
     }
 
-    private void FixedUpdate()
+    private new void FixedUpdate()
     {
         Vector2 frontOfEnemyBot = (enemyTransform.position.ToVector2() - Vector2.up) + enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * (enemyHeight * 0.75f);
         Vector2 frontOfEnemyTop = (enemyTransform.position.ToVector2() - Vector2.up) + enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * (enemyHeight * 1.5f);

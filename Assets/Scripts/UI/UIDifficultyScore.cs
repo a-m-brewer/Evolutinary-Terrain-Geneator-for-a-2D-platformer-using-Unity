@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/*
+ * A script to handle displaying the players difficulty score in the
+ * UI element
+ */
 public class UIDifficultyScore : MonoBehaviour {
 
     private Text mytext;

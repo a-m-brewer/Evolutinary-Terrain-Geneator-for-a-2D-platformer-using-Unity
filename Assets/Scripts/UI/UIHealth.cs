@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class UIPlayerScore : MonoBehaviour {
+/*
+ * A script to handle displaying the players Health in the
+ * UI element
+ */
+public class UIHealth : MonoBehaviour {
 
     private Text mytext;
     public Player player;
@@ -16,6 +19,6 @@ public class UIPlayerScore : MonoBehaviour {
 
     private void Update()
     {
-        mytext.text = player.GetScore().ToString();
+        mytext.text = "Health: " + player.GetHealth().ToString();
     }
 }

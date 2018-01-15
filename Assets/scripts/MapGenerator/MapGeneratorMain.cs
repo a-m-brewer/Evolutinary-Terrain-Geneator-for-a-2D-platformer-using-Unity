@@ -1,20 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
+ * Responsible for creating a set of rooms in the world 
+ * This is done through using the LevelSelector Class
+ * and Roomgenerator script
+ */ 
 public class MapGeneratorMain : MonoBehaviour, IDifficulty {
-
+    // the size of each room
     private const int roomSizeX = 24;
     private const int roomSizeY = 10;
     public Vector2 rSize;
-
+    // number of rooms
     public const int numRooms = 4;
+    // links to the room and flag prefabs
     public Transform room;
     public Transform endFlag;
-
+    // as storing of the data needed to create maps
     public int[][] allTemplateRoomData;
     public int[][] chosenMap;
-
+    // implimentation of IDifficulty
     private int difficutly;
     public int DifficultyScore
     {
@@ -28,24 +33,31 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             difficutly = value;
         }
     }
+    // create a global object of the levelSelector script
     LevelSelector levelSelector = new LevelSelector();
+    // a link to the file storing all of the roomData
     public TextAsset mapDataText;
 
+    // Difficultys
     public int mapTargetDifficulty;
     public int actualDifficultyScore;
 
     private void Start()
     {
+        // load in all of the data of the rooms
         allTemplateRoomData = LoadMaps(mapDataText);
-
+        // set the size of the room
         rSize = new Vector2(roomSizeX, roomSizeY);
-
+        // create a map
         GenerateMap(rSize);
+        // caculate the difficutly of the map that is created
         CalculateDifficulty();
     }
 
+    // main method for creating a map that calls other methods
     public void GenerateMap(Vector2 rSize)
     {
+        // chooses the set of rooms that are closest in difficulty to the desired difficulty of the map
         chosenMap = levelSelector.SelectMap(allTemplateRoomData, numRooms, mapTargetDifficulty, room);
         actualDifficultyScore = levelSelector.DifficultyScoreOfMap(chosenMap, room.GetComponent<RoomGenerator>().GetRoomTiles());
 
@@ -60,6 +72,7 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         Transform mapHolder = new GameObject(holderName).transform;
         mapHolder.parent = transform;
         
+        // create each of the rooms next to each other
         for (int i = 0; i < numRooms; i++)
         {
             Vector3 rPos = new Vector3(i, 0, 0);
@@ -68,15 +81,18 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
             newRoom.parent = mapHolder;
             newRoom.GetComponent<RoomGenerator>().GenerateRoom(rSize, i, mapHolder, chosenMap[i]);
         }
-
+        // place the end flag at the end of the level and place borders so the player does not escape
+        // the map.
         PlaceEndFlag(endFlag, mapHolder);
         PlaceBorders();
     }
 
+    // add the difficulty of the each rooms to get the maps score
     void CalculateDifficulty()
     {
         AddComponentWithTagToDifficulty("Room");
     }
+
 
     void AddToDifficulty(Transform t)
     {
@@ -95,6 +111,10 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         }
     }
 
+    // work through the text file and add the rooms to a int array
+    // ',' represents the seperation of room tiles
+    // '.' represents the seperation of rooms
+    // represents rooms in array array[roomNumber][tileNumber]
     public int[][] LoadMaps(TextAsset inFile)
     {
         string[][] levels = new string[1][];
@@ -120,6 +140,7 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         return levelsInt;
     }
 
+    // places the flag at the end of a level
     void PlaceEndFlag(Transform flag, Transform holder)
     {
         float x = (float)(roomSizeX * (numRooms)) - 2f;
@@ -128,7 +149,7 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         Transform flagPlace = Instantiate(flag, place, Quaternion.Euler(Vector3.right));
         flagPlace.parent = holder;
     }
-
+    // creates a wall at a point
     void CreateAndPlaceBorder(string name, Vector2 pos, Vector2 size, Transform parent)
     {
         GameObject newGO = new GameObject();
@@ -138,7 +159,7 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         newGO.transform.localScale = new Vector3(size.x, size.y, 1f);
         newGO.transform.parent = parent;
     }
-
+    // places walls around the map so that the player does not fall out of the map
     void PlaceBorders()
     {
 
@@ -154,7 +175,12 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         mapHolder.parent = transform;
 
         CreateAndPlaceBorder("leftWall", new Vector2(-1f, 5f), new Vector2(1f, roomSizeY), mapHolder);
-        CreateAndPlaceBorder("topWall", new Vector2((roomSizeX * numRooms) / 2, roomSizeY), new Vector2((roomSizeX * numRooms), 1f), mapHolder);
+        //CreateAndPlaceBorder("topWall", new Vector2((roomSizeX * numRooms) / 2, roomSizeY), new Vector2((roomSizeX * numRooms), 1f), mapHolder);
         CreateAndPlaceBorder("rightWall", new Vector2((roomSizeX * numRooms), 5f), new Vector2(1f, roomSizeY), mapHolder);
+    }
+
+    public int GetNumRooms()
+    {
+        return numRooms;
     }
 }

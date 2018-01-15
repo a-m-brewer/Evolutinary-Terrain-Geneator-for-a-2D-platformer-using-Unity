@@ -334,22 +334,8 @@ Prefab:
       propertyPath: map
       value: 
       objectReference: {fileID: 1770419791}
-    - target: {fileID: 20298796874711254, guid: ba140c56a36530c4ea6d01ea99213eff,
-        type: 2}
-      propertyPath: m_BackGroundColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 20298796874711254, guid: ba140c56a36530c4ea6d01ea99213eff,
-        type: 2}
-      propertyPath: m_BackGroundColor.g
-      value: 0.98823535
-      objectReference: {fileID: 0}
-    - target: {fileID: 20298796874711254, guid: ba140c56a36530c4ea6d01ea99213eff,
-        type: 2}
-      propertyPath: m_BackGroundColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 61796087425903190, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &752829171 stripped

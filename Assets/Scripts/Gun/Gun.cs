@@ -9,11 +9,7 @@ public class Gun : MonoBehaviour {
     public float bulletSpeed = 15f;
     public LayerMask canHit;
     private float timeToFire = 0f;
-    float timeToSpawnEffect = 0f;
-    Transform firePoint;
-    Transform gun;
-
-    public Transform bulletTrail;
+    public Transform firePoint;
 
     private bool fliped;
 
@@ -26,7 +22,6 @@ public class Gun : MonoBehaviour {
         {
             Debug.LogError("Could not find firePoint Gun.cs");
         }
-        gun = gameObject.transform;
 
         gameObject.tag = gameObject.transform.parent.tag;
     }
@@ -39,6 +34,7 @@ public class Gun : MonoBehaviour {
         fliped = transform.parent.gameObject.GetComponent<Person>().GetFacingRight();
 	}
 
+    // handle the shooting input from the player
     void HandleShootingInput()
     {
         //bool isGrounded = transform.parent.gameObject.GetComponent<Person>().isGrounded;
@@ -55,6 +51,7 @@ public class Gun : MonoBehaviour {
         }
     }
 
+    // fire the gun
     public void Shoot()
     {        
         Vector2 firePointPosition = new Vector2(firePoint.position.x, firePoint.position.y);
@@ -73,6 +70,7 @@ public class Gun : MonoBehaviour {
         }
     }
 
+    // spawn the bullet
     void SpawnBullet(Vector2 forward, Vector2 firePos)
     {
         GameObject bullet = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);

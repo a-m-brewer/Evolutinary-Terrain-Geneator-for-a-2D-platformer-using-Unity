@@ -4,8 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/*
+ *  Decides which set of maps will be used based on a 
+ *  difficulty score given to it
+ */ 
+
 public class LevelSelector {
 
+    // works through each tile of a room and if it implements IDifficulty
+    // add it's difficulty to the room score
     public int CalculateRoomDifficulty(int[] roomData, Transform[] tileTypes)
     {
         int difficulty = 0;
@@ -21,6 +28,7 @@ public class LevelSelector {
         return difficulty;
     }
 
+    // Works out for a set of rooms int[][] what the difficulty of each room is
     public int[] CalculateDifficultyOfEachRoom(int[][] allRoomsData, Transform[] tileTypes)
     {
         int[] diffScores = new int[allRoomsData.Length];
@@ -32,11 +40,12 @@ public class LevelSelector {
         return diffScores;
     }
 
-    public IEnumerable<int[]> MyCombinations(IList<int> argList, int argSetSize)
+    // create a list of possible room combinations with no repeats of rooms
+    public IEnumerable<int[]> MyCombinations(IList<int> roomList, int amountOfRoomsToPick)
     {
-        if (argList == null) throw new ArgumentNullException("argList");
-        if (argSetSize <= 0) throw new ArgumentException("argSetSize Must be greater than 0", "argSetSize");
-        return MyCombinationsImpl(argList, 0, argSetSize - 1);
+        if (roomList == null) throw new ArgumentNullException("argList");
+        if (amountOfRoomsToPick <= 0) throw new ArgumentException("argSetSize Must be greater than 0", "argSetSize");
+        return MyCombinationsImpl(roomList, 0, amountOfRoomsToPick - 1);
     }
     
     private IEnumerable<int[]> MyCombinationsImpl(IList<int> argList, int argStart, int argIteration, List<int> argIndicies = null) {
@@ -46,14 +55,14 @@ public class LevelSelector {
             argIndicies.Add(i);
             if (argIteration > 0)
             {
-                foreach (var array in MyCombinationsImpl(argList, i + 1, argIteration - 1, argIndicies))
+                foreach (int[] array in MyCombinationsImpl(argList, i + 1, argIteration - 1, argIndicies))
                 {
                     yield return array;
                 }
             }
             else
             {
-                var array = new int[argIndicies.Count];
+                int[] array = new int[argIndicies.Count];
                 for (int j = 0; j < argIndicies.Count; j++)
                 {
                     array[j] = argList[argIndicies[j]];
@@ -64,7 +73,7 @@ public class LevelSelector {
             argIndicies.RemoveAt(argIndicies.Count - 1);
         }
     }
-
+    // count how many elements are in the enumerable list
     public int CountNumberOfElements(IEnumerable<int[]> ListOfCombinations)
     {
         int count = 0;
@@ -74,7 +83,7 @@ public class LevelSelector {
         }
         return count;
     }
-
+    // get the combination of maps in array form
     public int[][] GetArrayOfPosiblileMapCombinations(IEnumerable<int[]> combinations, int countOfElementsInCombintation)
     {
 
@@ -91,6 +100,7 @@ public class LevelSelector {
         return doubleArr;
     }
 
+    // work out which map is closest to the target score
     public int[][] GetMapClosestToScore(int target, int[][] allCombinationIndexs, int[][] allRoomData, Transform[] tileTypes)
     {
         System.Random r = new System.Random();
@@ -128,6 +138,7 @@ public class LevelSelector {
         return clossestMap;
     }
 
+    // from a given combination of rooms return a mapData array for it
     public int[][] GetMapFromCombination(int[] listOfIndexes, int[][] allRoomData)
     {
         int[][] newMap = new int[listOfIndexes.Length][];
@@ -138,6 +149,7 @@ public class LevelSelector {
         return newMap;
     }
 
+    // work out difficulty of a map
     public int DifficultyScoreOfMap(int[][] mapData, Transform[] tileTypes)
     {
         int[] diffScores = CalculateDifficultyOfEachRoom(mapData, tileTypes);
@@ -149,7 +161,7 @@ public class LevelSelector {
         return diff;
     }
 
-
+    // helper method to run from mapGenerator
     public int[][] SelectMap(int[][] allRoomData, int numberOfRooms, int targetDifficulty, Transform room)
     {
         int[] indexes = Enumerable.Range(0, allRoomData.Length).ToArray();

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
+/*
+ * Methods that apply to both the player and the enemy
+ */
 public class Person : MonoBehaviour{
     public float movementSpeed;
     public float jumpPower;
@@ -49,7 +50,7 @@ public class Person : MonoBehaviour{
         }
     }
 
-    // test done
+    // flip the sprite of the person
     public void FlipPlayer()
     {
         facingRight = !facingRight;
@@ -58,6 +59,7 @@ public class Person : MonoBehaviour{
         transform.localScale = localScale;
     }
 
+    // Flip if the player changes direction
     public void DirectionCheck()
     {
         if (moveX < 0.0f && !facingRight)
@@ -75,6 +77,7 @@ public class Person : MonoBehaviour{
         return personRB;
     }
 
+    // hurt the person for a given damage
     public void Hurt(float damageToGive)
     {
         health -= damageToGive;
@@ -91,6 +94,8 @@ public class Person : MonoBehaviour{
         }
     }
 
+    // set the animation bool to trigger hurt animation for
+    // N seconds
     public IEnumerator TriggerHurtAnimation()
     {
         Debug.Log("actually happens " + gameObject.tag);
@@ -102,16 +107,21 @@ public class Person : MonoBehaviour{
         anim.SetBool("Damaged", false);
     }
 
+    // returns true if the player is bellow the map
     public bool PesonIsBellowMap()
     {
         return transform.position.y < (-1.5f);
     }
 
+    // if level ended is true you are taken to the Difficulty seclection screen
+    // This also handles the reset so to restart the map levelEnded only needs
+    // to be true
     private void RestartMap()
     {
         levelEnded = true;
     }
 
+    // various setters and getters for variables
     public void GiveHealth(float healthToGive)
     {
         health += healthToGive;

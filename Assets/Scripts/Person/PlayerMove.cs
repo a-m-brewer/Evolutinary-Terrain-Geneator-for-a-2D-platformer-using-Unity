@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// class to handle the movement of the player
 public class PlayerMove : Player
 {
 

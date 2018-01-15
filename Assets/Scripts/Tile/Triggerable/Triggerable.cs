@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * A class for handling the logic for coins and traps
+ */ 
 public class Triggerable : MonoBehaviour, IDifficulty {
 
     public int difficulty;
     private bool triggerable = true;
-
+    // implimentation of IDifficulty
     public int DifficultyScore
     {
         get
@@ -20,6 +23,7 @@ public class Triggerable : MonoBehaviour, IDifficulty {
         }
     }
 
+    // replace the trap or coin tile with a background tile
     public void ReplaceTile(string prefabTag, string replacementPrefabTag)
     {
         if (triggerable)
@@ -30,6 +34,8 @@ public class Triggerable : MonoBehaviour, IDifficulty {
         }
     }
 
+    // if the trap is triggered, triggerable is set to false meaning it's actions won't
+    // be calculated
     public bool GetIsTriggerable()
     {
         return triggerable;
