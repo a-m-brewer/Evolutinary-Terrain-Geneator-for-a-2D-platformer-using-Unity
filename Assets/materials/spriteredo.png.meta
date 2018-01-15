@@ -1,16 +1,17 @@
 fileFormatVersion: 2
-guid: fa9bc2d69d3df134994390d8a4d5ace0
-timeCreated: 1513601218
+guid: 2b484cedaf29cbf458087589f99931f9
+timeCreated: 1515976505
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: mysprites_0
-    21300002: mysprites_1
-    21300004: mysprites_2
-    21300006: mysprites_3
-    21300008: mysprites_4
-    21300010: mysprites_5
-    21300012: mysprites_6
+    21300000: spriteredo_0
+    21300002: spriteredo_1
+    21300004: spriteredo_2
+    21300006: spriteredo_3
+    21300008: spriteredo_4
+    21300010: spriteredo_5
+    21300012: spriteredo_6
+    21300014: spriteredo_7
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -82,7 +83,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mysprites_0
+      name: spriteredo_0
       rect:
         serializedVersion: 2
         x: 82
@@ -96,7 +97,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mysprites_1
+      name: spriteredo_1
       rect:
         serializedVersion: 2
         x: 171
@@ -110,7 +111,21 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mysprites_2
+      name: spriteredo_2
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 366
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spriteredo_3
       rect:
         serializedVersion: 2
         x: 84
@@ -124,7 +139,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mysprites_3
+      name: spriteredo_4
       rect:
         serializedVersion: 2
         x: 85
@@ -138,7 +153,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mysprites_4
+      name: spriteredo_5
       rect:
         serializedVersion: 2
         x: 165
@@ -152,7 +167,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mysprites_5
+      name: spriteredo_6
       rect:
         serializedVersion: 2
         x: 85
@@ -166,7 +181,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mysprites_6
+      name: spriteredo_7
       rect:
         serializedVersion: 2
         x: 166
