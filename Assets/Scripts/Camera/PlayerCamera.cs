@@ -14,19 +14,28 @@ public class PlayerCamera : MonoBehaviour {
     public float newOffY = 0;
     [Range(0f, 1f)]
     public float offSetModifierPercent;
-    public float distFromEnd;
+    public float mapSize;
+    public float camSizeHalf;
+    public float minCamPos;
+    public float maxCamPos;
 
     private void Start()
     {
+        camSizeHalf = transform.GetComponent<Camera>().orthographicSize * Screen.width / Screen.height;
         floorPos = player.position.y;
-        Debug.Log(floorPos);
+        mapSize = (map.rSize.x * map.GetNumRooms()) - 0.5f;
+        minCamPos = (camSizeHalf - offset.x) - 0.5f;
+        maxCamPos = mapSize - camSizeHalf;
     }
 
     private void LateUpdate()
     {
-        distFromEnd = 95f - player.position.x;
         newOffY = offset.y - ((player.position.y - floorPos) * offSetModifierPercent);
-        Vector3 desiredPos = new Vector3((player.position.x + offset.x), (player.position.y + newOffY), transform.position.z);
+
+        float xPos = Mathf.Clamp(player.position.x, minCamPos, maxCamPos - offset.x);
+
+        Vector3 desiredPos = new Vector3(xPos + offset.x, (player.position.y + newOffY), transform.position.z);
+
         Vector3 smoothedPos = Vector3.Lerp(transform.position, desiredPos, speed * Time.deltaTime);
 
         transform.position = smoothedPos;      

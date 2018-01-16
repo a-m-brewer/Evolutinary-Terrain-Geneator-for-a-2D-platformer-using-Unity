@@ -83,13 +83,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1302468856746378}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.126, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4115823098109896}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!4 &4831356983850558
 Transform:
   m_ObjectHideFlags: 1
@@ -177,7 +177,6 @@ MonoBehaviour:
   damageAnimationTime: 2
   isGrounded: 0
   levelEnded: 0
-  map: {fileID: 114759044413422614, guid: c96ecb25b616c8947b42a10ad3993489, type: 2}
   enemyMask:
     serializedVersion: 2
     m_Bits: 4294964735
@@ -200,9 +199,8 @@ MonoBehaviour:
   canHit:
     serializedVersion: 2
     m_Bits: 4294966523
-  bulletTrail: {fileID: 4122777673276562, guid: 1f7e2d4323f97de489f8ff224a976089,
-    type: 2}
-  bulletPrefab: {fileID: 1887952409430610, guid: 1f7e2d4323f97de489f8ff224a976089,
+  firePoint: {fileID: 4155128954789760}
+  bulletPrefab: {fileID: 1594686736925608, guid: 6f0ef2c59142dff41a63c4ad0982efdd,
     type: 2}
 --- !u!212 &212196880554689662
 SpriteRenderer:

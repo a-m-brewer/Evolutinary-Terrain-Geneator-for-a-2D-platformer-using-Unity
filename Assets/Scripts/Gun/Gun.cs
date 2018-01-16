@@ -82,6 +82,8 @@ public class Gun : MonoBehaviour {
             bullet.GetComponent<BulletController>().SetPlayer(transform.parent.GetComponent<Player>());
         }
         bullet.tag = "Bullet";
+        bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y, -1f);
         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2((forward - firePos).x * bulletSpeed, bullet.GetComponent<Rigidbody2D>().velocity.y);
+        
     }
 }

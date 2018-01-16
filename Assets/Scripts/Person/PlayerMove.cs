@@ -4,7 +4,7 @@ using UnityEngine;
 
 // class to handle the movement of the player
 public class PlayerMove : Player
-{
+{ 
 
     // Update is called once per frame
     void Update()
@@ -15,7 +15,9 @@ public class PlayerMove : Player
 
     void MovePlayer()
     {
-        moveX = Input.GetAxis("Horizontal");
+        //moveX = 0f;
+
+        moveX = Input.GetAxisRaw("Horizontal");
 
         if (!GetIsTrapped())
         {
@@ -28,7 +30,7 @@ public class PlayerMove : Player
             // Player direction
             DirectionCheck();
             // Physics
-            GetRigidBody().velocity = new Vector2(moveX * movementSpeed, GetRigidBody().velocity.y);
+            GetRigidBody().velocity =  new Vector2(moveX * movementSpeed, GetRigidBody().velocity.y);
         }
     }
 }

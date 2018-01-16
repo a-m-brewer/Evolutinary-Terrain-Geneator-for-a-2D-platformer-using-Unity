@@ -152,11 +152,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114747494650986166, guid: 1ead474eb75dc9a41977f90b2d8fa18a,
-        type: 2}
-      propertyPath: fireRate
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ead474eb75dc9a41977f90b2d8fa18a, type: 2}
   m_IsPrefabParent: 0
@@ -334,8 +329,7 @@ Prefab:
       propertyPath: map
       value: 
       objectReference: {fileID: 1770419791}
-    m_RemovedComponents:
-    - {fileID: 61796087425903190, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &752829171 stripped
@@ -446,6 +440,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1842693265155146, guid: 734867852ae4111448cfd369e32a79f0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 734867852ae4111448cfd369e32a79f0, type: 2}
   m_IsPrefabParent: 0
@@ -545,6 +543,11 @@ Prefab:
       propertyPath: player
       value: 
       objectReference: {fileID: 752829171}
+    - target: {fileID: 114624044000544388, guid: c96ecb25b616c8947b42a10ad3993489,
+        type: 2}
+      propertyPath: TimerCanvas
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c96ecb25b616c8947b42a10ad3993489, type: 2}
   m_IsPrefabParent: 0

@@ -42,12 +42,16 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
     public int mapTargetDifficulty;
     public int actualDifficultyScore;
 
+    private void Awake()
+    {
+        // set the size of the room
+        rSize = new Vector2(roomSizeX, roomSizeY);
+    }
+
     private void Start()
     {
         // load in all of the data of the rooms
         allTemplateRoomData = LoadMaps(mapDataText);
-        // set the size of the room
-        rSize = new Vector2(roomSizeX, roomSizeY);
         // create a map
         GenerateMap(rSize);
         // caculate the difficutly of the map that is created

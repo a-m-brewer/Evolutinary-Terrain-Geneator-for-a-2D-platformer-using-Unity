@@ -24,7 +24,6 @@ GameObject:
   - component: {fileID: 124469816165429702}
   - component: {fileID: 81360237006760280}
   - component: {fileID: 114794322317970868}
-  - component: {fileID: 61796087425903190}
   m_Layer: 13
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -81,31 +80,6 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
---- !u!61 &61796087425903190
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1100347694940716}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 17.9, y: 10}
-  m_EdgeRadius: 0
 --- !u!81 &81360237006760280
 AudioListener:
   m_ObjectHideFlags: 1
@@ -134,10 +108,14 @@ MonoBehaviour:
   player: {fileID: 0}
   map: {fileID: 0}
   speed: 10
-  offset: {x: 7, y: 3, z: -10}
+  offset: {x: 5, y: 3, z: -10}
   floorPos: 0
   newOffY: 0
   offSetModifierPercent: 0.8
+  mapSize: 0
+  camSizeHalf: 0
+  minCamPos: 0
+  maxCamPos: 0
 --- !u!124 &124469816165429702
 Behaviour:
   m_ObjectHideFlags: 1

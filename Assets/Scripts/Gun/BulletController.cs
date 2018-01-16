@@ -9,6 +9,11 @@ public class BulletController : MonoBehaviour {
     private string badGuyTag;
     private Player player;
 
+    private void Start()
+    {
+        Destroy(gameObject, 1.7f);
+    }
+
     // Use this for initialization
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -39,10 +44,14 @@ public class BulletController : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-
-
-        Destroy(gameObject, 2f);
     }
+
+    /*
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
+    */
 
     public void SetDamage(float d)
     {

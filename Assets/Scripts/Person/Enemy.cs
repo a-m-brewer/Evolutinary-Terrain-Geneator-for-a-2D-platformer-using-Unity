@@ -52,6 +52,13 @@ public class Enemy : Person, IDifficulty {
         enemyHeight = sr.bounds.extents.y;
 
         SetBadGuyTag("Player");
+
+        if (hasGun)
+        {
+            // So that the enemy can't shoot right away and kill you
+            InvokeRepeating("EnemyShootGun", 3f, 1f);
+        }
+
     }
 
     private new void FixedUpdate()
@@ -72,10 +79,6 @@ public class Enemy : Person, IDifficulty {
         DirectionCheck();
 
         EnemyMove();
-        if (hasGun)
-        {
-            gameObject.transform.GetChild(0).GetComponent<Gun>().Shoot();
-        }        
     }
 
     private void EnemyMove()
@@ -102,6 +105,11 @@ public class Enemy : Person, IDifficulty {
         Vector3 currentRotation = enemyTransform.eulerAngles;
         currentRotation.y += 180f;
         enemyTransform.eulerAngles = currentRotation;
+    }
+
+    private void EnemyShootGun()
+    {
+        gameObject.transform.GetChild(0).GetComponent<Gun>().Shoot();
     }
 
 }

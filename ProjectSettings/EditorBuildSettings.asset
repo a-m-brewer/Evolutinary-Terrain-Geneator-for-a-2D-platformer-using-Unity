@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MapGeneratorTesting.unity
+    path: Assets/Scenes/MapGeneratorTesting.unity
     guid: f01f095e0de7c5041bc8dc63c6b46260

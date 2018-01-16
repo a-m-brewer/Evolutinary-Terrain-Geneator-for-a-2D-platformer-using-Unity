@@ -18,6 +18,11 @@ public class MapRestartHandler : MonoBehaviour {
     private bool hasEnteredText = false;
     private bool buttonClicked = false;
     private string inputNum;
+    private float lastRealTime = 0f;
+
+
+    private Text countdown;
+    private float timeToFinish;
 
     // links to input and button
     private void Awake()
@@ -52,6 +57,7 @@ public class MapRestartHandler : MonoBehaviour {
                 LoadNewMap(DiffStringToInt());
             }
         }
+        
     }
 
     // resest the level back to it's orginal state
@@ -118,7 +124,7 @@ public class MapRestartHandler : MonoBehaviour {
     }
 
     // if these are both true the level can be restarted
-    public bool CanRestatLevel()
+    private bool CanRestatLevel()
     {
         return hasEnteredText && buttonClicked;
     }
@@ -131,4 +137,25 @@ public class MapRestartHandler : MonoBehaviour {
         return output;
     }
 
+    private void Countdown()
+    {
+        string timeLeft = TimeFormat(timeToFinish -= Time.realtimeSinceStartup);
+        countdown.text = timeLeft;
+
+    }
+
+    private void SetTimeToFinish(float countdownDuration)
+    {
+        timeToFinish = countdownDuration;
+    }
+
+    private string TimeFormat(float time)
+    {
+        return (time / 1000).ToString("f0");
+    } 
+
+    private string FormatInt(int toFormat)
+    {
+        return toFormat.ToString("f0");
+    }
 }

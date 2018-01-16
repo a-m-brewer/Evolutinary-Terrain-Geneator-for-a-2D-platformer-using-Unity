@@ -22,7 +22,7 @@ public class Person : MonoBehaviour{
     public bool levelEnded = false;
     private string badGuyTag;
 
-    public MapGeneratorMain map;
+    //public MapGeneratorMain map;
 
     private void Start()
     {
@@ -98,7 +98,6 @@ public class Person : MonoBehaviour{
     // N seconds
     public IEnumerator TriggerHurtAnimation()
     {
-        Debug.Log("actually happens " + gameObject.tag);
         // Start Animation
         anim.SetBool("Damaged", true);
         // Wait For Invisiblity to end
