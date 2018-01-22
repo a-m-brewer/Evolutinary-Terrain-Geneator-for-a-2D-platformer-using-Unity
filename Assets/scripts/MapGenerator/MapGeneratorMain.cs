@@ -187,4 +187,9 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
     {
         return numRooms;
     }
+
+    public float GetMapSize()
+    {
+        return (rSize.x * GetNumRooms()) - 0.5f;
+    }
 }
