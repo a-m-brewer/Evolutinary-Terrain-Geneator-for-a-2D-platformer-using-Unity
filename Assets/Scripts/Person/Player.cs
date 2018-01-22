@@ -34,7 +34,6 @@ public class Player : Person {
                 // add to score and swith the tile for a background tile
                 IncreaseScore(10);
                 collision.transform.gameObject.GetComponent<Coin>().ReplaceTile("Coin", "Background");
-                Debug.Log(GetScore());
             }
         }
         
