@@ -68,6 +68,7 @@ public class MapRestartHandler : MonoBehaviour {
         hasEnteredText = false;
         buttonClicked = false;
         input.text = "";
+        player.GetComponent<PlayerMonitor>().PlayerMonitorReset();
     }
 
     // switch from the ingame ui to the difficulty select UI

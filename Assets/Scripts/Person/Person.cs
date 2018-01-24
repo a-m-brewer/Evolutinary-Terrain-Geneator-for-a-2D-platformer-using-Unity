@@ -46,6 +46,9 @@ public class Person : MonoBehaviour{
     {
         if(isGrounded)
         {
+            if (gameObject.GetComponent<PlayerMonitor>() != null)
+                gameObject.GetComponent<PlayerMonitor>().IncreaseJumps();
+
             personRB.AddForce(new Vector2(0, jumpPower));
         }
     }
@@ -117,6 +120,9 @@ public class Person : MonoBehaviour{
     // to be true
     private void RestartMap()
     {
+        if (gameObject.GetComponent<PlayerMonitor>() != null)
+            gameObject.GetComponent<PlayerMonitor>().IncreaseDeaths();
+
         levelEnded = true;
     }
 
@@ -159,5 +165,10 @@ public class Person : MonoBehaviour{
     public float GetOriginalHealth()
     {
         return originalHealth;
+    }
+
+    public bool IsDead()
+    {
+        return GetHealth() <= 0f;
     }
 }

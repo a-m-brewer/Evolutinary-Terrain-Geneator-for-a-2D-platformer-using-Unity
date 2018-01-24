@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114734256395325630}
   - component: {fileID: 95522527270009752}
   - component: {fileID: 70203507706954512}
+  - component: {fileID: 114741146360086446}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -177,6 +178,35 @@ MonoBehaviour:
   damageAnimationTime: 2
   isGrounded: 1
   levelEnded: 0
+--- !u!114 &114741146360086446
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1052031687626968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6710b8cd673a1ba4bbee41d8dee82a59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amountOfJumps: 0
+  amountOfDeaths: 0
+  amountPressedRight: 0
+  amountPressedLeft: 0
+  startTime: 0
+  timer: 0
+  timeToFinishLevel: 0
+  timeSpentGoingRight: 0
+  timeSpentGoingLeft: 0
+  timeSpentJumping: 0
+  bulletsFired: 0
+  bulletsHit: 0
+  coinsCollected: 0
+  trapsTriggered: 0
+  enemiesKilled: 0
+  gapsFallenInto: 0
+  timesShotByEnemy: 0
+  timesHitByEnemy: 0
 --- !u!114 &114747494650986166
 MonoBehaviour:
   m_ObjectHideFlags: 1

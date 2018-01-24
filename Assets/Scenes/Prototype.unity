@@ -281,7 +281,7 @@ Prefab:
         type: 2}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1674659331}
+      objectReference: {fileID: 1674659337}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ba140c56a36530c4ea6d01ea99213eff, type: 2}
   m_IsPrefabParent: 0
@@ -393,8 +393,8 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6e5d6ec2a2fe4634a9c01010a5b1e9b7, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1674659331 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1052031687626968, guid: 1ead474eb75dc9a41977f90b2d8fa18a,
+--- !u!4 &1674659337 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4046583679410792, guid: 1ead474eb75dc9a41977f90b2d8fa18a,
     type: 2}
   m_PrefabInternal: {fileID: 765341598}

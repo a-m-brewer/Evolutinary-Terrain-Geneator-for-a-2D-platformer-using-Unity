@@ -13,6 +13,8 @@ public class Enemy : Person, IDifficulty {
     public bool isBlockedBot = false;
     public bool isBlockedTop = false;
 
+    private const int pointsForKilling = 5;
+
     private bool hasGun = false;
 
     public int DifficultyScore
@@ -110,6 +112,11 @@ public class Enemy : Person, IDifficulty {
     private void EnemyShootGun()
     {
         gameObject.transform.GetChild(0).GetComponent<Gun>().Shoot();
+    }
+
+    public int GetPointsForKilling()
+    {
+        return pointsForKilling;
     }
 
 }

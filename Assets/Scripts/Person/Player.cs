@@ -34,12 +34,14 @@ public class Player : Person {
                 // add to score and swith the tile for a background tile
                 IncreaseScore(10);
                 collision.transform.gameObject.GetComponent<Coin>().ReplaceTile("Coin", "Background");
+                gameObject.GetComponent<PlayerMonitor>().IncreaseCoinsCollected();
             }
         }
         
         // if the player colides with a trap that is triggerable
         if (collision.gameObject.CompareTag("Trap") && collision.transform.GetComponent<Trap>().GetIsTriggerable())
         {
+            gameObject.GetComponent<PlayerMonitor>().IncreaseTrapsTriggered();
             // hurt the player and trigger the hurt animation
             Hurt(1f);
             StartCoroutine(TriggerHurtAnimation());
@@ -51,6 +53,7 @@ public class Player : Person {
         if (collision.gameObject.CompareTag("Flag"))
         {
             levelEnded = true;
+            gameObject.GetComponent<PlayerMonitor>().SetFinalTime();
         }
         
     }
@@ -64,6 +67,7 @@ public class Player : Person {
 
         if (collision.collider.CompareTag("Enemy"))
         {
+            gameObject.GetComponent<PlayerMonitor>().IncreaseHitByEnemy();
             Hurt(1f);
             StartCoroutine(TriggerHurtAnimation());
         }
