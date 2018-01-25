@@ -14,7 +14,6 @@ public class PlayerCamera : MonoBehaviour {
 
     private float floorPos = 0f;
     private float mapSize;
-    private float camSizeHalf;
     private float minCamPos;
     private float maxCamPos;
 
@@ -38,7 +37,6 @@ public class PlayerCamera : MonoBehaviour {
 
     private void CameraSetup(Camera cam, Transform p, MapGeneratorMain m, Vector3 off)
     {
-        camSizeHalf = GetHalfCameraSize(cam);
         floorPos = GetFloorPosition(p);
         minCamPos = GetMinCamPos(off, cam);
         maxCamPos = GetMaxCamPos(m, cam);

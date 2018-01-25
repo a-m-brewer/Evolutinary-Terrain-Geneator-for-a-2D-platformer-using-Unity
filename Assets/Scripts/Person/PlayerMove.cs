@@ -5,7 +5,7 @@ using UnityEngine;
 // class to handle the movement of the player
 public class PlayerMove : Player
 {
-
+    public UIDebugData ui;
     PlayerMonitor mon;
 
     private void Awake()
@@ -39,6 +39,11 @@ public class PlayerMove : Player
             DirectionCheck();
             // Physics
             GetRigidBody().velocity =  new Vector2(moveX * movementSpeed, GetRigidBody().velocity.y);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ui.ShowDebug();
         }
     }
 

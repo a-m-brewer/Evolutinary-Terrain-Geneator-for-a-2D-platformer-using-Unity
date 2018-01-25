@@ -11,7 +11,7 @@ public class Gun : MonoBehaviour {
     private float timeToFire = 0f;
     public Transform firePoint;
 
-    private bool fliped;
+    private bool wielderIsPlayer = false;
 
     public GameObject bulletPrefab;
 
@@ -24,66 +24,94 @@ public class Gun : MonoBehaviour {
         }
 
         gameObject.tag = gameObject.transform.parent.tag;
+
+        wielderIsPlayer = transform.parent.GetComponent<Player>() != null;
     }
 	
 	// Update is called once per frame
 	void Update () {
-
         HandleShootingInput();
-
-        fliped = transform.parent.gameObject.GetComponent<Person>().GetFacingRight();
 	}
 
     // handle the shooting input from the player
     void HandleShootingInput()
-    {
-        //bool isGrounded = transform.parent.gameObject.GetComponent<Person>().isGrounded;
-        bool isPlayer = (transform.parent.gameObject.GetComponent<PlayerMove>() != null);
-        bool playerIsFreeToMove = true;
-        if (isPlayer)
-        {
-            playerIsFreeToMove = !transform.parent.gameObject.GetComponent<PlayerMove>().GetIsTrapped();
-        }
-        
-        if (Input.GetButton("Fire1") && playerIsFreeToMove) // && isGrounded)
+    {       
+        if (Input.GetButton("Fire1") && PlayerCanMove())
         {
             Shoot();
         }
     }
 
+    private bool PlayerCanMove()
+    {
+        bool playerIsFreeToMove = true;
+
+        if (wielderIsPlayer)
+        {
+            playerIsFreeToMove = !transform.parent.gameObject.GetComponent<PlayerMove>().GetIsTrapped();
+        }
+
+        return playerIsFreeToMove;
+    }
+
     // fire the gun
     public void Shoot()
     {        
-        Vector2 firePointPosition = new Vector2(firePoint.position.x, firePoint.position.y);
-
-        Vector2 forwardPoint = firePointPosition + gameObject.transform.right.ToVector2();
-        
-        if (fliped)
-        {
-            forwardPoint = firePointPosition - gameObject.transform.right.ToVector2();
-        }
-
         if (Time.time > timeToFire)
         {
-            SpawnBullet(forwardPoint, firePointPosition);
+            SpawnBullet(GetForwardPointPosition(), GetFirePointPosition());
             timeToFire = Time.time + 1 / fireRate;
         }
+    }
+
+    private Vector2 GetForwardPointPosition()
+    {
+        Vector2 forwardPoint = GetFirePointPosition() + gameObject.transform.right.ToVector2();
+
+        if (GetIsFlipped())
+        {
+            forwardPoint = GetFirePointPosition() - gameObject.transform.right.ToVector2();
+        }
+
+        return forwardPoint;
+    }
+
+    private Vector2 GetFirePointPosition()
+    {
+        return new Vector2(firePoint.position.x, firePoint.position.y);
     }
 
     // spawn the bullet
     void SpawnBullet(Vector2 forward, Vector2 firePos)
     {
+        GameObject bullet = SetupBullet();
+
+        PropelBullet(bullet, forward, firePos);    
+    }
+
+    private void PropelBullet(GameObject b, Vector2 forward, Vector2 firePos)
+    {
+        b.transform.position = new Vector3(b.transform.position.x, b.transform.position.y, -1f);
+        b.GetComponent<Rigidbody2D>().velocity = new Vector2((forward - firePos).x * bulletSpeed, b.GetComponent<Rigidbody2D>().velocity.y);
+    }
+
+    private GameObject SetupBullet()
+    {
         GameObject bullet = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         bullet.GetComponent<BulletController>().SetDamage(damage);
         bullet.GetComponent<BulletController>().SetTagOfParent(gameObject.tag);
         bullet.GetComponent<BulletController>().SetBadGuyTag(transform.parent.gameObject.GetComponent<Person>().GetBadGuyTag());
-        if (transform.parent.tag == "Player")
+        if (wielderIsPlayer)
         {
             bullet.GetComponent<BulletController>().SetPlayer(transform.parent.GetComponent<Player>());
         }
         bullet.tag = "Bullet";
-        bullet.transform.position = new Vector3(bullet.transform.position.x, bullet.transform.position.y, -1f);
-        bullet.GetComponent<Rigidbody2D>().velocity = new Vector2((forward - firePos).x * bulletSpeed, bullet.GetComponent<Rigidbody2D>().velocity.y);
-        
+
+        return bullet;
+    }
+
+    private bool GetIsFlipped()
+    {
+        return transform.parent.gameObject.GetComponent<Person>().GetFacingRight();
     }
 }

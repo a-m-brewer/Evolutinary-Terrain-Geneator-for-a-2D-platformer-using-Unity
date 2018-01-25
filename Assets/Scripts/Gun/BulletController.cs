@@ -14,7 +14,6 @@ public class BulletController : MonoBehaviour {
     private void Start()
     {
         DestroyGameBulletAfterTime(timeToDie);
-        Debug.Log(tagOfParent);
 
         if(player != null)
             player.gameObject.GetComponent<PlayerMonitor>().IncreaseBulletsFired();

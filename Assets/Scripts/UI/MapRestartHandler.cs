@@ -18,10 +18,7 @@ public class MapRestartHandler : MonoBehaviour {
     private bool hasEnteredText = false;
     private bool buttonClicked = false;
     private string inputNum;
-    private float lastRealTime = 0f;
 
-
-    private Text countdown;
     private float timeToFinish;
 
     // links to input and button
@@ -33,11 +30,7 @@ public class MapRestartHandler : MonoBehaviour {
 
     private void Start()
     {
-        button.onClick.AddListener(ButtonClicked);
-
-        InputField.SubmitEvent se = new InputField.SubmitEvent();
-        se.AddListener(OnInputChange);
-        input.onEndEdit = se;
+        SetupEventListners();
     }
 
     // check every frame if the level has ended
@@ -58,6 +51,24 @@ public class MapRestartHandler : MonoBehaviour {
             }
         }
         
+    }
+
+    private void SetupEventListners()
+    {
+        SetupButtonEventListener();
+        SetupInputTextBox();
+    }
+
+    private void SetupButtonEventListener()
+    {
+        button.onClick.AddListener(ButtonClicked);
+    }
+
+    private void SetupInputTextBox()
+    {
+        InputField.SubmitEvent se = new InputField.SubmitEvent();
+        se.AddListener(OnInputChange);
+        input.onEndEdit = se;
     }
 
     // resest the level back to it's orginal state
@@ -136,13 +147,6 @@ public class MapRestartHandler : MonoBehaviour {
         int output = -1;
         int.TryParse(inputNum, out output);
         return output;
-    }
-
-    private void Countdown()
-    {
-        string timeLeft = TimeFormat(timeToFinish -= Time.realtimeSinceStartup);
-        countdown.text = timeLeft;
-
     }
 
     private void SetTimeToFinish(float countdownDuration)
