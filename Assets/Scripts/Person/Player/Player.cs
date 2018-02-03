@@ -28,19 +28,32 @@ public class Player : Person {
         // if the player hits a coin
         if (collision.gameObject.CompareTag("PickUp"))
         {
-            HandleCoinCollison(collision);
+            // if the coin has been triggerd before don't add to score
+            if (collision.transform.gameObject.GetComponent<Coin>().GetIsTriggerable())
+            {
+                // add to score and swith the tile for a background tile
+                IncreaseScore(10);
+                collision.transform.gameObject.GetComponent<Coin>().ReplaceTile("Coin", "Background");
+                gameObject.GetComponent<PlayerMonitor>().IncreaseCoinsCollected();
+            }
         }
         
         // if the player colides with a trap that is triggerable
-        if (collision.gameObject.CompareTag("Trap"))
+        if (collision.gameObject.CompareTag("Trap") && collision.transform.GetComponent<Trap>().GetIsTriggerable())
         {
-            HandleTrapCollision(collision);
+            gameObject.GetComponent<PlayerMonitor>().IncreaseTrapsTriggered();
+            // hurt the player and trigger the hurt animation
+            Hurt(1f);
+            StartCoroutine(TriggerHurtAnimation());
+            // trap the player
+            IEnumerator coroutine = TriggerTrap(collision);
+            StartCoroutine(coroutine);
         }
-
         // if the player hits the end level flag end the level
         if (collision.gameObject.CompareTag("Flag"))
         {
-            HandleFlagCollision();
+            levelEnded = true;
+            gameObject.GetComponent<PlayerMonitor>().SetFinalTime();
         }
         
     }
@@ -54,7 +67,9 @@ public class Player : Person {
 
         if (collision.collider.CompareTag("Enemy"))
         {
-            HandleEnemyCollision();
+            gameObject.GetComponent<PlayerMonitor>().IncreaseHitByEnemy();
+            Hurt(1f);
+            StartCoroutine(TriggerHurtAnimation());
         }
     }
 
@@ -85,53 +100,7 @@ public class Player : Person {
         isTrapped = true;
         yield return new WaitForSeconds(2f);
         isTrapped = false;
-        SwitchTiles(collision, "Trap", "Background");
-    }
-
-    private void TriggerTrapCoroutines(Collider2D col)
-    {
-        StartCoroutine(TriggerHurtAnimation());
-        StartCoroutine(TriggerTrap(col));
-    }
-
-    private void SwitchTiles(Collider2D col, string current, string updated)
-    {
-        col.gameObject.GetComponent<Triggerable>().ReplaceTile(current, updated);
-    }
-
-    private void HandleCoinCollison(Collider2D col)
-    {
-        if (col.transform.gameObject.GetComponent<Coin>().GetIsTriggerable())
-        {
-            // add to score and swith the tile for a background tile
-            IncreaseScore(10);
-            SwitchTiles(col, "Coin", "Background");
-            gameObject.GetComponent<PlayerMonitor>().IncreaseCoinsCollected();
-        }
-    }
-
-    private void HandleTrapCollision(Collider2D col)
-    {
-        if(col.transform.GetComponent<Trap>().GetIsTriggerable())
-        {
-            gameObject.GetComponent<PlayerMonitor>().IncreaseTrapsTriggered();
-            // hurt the player and trigger the hurt animation
-            Hurt(1f);
-            TriggerTrapCoroutines(col);
-        }
-    }
-
-    private void HandleFlagCollision()
-    {
-        levelEnded = true;
-        gameObject.GetComponent<PlayerMonitor>().SetFinalTime();
-    }
-
-    private void HandleEnemyCollision()
-    {
-        gameObject.GetComponent<PlayerMonitor>().IncreaseHitByEnemy();
-        Hurt(1f);
-        StartCoroutine(TriggerHurtAnimation());
+        collision.gameObject.GetComponent<Triggerable>().ReplaceTile("Trap", "Background");
     }
 
 }

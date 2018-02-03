@@ -5,12 +5,18 @@ using UnityEngine;
 public class Enemy : Person, IDifficulty {
 
     public LayerMask enemyMask;
+    private int difficulty;
+    private Transform enemyTransform;
+    private float enemyWidth;
+    private float enemyHeight;
+
+    public bool isBlockedBot = false;
+    public bool isBlockedTop = false;
 
     private const int pointsForKilling = 5;
 
     private bool hasGun = false;
 
-    private int difficulty;
     public int DifficultyScore
     {
         get
@@ -26,22 +32,51 @@ public class Enemy : Person, IDifficulty {
 
     private void Awake()
     {
-        SetupDifficulty();
+        hasGun = (gameObject.transform.childCount > 0);
+        // For some reason this needs to be in awake
+        if (hasGun)
+        {
+            DifficultyScore = TileInformation.difficultyScores[5];
+        } else
+        {
+            DifficultyScore = TileInformation.difficultyScores[4];
+        }
     }
 
     // Use this for initialization
     private void Start()
     {
         movementSpeed = 4;
+        enemyTransform = this.transform;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+
+        enemyWidth = sr.bounds.extents.x;
+        enemyHeight = sr.bounds.extents.y;
 
         SetBadGuyTag("Player");
 
-        EnemyShoot();
+        if (hasGun)
+        {
+            // So that the enemy can't shoot right away and kill you
+            InvokeRepeating("EnemyShootGun", 3f, 1f);
+        }
+
     }
 
     private new void FixedUpdate()
     {
-        HandleEnemyRotation();
+        Vector2 frontOfEnemyBot = (enemyTransform.position.ToVector2() - Vector2.up) + enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * (enemyHeight * 0.75f);
+        Vector2 frontOfEnemyTop = (enemyTransform.position.ToVector2() - Vector2.up) + enemyTransform.right.ToVector2() * enemyWidth + Vector2.up * (enemyHeight * 1.5f);
+
+        isGrounded = EnemyIsGrounded(frontOfEnemyBot);
+
+        isBlockedBot = EnemyIsBlocked(frontOfEnemyBot);
+        isBlockedTop = EnemyIsBlocked(frontOfEnemyTop);
+
+        if (!isGrounded || (isBlockedBot || isBlockedTop))
+        {
+            RotateEnemy();
+        }
 
         DirectionCheck();
 
@@ -51,7 +86,7 @@ public class Enemy : Person, IDifficulty {
     private void EnemyMove()
     {
         Vector2 enemyVelocity = GetRigidBody().velocity;
-        enemyVelocity.x = transform.right.x * movementSpeed;
+        enemyVelocity.x = enemyTransform.right.x * movementSpeed;
         GetRigidBody().velocity = enemyVelocity;
     }
 
@@ -63,15 +98,15 @@ public class Enemy : Person, IDifficulty {
 
     private bool EnemyIsBlocked(Vector2 foe)
     {
-        Debug.DrawLine(foe, foe + transform.right.ToVector2() * 0.3f, Color.white);
-        return Physics2D.Linecast(foe, foe + transform.right.ToVector2() * 0.03f, enemyMask);
+        Debug.DrawLine(foe, foe + enemyTransform.right.ToVector2() * 0.3f, Color.white);
+        return Physics2D.Linecast(foe, foe + enemyTransform.right.ToVector2() * 0.03f, enemyMask);
     }
 
     private void RotateEnemy()
     {
-        Vector3 currentRotation = transform.eulerAngles;
+        Vector3 currentRotation = enemyTransform.eulerAngles;
         currentRotation.y += 180f;
-        transform.eulerAngles = currentRotation;
+        enemyTransform.eulerAngles = currentRotation;
     }
 
     private void EnemyShootGun()
@@ -82,62 +117,6 @@ public class Enemy : Person, IDifficulty {
     public int GetPointsForKilling()
     {
         return pointsForKilling;
-    }
-
-    private void SetupDifficulty()
-    {
-        hasGun = (gameObject.transform.childCount > 0);
-        // For some reason this needs to be in awake
-        if (hasGun)
-        {
-            DifficultyScore = TileInformation.difficultyScores[5];
-        }
-        else
-        {
-            DifficultyScore = TileInformation.difficultyScores[4];
-        }
-    }
-
-    private void HandleEnemyRotation()
-    {
-        if (NeedsRotation())
-        {
-            RotateEnemy();
-        }
-    }
-
-    private bool NeedsRotation()
-    {
-        Vector2 frontOfEnemyBot = RayCastFrontPosition(0.75f);
-        Vector2 frontOfEnemyTop = RayCastFrontPosition(1.5f);
-
-        isGrounded = EnemyIsGrounded(frontOfEnemyBot);
-        bool isBlockedBot = EnemyIsBlocked(frontOfEnemyBot);
-        bool isBlockedTop = EnemyIsBlocked(frontOfEnemyTop);
-
-        return !isGrounded || (isBlockedBot || isBlockedTop);
-    }
-
-    private Vector2 RayCastFrontPosition(float positionOnBody)
-    {
-        Vector2 size = GetWidthAndHeight();
-        return (transform.position.ToVector2() - Vector2.up) + transform.right.ToVector2() * size.x + Vector2.up * (size.y * positionOnBody);
-    }
-
-    private Vector2 GetWidthAndHeight()
-    {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        return new Vector2(sr.bounds.extents.x, sr.bounds.extents.y);
-    }
-
-    // delay 3 secs at start and then shoot as much as possible
-    private void EnemyShoot()
-    {
-        if (hasGun)
-        {
-            // So that the enemy can't shoot right away and kill you
-            InvokeRepeating("EnemyShootGun", 3f, 1f);
-        }
     }
 
 }
