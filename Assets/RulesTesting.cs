@@ -8,7 +8,7 @@ public class RulesTesting : MonoBehaviour {
 
     int[] testingMap = new int[i] 
         {
-            6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+            1,1,1,1,1,1,1,1,6,1,1,1,1,1,1,1,1,1,6,1,1,1,1,1,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -24,7 +24,8 @@ public class RulesTesting : MonoBehaviour {
 
     private void Start()
     {
-        Debug.Log(gr.MainChecker(testingMap));
+        float f = gr.MainChecker(testingMap);
+        Debug.Log(f);
     }
 
 }
