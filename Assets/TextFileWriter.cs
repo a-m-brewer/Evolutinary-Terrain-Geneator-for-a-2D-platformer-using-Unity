@@ -5,18 +5,20 @@ public class TextFileWriter {
 
     // TODO: Write map data to a text file to see wtf is going on
 
-    string path = System.IO.Path.GetFullPath(".");
+    string path;
     string filename = "default.txt";
     StreamWriter sr;
 
-    public TextFileWriter(string filename)
+    public TextFileWriter(string fn)
     {
-        filename = filename + ".txt";
+        this.filename = "/" + fn + ".txt";
+        path = Path.GetDirectoryName(Application.dataPath + "/MapArchive" + this.filename);
     }
 
     public void OpenStream()
     {
         sr = File.CreateText(path + filename);
+        Debug.Log(path + filename);
     }
 
     public void CloseStream()

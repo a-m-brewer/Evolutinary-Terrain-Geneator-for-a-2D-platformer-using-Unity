@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Globalization;
+using System;
+using System.IO;
 
 public class RulesTesting : MonoBehaviour {
 
@@ -24,19 +27,35 @@ public class RulesTesting : MonoBehaviour {
     EvaluateRoom er = new EvaluateRoom(0.5f);
     CreateRoom cr = new CreateRoom();
     InitPopulation ip = new InitPopulation();
-
+    
+    // TODO: Cleanup this mess
     private void Start()
     {
+        string fileName = "mapdata-" + GetDateTime();
+
+        string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()) + " ";
+
+        foreach (char c in invalid)
+        {
+            fileName = fileName.Replace(c.ToString(), "-");
+        }
+
+        TextFileWriter tfw = new TextFileWriter(fileName);
+        tfw.OpenStream();
+
         int[][] rooms = new int[gr.GetPopulationSize()][];
         float[] scores = new float[rooms.Length];
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i] = cr.Generate();
             scores[i] = er.Evaluate(rooms[i]);
-            
+
+            tfw.WriteLine(cr.roomString);
+
             Debug.Log(i + " " + scores[i]);
         }
-       
+
+        tfw.CloseStream();
     }
 
     // TODO: add top scores getter, if it can't reach target amount get as many as possible
@@ -55,6 +74,11 @@ public class RulesTesting : MonoBehaviour {
         return output;
     }
 
-
+    private string GetDateTime()
+    {
+        DateTime dt = DateTime.Now;
+        CultureInfo ci = new CultureInfo("en-GB");
+        return dt.ToString(ci);
+    }
 
 }

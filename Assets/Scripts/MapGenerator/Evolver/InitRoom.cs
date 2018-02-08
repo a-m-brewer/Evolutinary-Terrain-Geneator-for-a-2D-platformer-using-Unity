@@ -10,6 +10,8 @@ public class CreateRoom {
     private const int GAP = 6;
     private const int SPAWN_POINT_INDEX = 2;
 
+    public string roomString = "";
+
     private float[] chanceOfSpawning = new float[6]
     {
         40f, // ground
@@ -24,12 +26,18 @@ public class CreateRoom {
     {
         int[] randomRoom = new int[TileInformation.roomSizeX * TileInformation.roomSizeY];
 
+        roomString = "";
+
         for (int i = 0; i < randomRoom.Length; i++)
         {
+            if ( (i % TileInformation.roomSizeX) == 0)
+            {
+                roomString += "\n";
+            }
             randomRoom[i] = SetTile(i);
-
-
+            roomString += randomRoom[i] + " ";
         }
+        roomString += "\n\n";
 
         return randomRoom;
     }
