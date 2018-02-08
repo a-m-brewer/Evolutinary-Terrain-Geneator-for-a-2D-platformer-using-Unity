@@ -7,33 +7,54 @@ public class GeneratorRules {
     private int numGenerations = 1;
     private int populationSize = 100;
     private float mutationRate = 0.01f;
-    private int maxGapSize = 9;
+    private float maxGapSize = 9;
+    private int startTileIndex = 2;
 
 
     public float MainChecker(int[] room)
     {
 
         float resRoomGround = 0f;
-        int gapSize = 0;
-        float gapsWithinLimit = 1f;
+        float[] gapCheck = new float[2] { 1f, 0f };
+        float hasStartingTile = IsTileGround(room[startTileIndex]);
+        float enemiesOnFloor = 1f;
 
         for(int i = 0; i < room.Length; i++)
         {
             resRoomGround += RoomHasGroundEvaluator(i, room[i]);
 
-            if (i < TileInformation.roomSizeX)
-            {
-                gapSize = (room[i] == 6) ? (gapSize += 1) : 0;
-                if (maxGapSize < gapSize)
-                {
-                    gapsWithinLimit = 0f;
-                }
-            }
-           
+            gapCheck = LegalGapCheck(i, gapCheck, room[i]);
+
+            enemiesOnFloor = GetBellowEnemyIsFloor(i, room, enemiesOnFloor);
 
         }
-        // score + score2 / number of scores
-        return gapsWithinLimit;
+
+        return  resRoomGround * gapCheck[0] * hasStartingTile * enemiesOnFloor;
+    }
+    
+    private float[] LegalGapCheck(int index, float[] gapCheck, int tile)
+    {
+        if (index < TileInformation.roomSizeX)
+        {
+            gapCheck[1] = IncreaseGapSize(gapCheck[1], tile);
+            gapCheck[0] = GetGapsWithinLimit(gapCheck[1], gapCheck[0]);
+        }
+        return gapCheck;
+    }
+
+    private float IncreaseGapSize(float prevGap, int tile)
+    {
+        return (tile == 6) ? (prevGap += 1f) : 0f;
+    }
+
+    private float GetGapsWithinLimit(float gapSize, float gapInLimit)
+    {
+        if (maxGapSize < gapSize)
+        {
+            return 0f;
+        }
+
+        return gapInLimit;
     }
 
     // closer to 1f the more ground
@@ -52,15 +73,9 @@ public class GeneratorRules {
         return 0f;
     }
 
-    // somting is wrong
-
-    public float RoomSizeInLimit(int gapSize)
+    public float IsTileGround(int tile)
     {
-        if (maxGapSize < gapSize)
-        {
-            return 0f;
-        }
-        return 1f;
+        return (tile == 1) ? 1f : 0f;
     }
 
     public int GetPopulationSize()
@@ -68,7 +83,33 @@ public class GeneratorRules {
         return populationSize;
     }
 
+    private int GetNRowsBellowIndex(int index,int rowsBellow)
+    {
+        int rowBellowIndex = index - (TileInformation.roomSizeX * rowsBellow);
+        return rowBellowIndex;
+    }
 
-    
+    public float GetBellowEnemyIsFloor(int index, int[] room, float lastResult)
+    {
+        int newIndex = GetNRowsBellowIndex(index, 2);
+
+        if (room[index] == 4 || room[index] == 5)
+        {
+            if (newIndex < 0)
+            {
+                return 0f;
+            }
+
+            if (room[newIndex] != 1)
+            {
+                return 0f;
+            }
+        }
+
+        return lastResult;
+
+    }
+
+
 
 }
