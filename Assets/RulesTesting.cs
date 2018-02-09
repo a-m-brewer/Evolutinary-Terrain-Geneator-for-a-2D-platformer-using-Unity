@@ -9,6 +9,8 @@ public class RulesTesting : MonoBehaviour {
 
     const int i = 24 * 10;
 
+    public TextAsset huristicMaps;
+
     int[] testingMap = new int[i] 
         {
             1,1,1,1,1,1,1,1,1,6,6,6,6,1,1,1,1,1,6,6,6,6,6,6,
@@ -23,62 +25,66 @@ public class RulesTesting : MonoBehaviour {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
         };
 
-    GeneratorRules gr = new GeneratorRules();
-    EvaluateRoom er = new EvaluateRoom(0.5f);
-    CreateRoom cr = new CreateRoom();
     InitPopulation ip = new InitPopulation();
-    
+    EvaluateRoom er = new EvaluateRoom(0.75f);
+
     // TODO: Cleanup this mess
     private void Start()
     {
-        string fileName = "mapdata-" + GetDateTime();
+        int[][] randomPopulation = ip.Generate(er.GetGroundPercent());
+        float[] populationScores = er.EvaluatePopulation(randomPopulation);
+        int[][] randomRandomRooms = SelectRandom(randomPopulation, 30);
 
-        string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()) + " ";
+        int[][] hLevels = LoadMaps(huristicMaps);
+        float[] hScores = er.EvaluatePopulation(hLevels);
+        int[][] randomHRooms = SelectRandom(hLevels, 10);
 
-        foreach (char c in invalid)
-        {
-            fileName = fileName.Replace(c.ToString(), "-");
-        }
+        int[][] toBeCrossedOverAndMutated = new int[randomHRooms.Length + randomRandomRooms.Length][];
+        Array.Copy(randomRandomRooms, toBeCrossedOverAndMutated, randomRandomRooms.Length);
+        Array.Copy(randomHRooms, 0, toBeCrossedOverAndMutated, randomRandomRooms.Length, randomHRooms.Length);
 
-        TextFileWriter tfw = new TextFileWriter(fileName);
-        tfw.OpenStream();
-
-        int[][] rooms = new int[gr.GetPopulationSize()][];
-        float[] scores = new float[rooms.Length];
-        for (int i = 0; i < rooms.Length; i++)
-        {
-            rooms[i] = cr.Generate();
-            scores[i] = er.Evaluate(rooms[i]);
-
-            tfw.WriteLine(cr.roomString);
-
-            Debug.Log(i + " " + scores[i]);
-        }
-
-        tfw.CloseStream();
+        TextFileWriter tfw = new TextFileWriter("boob");
+        tfw.WriteRoomsToFile(toBeCrossedOverAndMutated);
     }
 
     // TODO: add top scores getter, if it can't reach target amount get as many as possible
     // TODO: if all scores are 0 pick random sample
     // TODO: Then mutate and copy
 
-    private float EvaluateMap(int[][] map)
+    public int[][] LoadMaps(TextAsset inFile)
     {
-        float[] scores = new float[map.Length];
-        float output = 1f;
-        for(int i = 0; i < map.Length; i++)
+        string[][] levels = new string[1][];
+        int[][] levelsInt = new int[1][];
+
+        if (inFile != null)
         {
-            scores[i] = er.Evaluate(map[i]);
-            output *= scores[i];
+            string[] wholeLevels = (inFile.text.Split('.'));
+            levels = new string[wholeLevels.Length][];
+            levelsInt = new int[wholeLevels.Length][];
+
+            for (int i = 0; i < wholeLevels.Length; i++)
+            {
+                levels[i] = wholeLevels[i].Split(',');
+                levelsInt[i] = new int[levels[i].Length];
+                for (int j = 0; j < levels[i].Length; j++)
+                {
+                    int.TryParse(levels[i][j], out levelsInt[i][j]);
+                }
+            }
+
         }
-        return output;
+        return levelsInt;
     }
 
-    private string GetDateTime()
+    private int[][] SelectRandom(int[][] rooms, int amount)
     {
-        DateTime dt = DateTime.Now;
-        CultureInfo ci = new CultureInfo("en-GB");
-        return dt.ToString(ci);
+        int[][] randomMaps = new int[amount][];
+        for (int i = 0; i < amount; i++)
+        {
+            int indexRandom = UnityEngine.Random.Range(0, rooms.Length - 1);
+            randomMaps[i] = rooms[indexRandom];
+        }
+        return randomMaps;
     }
 
 }

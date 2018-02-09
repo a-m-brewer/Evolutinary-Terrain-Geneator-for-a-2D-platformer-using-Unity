@@ -16,5 +16,6 @@ public static class TileInformation {
     {
         0,0,0,5,10,20,2
     };
+
 }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class GeneratorRules { 
 
     private int numGenerations = 1;
-    private int populationSize = 100;
+    private int populationSize = 80;
     private float mutationRate = 0.01f;
     private float maxGapSize = 9;
     private int startTileIndex = 2;

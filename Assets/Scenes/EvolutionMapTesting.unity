@@ -665,6 +665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea8815ff704f2e47bcab50e80c0f587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  huristicMaps: {fileID: 4900000, guid: bd03f6c1aa5bb854cbf030e10a050c09, type: 3}
 --- !u!4 &1054209785
 Transform:
   m_ObjectHideFlags: 0

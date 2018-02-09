@@ -34,8 +34,10 @@ public class CreateRoom {
             {
                 roomString += "\n";
             }
+
             randomRoom[i] = SetTile(i);
-            roomString += randomRoom[i] + " ";
+
+            roomString += randomRoom[i] + ",";
         }
         roomString += "\n\n";
 
@@ -45,6 +47,9 @@ public class CreateRoom {
     private int SetTile(int index)
     {
         int toPlace = ERROR_NO_TILE;
+
+        toPlace = InitGround(index);
+
         for (int i = 0; i < chanceOfSpawning.Length; i++)
         {
             int tileType = i + 1;
@@ -81,6 +86,23 @@ public class CreateRoom {
     private bool RandomChance(float chance)
     {
         return (Random.Range(0, 100) <= chance);
+    }
+
+    private int InitGround(int i)
+    {
+        if (i < TileInformation.roomSizeX)
+        {
+            if(RandomChance(chanceOfSpawning[1]))
+            {
+                return GAP;
+            } else
+            {
+                return GROUND;
+            }
+        }
+
+        return ERROR_NO_TILE;
+        
     }
 
 }

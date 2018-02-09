@@ -57,4 +57,20 @@ public class EvaluateRoom {
     {
         return Gauss(X, 0.35f, targetGroundPercentage);
     }
+
+    public float[] EvaluatePopulation(int[][] pop)
+    {
+        float[] result = new float[pop.Length];
+        for (int i = 0; i < result.Length; i++)
+        {
+            result[i] = Evaluate(pop[i]);
+            Debug.Log(i + " " + result[i]);
+        }
+        return result;
+    }
+
+    public float GetGroundPercent()
+    {
+        return this.targetGroundPercentage;
+    }
 }
