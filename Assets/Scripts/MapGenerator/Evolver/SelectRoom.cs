@@ -43,11 +43,11 @@ public class SelectRoom {
             partialFitness += populationPool[i].Fitness;
             if(randomNumberInFitnessPool < partialFitness)
             {
-                Debug.Log("Returned a room from the roulette style");
+                // return roullete style
                 return populationPool[i];
             }
         }
-        Debug.Log("Returned Random");
+        // if can't use roullette pick randomly
         return SelectRandomRoom(populationPool);
     }
 

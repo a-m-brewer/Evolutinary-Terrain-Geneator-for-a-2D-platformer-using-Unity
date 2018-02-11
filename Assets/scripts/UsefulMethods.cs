@@ -13,4 +13,10 @@ public static class UsefulMethods {
     {
         return (Random.Range(0, 100) <= chance);
     }
+
+    public static void Archive(this Room[] pop)
+    {
+        TextFileWriter t = new TextFileWriter();
+        t.WriteRoomsToFile(pop);
+    }
 }

@@ -12,22 +12,31 @@ public class Crossover {
     /// <param name="roomTwo">The Second room</param>
     /// <param name="bias">How likely it is to choose the first room out of 100</param>
     /// <returns></returns>
-    public int[][] UniformCrossover(int[] roomOne, int[] roomTwo, int bias)
+    public Room[] UniformCrossover(Room roomOne, Room roomTwo, int bias, EvaluateRoom er)
     {
-        int[][] output = new int[2][];
-        for(int i = 0; i < roomOne.Length; i++)
+        int[] out1 = new int[roomOne.Data.Length];
+        int[] out2 = new int[roomTwo.Data.Length];
+        
+        for(int i = 0; i < roomOne.Data.Length; i++)
         {
             if(UsefulMethods.RandomChance(bias))
             {
-                output[0][i] = roomOne[i];
-                output[1][i] = roomTwo[i];
+                out1[i] = roomOne.Data[i];
+                out2[i] = roomTwo.Data[i];
             } else
             {
-                output[0][i] = roomTwo[i];
-                output[1][i] = roomOne[i];
+                out1[i] = roomTwo.Data[i];
+                out2[i] = roomOne.Data[i];
             }
         }
-        return output;
+
+        Room[] newRooms = new Room[2]
+        {
+            new Room(out1,er),
+            new Room(out2,er)
+        };
+
+        return newRooms;
     }
 
 }

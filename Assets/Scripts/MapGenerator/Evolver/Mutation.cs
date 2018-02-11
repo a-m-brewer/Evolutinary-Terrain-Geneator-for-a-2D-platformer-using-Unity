@@ -6,9 +6,10 @@ public class Mutation {
 
     GeneratorRules gr = new GeneratorRules();
 
-    public int[] RandomReseting(int[] room)
+    public Room RandomReseting(Room room, EvaluateRoom evaluateRoom)
     {
-        int[] output = new int[room.Length];
+        int[] output = room.Data;
+
         for(int i = 0; i < output.Length; i++)
         {
             if(UsefulMethods.RandomChance(gr.GetMutationRate()))
@@ -24,6 +25,6 @@ public class Mutation {
             }
         }
 
-        return output;
+        return new Room(output, evaluateRoom);
     }
 }

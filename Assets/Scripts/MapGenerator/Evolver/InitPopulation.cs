@@ -14,14 +14,7 @@ public class InitPopulation {
         Array.Copy(randomRooms, population, randomRooms.Length);
         Array.Copy(hRooms, 0, population, randomRooms.Length, hRooms.Length);
 
-        Archive(population);
         return population;
-    }
-
-    private void Archive(Room[] pop)
-    {
-        TextFileWriter t = new TextFileWriter();
-        t.WriteRoomsToFile(pop);
     }
 
 }

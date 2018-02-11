@@ -5,10 +5,14 @@ using UnityEngine;
 public class GeneratorRules { 
 
     private int numGenerations = 1;
-    private int populationSize = 80;
+    // remember pop sizes need to be even
+    private int initRandomPopulationSize = 80;
+    private int populationSize = 100;
     private float mutationRate = 1f;
     private float maxGapSize = 9;
     private int startTileIndex = 2;
+
+    public int PopulationSize { get { return this.populationSize; } }
 
     /// <summary>
     /// 0: how much of the floor is a ground tile
@@ -127,9 +131,9 @@ public class GeneratorRules {
     /// How many rooms to generate per round
     /// </summary>
     /// <returns>size of the population</returns>
-    public int GetPopulationSize()
+    public int GetInitRandomPopulationSize()
     {
-        return populationSize;
+        return initRandomPopulationSize;
     }
 
     /// <summary>

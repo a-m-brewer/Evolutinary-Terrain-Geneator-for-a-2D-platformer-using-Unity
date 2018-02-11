@@ -23,7 +23,7 @@ public class InitRandomPopulation {
     /// <returns>the set of rooms</returns>
     public Room[] Generate(float percentGround, EvaluateRoom evaluateRoom)
     {
-        Room[] initMap = new Room[gr.GetPopulationSize()];
+        Room[] initMap = new Room[gr.GetInitRandomPopulationSize()];
 
         for (int i = 0; i < initMap.Length; i++)
         {
