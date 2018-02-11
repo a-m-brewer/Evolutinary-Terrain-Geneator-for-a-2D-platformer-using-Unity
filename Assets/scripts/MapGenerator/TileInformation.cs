@@ -17,5 +17,7 @@ public static class TileInformation {
         0,0,0,5,10,20,2
     };
 
+    public static int numTiles = difficultyScores.Length - 1;
+
 }
 

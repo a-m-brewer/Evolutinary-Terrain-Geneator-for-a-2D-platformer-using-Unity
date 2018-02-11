@@ -24,11 +24,14 @@ public class EvaluateRoom {
     /// </summary>
     /// <param name="room"></param>
     /// <returns></returns>
-    public float Evaluate(int[] room)
+    public float Evaluate(Room room)
     {
         float[] roomScoreRaw = gr.MainChecker(room);
         float groundScore = EvaluationDistrobution(roomScoreRaw[0]);
-        return groundScore * roomScoreRaw[1] * roomScoreRaw[3] * roomScoreRaw[4];
+        float score = groundScore * roomScoreRaw[1] * roomScoreRaw[3] * roomScoreRaw[4];
+        // give maps that do not score a stake in the pool
+        // this is mainly used for initialisation where random generated levels often score 0
+        return (score == 0f) ? 0.01f : score;
     }
     
     /// <summary>
@@ -58,7 +61,7 @@ public class EvaluateRoom {
         return Gauss(X, 0.35f, targetGroundPercentage);
     }
 
-    public float[] EvaluatePopulation(int[][] pop)
+    public float[] EvaluatePopulation(Room[] pop)
     {
         float[] result = new float[pop.Length];
         for (int i = 0; i < result.Length; i++)

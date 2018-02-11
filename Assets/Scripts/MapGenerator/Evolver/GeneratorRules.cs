@@ -6,7 +6,7 @@ public class GeneratorRules {
 
     private int numGenerations = 1;
     private int populationSize = 80;
-    private float mutationRate = 0.01f;
+    private float mutationRate = 1f;
     private float maxGapSize = 9;
     private int startTileIndex = 2;
 
@@ -19,26 +19,26 @@ public class GeneratorRules {
     /// </summary>
     public float[] evaluationResults = new float[5];
 
-    public float[] MainChecker(int[] room)
+    public float[] MainChecker(Room room)
     {
 
         evaluationResults[0] = 0f;
         evaluationResults[1] = 1f;
         evaluationResults[2] = 0f;
-        evaluationResults[3] = IsTileGround(room[startTileIndex]);
+        evaluationResults[3] = IsTileGround(room.Data[startTileIndex]);
         evaluationResults[4] = 1f;
 
         float[] gapCheck = new float[2] { evaluationResults[1], evaluationResults[2] };
 
-        for(int i = 0; i < room.Length; i++)
+        for(int i = 0; i < room.Data.Length; i++)
         {
-            evaluationResults[0] += RoomHasGroundEvaluator(i, room[i]);
+            evaluationResults[0] += RoomHasGroundEvaluator(i, room.Data[i]);
 
-            gapCheck = LegalGapCheck(i, gapCheck, room[i]);
+            gapCheck = LegalGapCheck(i, gapCheck, room.Data[i]);
             evaluationResults[1] = gapCheck[0];
             evaluationResults[2] = gapCheck[1];
 
-            evaluationResults[4] = GetBellowEnemyIsFloor(i, room, evaluationResults[4]);
+            evaluationResults[4] = GetBellowEnemyIsFloor(i, room.Data, evaluationResults[4]);
 
         }
 
@@ -170,6 +170,11 @@ public class GeneratorRules {
 
         return lastResult;
 
+    }
+
+    public float GetMutationRate()
+    {
+        return this.mutationRate;
     }
 
 

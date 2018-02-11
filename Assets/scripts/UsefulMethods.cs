@@ -8,4 +8,9 @@ public static class UsefulMethods {
     {
         return new Vector2(v3.x, v3.y);
     }
+
+    public static bool RandomChance(float chance)
+    {
+        return (Random.Range(0, 100) <= chance);
+    }
 }

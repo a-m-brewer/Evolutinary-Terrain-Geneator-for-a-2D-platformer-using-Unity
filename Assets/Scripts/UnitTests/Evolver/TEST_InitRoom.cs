@@ -8,13 +8,14 @@ public class TEST_InitRoom {
 	[Test]
 	public void TEST_GenerateARandomRoom() {
         CreateRoom cr = new CreateRoom();
-        int[] ranRoom = cr.Generate();
+        EvaluateRoom evaluateRoom = new EvaluateRoom(0.75f);
+        Room ranRoom = cr.Generate(evaluateRoom);
 
         bool inRange = true;
 
-        for (int i = 0; i < ranRoom.Length; i++)
+        for (int i = 0; i < ranRoom.Data.Length; i++)
         {
-            if (!(0 <= ranRoom[i] && ranRoom[i] <= 6))
+            if (!(0 <= ranRoom.Data[i] && ranRoom.Data[i] <= 6))
             {
                 inRange = false;
                 break;
@@ -29,9 +30,10 @@ public class TEST_InitRoom {
     public void TEST_CorrectLength()
     {
         CreateRoom cr = new CreateRoom();
-        int[] ranRoom = cr.Generate();
+        EvaluateRoom evaluateRoom = new EvaluateRoom(0.75f);
+        Room ranRoom = cr.Generate(evaluateRoom);
 
-        Assert.True((ranRoom.Length == (TileInformation.roomSizeX * TileInformation.roomSizeY)));
+        Assert.True((ranRoom.Data.Length == (TileInformation.roomSizeX * TileInformation.roomSizeY)));
 
     }
 }

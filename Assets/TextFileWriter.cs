@@ -5,29 +5,43 @@ using UnityEngine;
 
 public class TextFileWriter {
 
-    // TODO: Write map data to a text file to see wtf is going on
-
     string path;
     string filename = "default.txt";
     StreamWriter sr;
 
-    public TextFileWriter(string fn)
+    /// <summary>
+    /// On creation give a file name mapdata + datetime + a guid
+    /// </summary>
+    public TextFileWriter()
     {
-        this.filename = "/" + fn + ".csv";
-        path = Path.GetDirectoryName(Application.dataPath + "/MapArchive" + this.filename);
+        this.filename = InitFilename();
+        path = Path.GetDirectoryName(Application.dataPath + "/MapArchive/");
     }
 
+    /// <summary>
+    /// Open the new file and give the rng file name generated when the object
+    /// was created
+    /// </summary>
     public void OpenStream()
     {
-        sr = File.CreateText(path + filename);
-        Debug.Log(path + filename);
+        string toCreate = path + "/" + filename;
+        sr = File.CreateText(toCreate);
+        Debug.Log("string " + toCreate);
     }
 
+
+    /// <summary>
+    /// End the file
+    /// </summary>
     public void CloseStream()
     {
         sr.Close();
     }
 
+    /// <summary>
+    /// Write one line into the open file if the stream is open
+    /// </summary>
+    /// <param name="line"></param>
     public void WriteLine(string line)
     {
         if(sr == null)
@@ -46,7 +60,7 @@ public class TextFileWriter {
     private string InitFilename()
     {
         string guid = Guid.NewGuid().ToString();
-        string fileName = "mapdata-" + GetDateTime() + "-GUID-" + guid;
+        string fileName = "mapdata-" + GetDateTime() + "-GUID-" + guid + ".csv";
 
         string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars()) + " ";
 
@@ -69,21 +83,25 @@ public class TextFileWriter {
         return dt.ToString(ci);
     }
 
-    public void WriteRoomsToFile(int[][] rooms)
+    /// <summary>
+    /// Write an array of Room objects Data to a file
+    /// </summary>
+    /// <param name="rooms">a array of rooms</param>
+    public void WriteRoomsToFile(Room[] rooms)
     {
-        TextFileWriter tfw = new TextFileWriter(InitFilename());
+        TextFileWriter tfw = new TextFileWriter();
         tfw.OpenStream();
 
         for(int room = 0; room < rooms.Length; room++ )
         {
             string roomString = "";
-            for(int tile = 0; tile < rooms[room].Length; tile++)
+            for(int tile = 0; tile < rooms[room].Data.Length; tile++)
             {
                 if((tile % TileInformation.roomSizeX) == 0)
                 {
                     roomString += "\n";
                 }
-                roomString += rooms[room][tile] + ",";
+                roomString += rooms[room].Data[tile] + ",";
             }
             roomString += "\n";
 

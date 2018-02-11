@@ -10,8 +10,6 @@ public class CreateRoom {
     private const int GAP = 6;
     private const int SPAWN_POINT_INDEX = 2;
 
-    public string roomString = "";
-
     private float[] chanceOfSpawning = new float[6]
     {
         40f, // ground
@@ -22,11 +20,11 @@ public class CreateRoom {
         5f   // enemy with gun
     };
 
-    public int[] Generate()
+    public Room Generate(EvaluateRoom evaluateRoom)
     {
         int[] randomRoom = new int[TileInformation.roomSizeX * TileInformation.roomSizeY];
 
-        roomString = "";
+        string roomString = "";
 
         for (int i = 0; i < randomRoom.Length; i++)
         {
@@ -41,7 +39,7 @@ public class CreateRoom {
         }
         roomString += "\n\n";
 
-        return randomRoom;
+        return new Room(randomRoom, roomString, evaluateRoom);
     }
 
     private int SetTile(int index)
