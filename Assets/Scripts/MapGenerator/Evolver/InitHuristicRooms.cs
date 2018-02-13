@@ -9,37 +9,53 @@ public class InitHuristicRooms {
 
     public InitHuristicRooms(TextAsset rooms, EvaluateRoom evaluateRoom)
     {
-        this.Rooms = LoadMaps(rooms, evaluateRoom);
+        string[] loadRooms = LoadRooms(rooms, evaluateRoom);
+        this.Rooms = LoadData(loadRooms, evaluateRoom);
     }
 
-    public Room[] LoadMaps(TextAsset inFile, EvaluateRoom er)
+    public string[] LoadRooms(TextAsset inFile, EvaluateRoom er)
     {
-        string[][] levels = new string[1][];
-        int[][] levelsInt = new int[1][];
-        Room[] rooms = new Room[1];
+        string[] wholeLevels = new string[1];
 
         if (inFile != null)
         {
-            string[] wholeLevels = (inFile.text.Split('.'));
-            levels = new string[wholeLevels.Length][];
-            levelsInt = new int[wholeLevels.Length][];
-            rooms = new Room[wholeLevels.Length];
-
-            for (int i = 0; i < wholeLevels.Length; i++)
-            {
-                levels[i] = wholeLevels[i].Split(',');
-                levelsInt[i] = new int[levels[i].Length];
-                for (int j = 0; j < levels[i].Length; j++)
-                {
-                    int.TryParse(levels[i][j], out levelsInt[i][j]);
-                }
-
-                rooms[i] = new Room(levelsInt[i], er);
-            }
-
+            wholeLevels = new string[(inFile.text.Split('.')).Length];
+            wholeLevels = (inFile.text.Split('.'));
         }
-        return rooms;
+        return wholeLevels; 
     }
 
+    // TODO: Somthing about this is fucked
+    public Room[] LoadData(string[] rooms, EvaluateRoom er)
+    {
+
+        string[][] levels = new string[rooms.Length][];
+        string[][][] final = new string[rooms.Length][][];
+        Room[] r = new Room[rooms.Length];
+        int[,] toAdd = new int[TileInformation.roomSizeY, TileInformation.roomSizeX]; 
+
+        for (int z = 0; z < levels.Length; z++)
+        {
+
+            toAdd = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
+
+            levels[z] = rooms[z].Split('!');
+            final[z] = new string[levels[z].Length][];
+            
+            for (int y = 0; y < TileInformation.roomSizeY; y++)
+            {
+                final[z][y] = levels[z][y].Split(',');
+
+                for (int x = 0; x < TileInformation.roomSizeX; x++)
+                {
+                    //Debug.Log("1: " + final.Length + " 2: " + final[z].Length + " 3: " + final[z][y].Length + " 4: " + final[z][y][x].Length);
+                    int.TryParse(final[z][y][x], out toAdd[y, x]);
+                }
+            }
+            r[z] = new Room(toAdd, er);
+        }
+        return r;
+
+    }
 
 }

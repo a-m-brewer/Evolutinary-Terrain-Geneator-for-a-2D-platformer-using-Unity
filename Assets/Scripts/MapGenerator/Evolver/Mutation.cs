@@ -8,19 +8,23 @@ public class Mutation {
 
     public Room RandomReseting(Room room, EvaluateRoom evaluateRoom)
     {
-        int[] output = room.Data;
+        int[,] output = room.Data;
 
-        for(int i = 0; i < output.Length; i++)
+        for (int y = 0; y < output.GetLength(0); y++)
         {
-            if(UsefulMethods.RandomChance(gr.GetMutationRate()))
+            for (int x = 0; x < output.GetLength(1); x++)
             {
-                // only allow gap tiles if the array is setting the bottom layer
-                if (i < TileInformation.roomSizeX)
+                if (UsefulMethods.RandomChance(gr.GetMutationRate()))
                 {
-                    output[i] = Random.Range(0, TileInformation.numTiles);
-                } else
-                {
-                    output[i] = Random.Range(0, TileInformation.numTiles - 1);
+                    // only allow gap tiles if the array is setting the bottom layer
+                    if (x < TileInformation.roomSizeX)
+                    {
+                        output[y,x] = Random.Range(0, TileInformation.numTiles);
+                    }
+                    else
+                    {
+                        output[y,x] = Random.Range(0, TileInformation.numTiles - 1);
+                    }
                 }
             }
         }

@@ -19,4 +19,10 @@ public static class UsefulMethods {
         TextFileWriter t = new TextFileWriter();
         t.WriteRoomsToFile(pop);
     }
+
+    public static void ArchiveRoom(this int[,] array)
+    {
+        TextFileWriter t = new TextFileWriter();
+        t.Write2DArrayToFile(array);
+    }
 }

@@ -66,10 +66,6 @@ public class MapGeneratorMain : MonoBehaviour, IDifficulty {
         // Prototype version
         chosenMap = levelSelector.SelectMap(allTemplateRoomData, TileInformation.numRooms, mapTargetDifficulty, room);
 
-        //InitMap initMap = new InitMap();
-
-        //chosenMap = initMap.Generate();
-
         actualDifficultyScore = levelSelector.DifficultyScoreOfMap(chosenMap, room.GetComponent<RoomGenerator>().GetRoomTiles());
 
         // set the name of the game object to group map tiles with

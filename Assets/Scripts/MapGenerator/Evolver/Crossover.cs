@@ -14,19 +14,23 @@ public class Crossover {
     /// <returns></returns>
     public Room[] UniformCrossover(Room roomOne, Room roomTwo, int bias, EvaluateRoom er)
     {
-        int[] out1 = new int[roomOne.Data.Length];
-        int[] out2 = new int[roomTwo.Data.Length];
+        int[,] out1 = new int[roomOne.Data.GetLength(0), roomOne.Data.GetLength(1)];
+        int[,] out2 = new int[roomTwo.Data.GetLength(0), roomTwo.Data.GetLength(1)];
         
-        for(int i = 0; i < roomOne.Data.Length; i++)
+        for(int y = 0; y < roomOne.Data.GetLength(0); y++)
         {
-            if(UsefulMethods.RandomChance(bias))
+            for (int x = 0; x < roomOne.Data.GetLength(1); x++)
             {
-                out1[i] = roomOne.Data[i];
-                out2[i] = roomTwo.Data[i];
-            } else
-            {
-                out1[i] = roomTwo.Data[i];
-                out2[i] = roomOne.Data[i];
+                if (UsefulMethods.RandomChance(bias))
+                {
+                    out1[y,x] = roomOne.Data[y, x];
+                    out2[y, x] = roomTwo.Data[y, x];
+                }
+                else
+                {
+                    out1[y, x] = roomTwo.Data[y, x];
+                    out2[y, x] = roomOne.Data[y, x];
+                }
             }
         }
 
@@ -38,5 +42,4 @@ public class Crossover {
 
         return newRooms;
     }
-
 }

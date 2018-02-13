@@ -8,7 +8,6 @@ public class CreateRoom {
     private const int BACKGROUND = 0;
     private const int GROUND = 1;
     private const int GAP = 6;
-    private const int SPAWN_POINT_INDEX = 2;
 
     private float[] chanceOfSpawning = new float[6]
     {
@@ -22,47 +21,46 @@ public class CreateRoom {
 
     public Room Generate(EvaluateRoom evaluateRoom)
     {
-        int[] randomRoom = new int[TileInformation.roomSizeX * TileInformation.roomSizeY];
+        int[,] randomRoom = new int[TileInformation.roomSizeY,TileInformation.roomSizeX];
 
         string roomString = "";
 
-        for (int i = 0; i < randomRoom.Length; i++)
+        for (int y = 0; y < randomRoom.GetLength(0); y++)
         {
-            if ( (i % TileInformation.roomSizeX) == 0)
+            for (int x = 0; x < randomRoom.GetLength(1); x++)
             {
-                roomString += "\n";
+                randomRoom[y, x] = SetTile(new Vector2(x, y));
+                roomString += randomRoom[y, x];
             }
-
-            randomRoom[i] = SetTile(i);
-
-            roomString += randomRoom[i] + ",";
+            roomString += "\n";
         }
+
         roomString += "\n\n";
 
         return new Room(randomRoom, roomString, evaluateRoom);
     }
 
-    private int SetTile(int index)
+    private int SetTile(Vector2 index)
     {
         int toPlace = ERROR_NO_TILE;
-
-        toPlace = InitGround(index);
-
+        
+        toPlace = InitGround((int)index.y);
+        
         for (int i = 0; i < chanceOfSpawning.Length; i++)
         {
             int tileType = i + 1;
             toPlace = TryPlaceTile(chanceOfSpawning[0], tileType, toPlace);
         }
 
-        if (index < TileInformation.roomSizeX && toPlace == ERROR_NO_TILE)
+        if (index.x < TileInformation.roomSizeX && toPlace == ERROR_NO_TILE)
             toPlace = GAP;
 
         if (toPlace == ERROR_NO_TILE)
             toPlace = BACKGROUND;
 
-        if (index == SPAWN_POINT_INDEX)
+        if (index == TileInformation.spawnPoint)
             toPlace = GROUND;
-
+        
         return toPlace;
     }
 
@@ -86,9 +84,9 @@ public class CreateRoom {
         return (Random.Range(0, 100) <= chance);
     }
 
-    private int InitGround(int i)
+    private int InitGround(int y)
     {
-        if (i < TileInformation.roomSizeX)
+        if (y == 0)
         {
             if(RandomChance(chanceOfSpawning[1]))
             {

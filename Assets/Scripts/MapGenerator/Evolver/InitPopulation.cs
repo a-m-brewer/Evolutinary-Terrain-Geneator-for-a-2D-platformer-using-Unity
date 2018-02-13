@@ -8,7 +8,9 @@ public class InitPopulation {
     public Room[] Generate(TextAsset huristicRooms, float percentGround, EvaluateRoom evaluateRoom)
     {
         Room[] randomRooms = new InitRandomPopulation(percentGround, evaluateRoom).population;
+        
         Room[] hRooms = new InitHuristicRooms(huristicRooms, evaluateRoom).Rooms;
+
         // join both together
         Room[] population = new Room[randomRooms.Length + hRooms.Length];
         Array.Copy(randomRooms, population, randomRooms.Length);

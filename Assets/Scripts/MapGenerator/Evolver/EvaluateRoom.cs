@@ -28,7 +28,9 @@ public class EvaluateRoom {
     {
         float[] roomScoreRaw = gr.MainChecker(room);
         float groundScore = EvaluationDistrobution(roomScoreRaw[0]);
+
         float score = groundScore * roomScoreRaw[1] * roomScoreRaw[3] * roomScoreRaw[4];
+
         // give maps that do not score a stake in the pool
         // this is mainly used for initialisation where random generated levels often score 0
         return (score == 0f) ? 0.01f : score;

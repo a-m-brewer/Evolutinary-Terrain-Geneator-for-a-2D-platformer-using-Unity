@@ -95,14 +95,16 @@ public class TextFileWriter {
         for(int room = 0; room < rooms.Length; room++ )
         {
             string roomString = "";
-            for(int tile = 0; tile < rooms[room].Data.Length; tile++)
+
+            for (int y = 0; y < rooms[room].Data.GetLength(0); y++)
             {
-                if((tile % TileInformation.roomSizeX) == 0)
+                for (int x = 0; x < rooms[room].Data.GetLength(1); x++)
                 {
-                    roomString += "\n";
+                    roomString += rooms[room].Data[y, x] + ",";
                 }
-                roomString += rooms[room].Data[tile] + ",";
+                roomString += "\n";
             }
+
             roomString += "\n";
 
             tfw.WriteLine(roomString);
@@ -110,4 +112,23 @@ public class TextFileWriter {
 
         tfw.CloseStream();
     }
+
+    public void Write2DArrayToFile(int[,] array)
+    {
+        TextFileWriter tfw = new TextFileWriter();
+        tfw.OpenStream();
+
+        string output = "";
+        for(int y = 0; y < array.GetLength(0); y++)
+        {
+            for(int x = 0; x < array.GetLength(1); x++)
+            {
+                output += array[y, x] + ",";
+            }
+            output += "\n";
+        }
+
+        tfw.WriteLine(output);
+        tfw.CloseStream();
+    } 
 }

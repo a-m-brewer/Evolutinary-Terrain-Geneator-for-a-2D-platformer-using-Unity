@@ -13,12 +13,15 @@ public class TEST_InitRoom {
 
         bool inRange = true;
 
-        for (int i = 0; i < ranRoom.Data.Length; i++)
+        for (int y = 0; y < ranRoom.Data.GetLength(0); y++)
         {
-            if (!(0 <= ranRoom.Data[i] && ranRoom.Data[i] <= 6))
+            for (int x = 0; x < ranRoom.Data.GetLength(1); x++)
             {
-                inRange = false;
-                break;
+                if(!(0 <= ranRoom.Data[y,x] && ranRoom.Data[y,x] <= 6))
+                {
+                    inRange = false;
+                    break;
+                }
             }
         }
 

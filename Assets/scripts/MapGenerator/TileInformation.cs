@@ -19,5 +19,7 @@ public static class TileInformation {
 
     public static int numTiles = difficultyScores.Length - 1;
 
+    public static Vector2 spawnPoint = new Vector2(2, 0);
+
 }
 

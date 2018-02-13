@@ -10,7 +10,8 @@ public class GeneratorRules {
     private int populationSize = 100;
     private float mutationRate = 1f;
     private float maxGapSize = 9;
-    private int startTileIndex = 2;
+
+    private Vector2 startTileIndex = new Vector2(2, 0);
 
     public int PopulationSize { get { return this.populationSize; } }
 
@@ -29,23 +30,25 @@ public class GeneratorRules {
         evaluationResults[0] = 0f;
         evaluationResults[1] = 1f;
         evaluationResults[2] = 0f;
-        evaluationResults[3] = IsTileGround(room.Data[startTileIndex]);
+        evaluationResults[3] = IsTileGround(room.Data[(int) startTileIndex.y, (int) startTileIndex.x]);
         evaluationResults[4] = 1f;
 
         float[] gapCheck = new float[2] { evaluationResults[1], evaluationResults[2] };
 
-        for(int i = 0; i < room.Data.Length; i++)
+
+        for (int y = 0; y < room.Data.GetLength(0); y++)
         {
-            evaluationResults[0] += RoomHasGroundEvaluator(i, room.Data[i]);
+            for (int x = 0; x < room.Data.GetLength(1); x++)
+            {
+                evaluationResults[0] += RoomHasGroundEvaluator(y, room.Data[y, x]);
 
-            gapCheck = LegalGapCheck(i, gapCheck, room.Data[i]);
-            evaluationResults[1] = gapCheck[0];
-            evaluationResults[2] = gapCheck[1];
+                gapCheck = LegalGapCheck(x, gapCheck, room.Data[y, x]);
+                evaluationResults[1] = gapCheck[0];
+                evaluationResults[2] = gapCheck[1];
 
-            evaluationResults[4] = GetBellowEnemyIsFloor(i, room.Data, evaluationResults[4]);
-
+                evaluationResults[4] = GetBellowEnemyIsFloor(new Vector2(x, y), room.Data, evaluationResults[4]); ;
+            }
         }
-
         return  evaluationResults;
     }
     
@@ -106,7 +109,7 @@ public class GeneratorRules {
     {
         float perGroundFound = 1f / (TileInformation.roomSizeX);
 
-        if(index < TileInformation.roomSizeX)
+        if(index == 0)
         {
             if (tile == 1)
             {
@@ -142,9 +145,9 @@ public class GeneratorRules {
     /// <param name="index">index you want to find the tile bellow</param>
     /// <param name="rowsBellow">how many rows down</param>
     /// <returns></returns>
-    private int GetNRowsBellowIndex(int index,int rowsBellow)
+    private Vector2 GetNRowsBellowIndex(Vector2 index,int rowsBellow)
     {
-        int rowBellowIndex = index - (TileInformation.roomSizeX * rowsBellow);
+        Vector2 rowBellowIndex = new Vector2(index.x, index.y - rowsBellow);
         return rowBellowIndex;
     }
 
@@ -155,23 +158,24 @@ public class GeneratorRules {
     /// <param name="room">the room data</param>
     /// <param name="lastResult">return value</param>
     /// <returns></returns>
-    public float GetBellowEnemyIsFloor(int index, int[] room, float lastResult)
+    public float GetBellowEnemyIsFloor(Vector2 index, int[,] room, float lastResult)
     {
-        int newIndex = GetNRowsBellowIndex(index, 2);
+        Vector2 newIndex = GetNRowsBellowIndex(index, 2);
 
-        if (room[index] == 4 || room[index] == 5)
+        if (room[(int)index.y, (int)index.x] == 4 ||
+            room[(int)index.y, (int)index.x] == 5)
         {
-            if (newIndex < 0)
+            if (newIndex.y < 0)
             {
                 return 0f;
             }
 
-            if (room[newIndex] != 1)
+            if (room[(int)newIndex.y, (int)newIndex.x] != 1)
             {
                 return 0f;
             }
         }
-
+        
         return lastResult;
 
     }

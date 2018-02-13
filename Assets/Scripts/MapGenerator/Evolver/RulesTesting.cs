@@ -35,17 +35,17 @@ public class RulesTesting : MonoBehaviour {
     // TODO: Cleanup this mess
     private void Start()
     {
+
         // init pop and evaluation
         Room[] population = ip.Generate(huristicMaps, er.GetGroundPercent(), er);
+        //Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
 
         Room[] parents = sr.SelectParents(population);
         parents.Archive();
-
         Debug.Log("Parents: " + parents[0].Fitness + " " + parents[1].Fitness);
 
         Room[] testRooms = co.UniformCrossover(parents[0], parents[1], 50, er);
         testRooms.Archive();
-
         Debug.Log("Crossover: " + testRooms[0].Fitness + " " + testRooms[1].Fitness);
 
         testRooms[0] = mu.RandomReseting(testRooms[0], er);
@@ -54,9 +54,5 @@ public class RulesTesting : MonoBehaviour {
         Debug.Log("Mutation: " + testRooms[0].Fitness + " " + testRooms[1].Fitness);
 
     }
-
-    // TODO: add top scores getter, if it can't reach target amount get as many as possible
-    // TODO: if all scores are 0 pick random sample
-    // TODO: Then mutate and copy
 
 }
