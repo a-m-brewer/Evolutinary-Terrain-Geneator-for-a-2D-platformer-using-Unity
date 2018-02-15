@@ -17,6 +17,7 @@ public class Enemy : Person, IDifficulty {
 
     private bool hasGun = false;
 
+
     public int DifficultyScore
     {
         get
@@ -41,6 +42,8 @@ public class Enemy : Person, IDifficulty {
         {
             DifficultyScore = TileInformation.difficultyScores[4];
         }
+
+        
     }
 
     // Use this for initialization

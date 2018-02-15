@@ -29,7 +29,7 @@ public class Grid {
             for(int x = 0; x < TileInformation.roomSizeX; x++)
             {
                 int tile = room[y, x];
-                grid[y, x] = new Node(tile, x, y);
+                grid[y, x] = new Node(room, x, y);
                 
                 if (grid[y, x].Walkable)
                 {
@@ -89,5 +89,40 @@ public class Grid {
         }
 
         return neighbours;
+    }
+
+    public List<Node> GetNeighbours2(Node node)
+    {
+        List<Node> output = new List<Node>();
+
+        int leftX = node.X - 1;
+        int leftY = node.Y;
+        if (leftX >= 0 && leftX < TileInformation.roomSizeX && leftY >= 0 && leftY < TileInformation.roomSizeY)
+        {
+            output.Add(grid[leftY, leftX]);
+        }
+
+        int rightX = node.X + 1;
+        int rightY = node.Y;
+        if (rightX >= 0 && rightX < TileInformation.roomSizeX && rightY >= 0 && rightY < TileInformation.roomSizeY)
+        {
+            output.Add(grid[rightY, rightX]);
+        }
+
+        int upX = node.X;
+        int upY = node.Y + 1;
+        if (upX >= 0 && upX < TileInformation.roomSizeX && upY >= 0 && upY < TileInformation.roomSizeY)
+        {
+            output.Add(grid[upY, upX]);
+        }
+
+        int downX = node.X;
+        int downY = node.Y - 1;
+        if (downX >= 0 && downX < TileInformation.roomSizeX && downY >= 0 && downY < TileInformation.roomSizeY)
+        {
+            output.Add(grid[downY, downX]);
+        }
+
+        return output;
     }
 }

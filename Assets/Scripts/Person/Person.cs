@@ -34,6 +34,17 @@ public class Person : MonoBehaviour{
         }
     }
 
+    public void LimitFallSpeed()
+    {
+        if (GetRigidBody().velocity.y < PlayerMovementRestrictions.cMaxFallSpeedUnity)
+        {
+            GetRigidBody().velocity = new Vector2(GetRigidBody().velocity.x, PlayerMovementRestrictions.cMaxFallSpeedUnity);
+        }
+
+        //if (GetRigidBody().velocity != new Vector2(0f, 0f))
+            //Debug.Log("X: " + GetRigidBody().velocity.x + " Y: " + GetRigidBody().velocity.y);
+    }
+
     public void FixedUpdate()
     {
         if (PesonIsBellowMap())
@@ -49,7 +60,9 @@ public class Person : MonoBehaviour{
             if (gameObject.GetComponent<PlayerMonitor>() != null)
                 gameObject.GetComponent<PlayerMonitor>().IncreaseJumps();
 
-            personRB.AddForce(new Vector2(0, jumpPower));
+            //personRB.AddForce(new Vector2(0, jumpPower));
+            personRB.velocity = new Vector2(personRB.velocity.x, jumpPower);
+            
         }
     }
 

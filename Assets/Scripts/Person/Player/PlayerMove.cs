@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Diagnostics;
+using System;
 // class to handle the movement of the player
 public class PlayerMove : Player
 {
     public UIDebugData ui;
     PlayerMonitor mon;
+
+    bool hasJumped = false;
+    Stopwatch s = new Stopwatch();
 
     private void Awake()
     {
@@ -16,10 +20,17 @@ public class PlayerMove : Player
     // Update is called once per frame
     void Update()
     {
+        LimitFallSpeed();
         MovePlayer();
         HandlePlayerMonitor();
-    }
 
+        if(isGrounded && hasJumped)
+        {
+            s.Stop();
+            UnityEngine.Debug.Log(s.Elapsed.Milliseconds);
+            hasJumped = false;
+        }
+    }
 
     void MovePlayer()
     {
@@ -32,12 +43,19 @@ public class PlayerMove : Player
             if (Input.GetButtonDown("Jump"))
             {
                 Jump();
+                
+
+                hasJumped = true;
+
+                s = new Stopwatch();
+                s.Start();
+
                 isGrounded = false;
             }
 
             // Player direction
             DirectionCheck();
-            // Physics
+            // Physics    
             GetRigidBody().velocity =  new Vector2(moveX * movementSpeed, GetRigidBody().velocity.y);
         }
 

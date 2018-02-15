@@ -11,13 +11,29 @@ public class PathFindingTesting : MonoBehaviour {
     void Start () {
         Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
 
-        Grid grid = new Grid(population[13].Data);
-        grid.CreateGrid();
+        //population[poptotest].Data.ArchiveRoom();
+        for (int i = 0; i < population.Length; i++)
+        {
+            Grid grid = new Grid(population[i].Data);
+            grid.CreateGrid();
 
-        Pathfinding pf = new Pathfinding(grid);
-        pf.FindPath(new Vector2(0, 4), new Vector2(23, 4));
-        grid.DrawPath();
-        grid.WalkableGrid.ArchiveRoom();
+            Pathfinding pf = new Pathfinding(grid);
+
+            pf.FindPath(new Vector2(0, FindPosY(grid, 0)), new Vector2(23, FindPosY(grid, 23)));
+            grid.DrawPath();
+            //grid.WalkableGrid.ArchiveRoom();
+            Debug.Log(pf.foundpath);
+        }
+    }
+
+    int FindPosY(Grid grid, int x)
+    {
+        int y = 0;
+        while(grid.WalkableGrid[y, x] != 1 && y < TileInformation.roomSizeY)
+        {
+            y++;
+        }
+        return y;
     }
 	
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Pathfinding {
 
     private Grid grid;
+    public bool foundpath = false;
 
 	public Pathfinding(Grid _grid) 
     {
@@ -13,41 +14,61 @@ public class Pathfinding {
 
     public void FindPath(Vector2 startPos, Vector2 endPos)
     {
+        // return if start or end inaccessable
+        if(grid.WalkableGrid[(int) startPos.y,(int) startPos.x] == 0
+            || grid.WalkableGrid[(int)endPos.y, (int)endPos.x] == 0)
+        {
+            return;
+        }
+
         Node startNode = grid.NodeAtPosition((int)startPos.x, (int)startPos.y);
         Node endNode = grid.NodeAtPosition((int)endPos.x, (int)endPos.y);
 
-        List<Node> openSet = new List<Node>();
-        HashSet<Node> closedSet = new HashSet<Node>();
+        startNode.JumpValue = 0;
 
+        Heap<Node> openSet = new Heap<Node>(TileInformation.roomSizeX * TileInformation.roomSizeY);
+        HashSet<Node> closedSet = new HashSet<Node>();
         openSet.Add(startNode);
 
         while(openSet.Count > 0)
         {
-            Node node = openSet[0];
+            Node node = openSet.RemoveFirst();
 
-            for (int i = 1; i < openSet.Count; i++)
-            {
-                if(openSet[i].fCost <= node.fCost)
-                {
-                    if (openSet[i].hCost < node.hCost)
-                    {
-                        node = openSet[i];
-                    }
-                }
-            }
+            if (node.parent != null)
+                node.CalculateJumpValue(node.parent);
 
-            openSet.Remove(node);
+            node.SetLowestValue(node.JumpValue);
+
             closedSet.Add(node);
 
             if (node == endNode)
             {
+                foundpath = true;
                 RetraceSteps(startNode, endNode);
                 return;
             }
 
-            foreach(Node neighbour in grid.GetNeighbours(node))
+            foreach(Node neighbour in grid.GetNeighbours2(node))
             {
-                if(!neighbour.Walkable || closedSet.Contains(neighbour))
+
+                if (neighbour.NodeAboveAnother(node))
+                {
+                    if (!node.CanMoveUp())
+                    {
+                        neighbour.Walkable = false;
+                    }
+                }
+
+                if(neighbour.NodeOnXAxis(node))
+                {
+                    if (!node.CanMoveOnXAxis())
+                    {
+                        neighbour.Walkable = false;
+                    }
+                }
+
+
+                if (!neighbour.Walkable || closedSet.Contains(neighbour))
                 {
                     continue;
                 }

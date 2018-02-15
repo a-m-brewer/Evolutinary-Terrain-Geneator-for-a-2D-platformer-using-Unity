@@ -1,0 +1,9 @@
+Jump 1x2 blocks in size
+Jump vertically 3 blocks
+Jump horisontally 9 blocks
+
+Pixel move speed  = 320
+Player jump speed = 440
+grav = -960
+
+time in air = ~900ms
