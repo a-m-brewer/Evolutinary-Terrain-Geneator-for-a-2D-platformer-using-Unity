@@ -83,6 +83,10 @@ public class Pathfinding {
                     if(!openSet.Contains(neighbour))
                     {
                         openSet.Add(neighbour);
+                    } else
+                    {
+                        // try here for adding new node?
+                        openSet.UpdateItem(neighbour);
                     }
                 }
             }
