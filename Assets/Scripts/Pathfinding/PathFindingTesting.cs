@@ -20,7 +20,7 @@ public class PathFindingTesting : MonoBehaviour {
 
             pf.FindPath(new Vector2(0, FindPosY(grid, 0)), new Vector2(23, FindPosY(grid, 23)));
             grid.DrawPath();
-            //grid.WalkableGrid.ArchiveRoom();
+            grid.WalkableGrid.ArchiveRoom();
             Debug.Log(pf.foundpath);
         }
     }
