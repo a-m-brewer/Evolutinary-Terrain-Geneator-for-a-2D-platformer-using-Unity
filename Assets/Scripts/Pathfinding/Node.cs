@@ -17,7 +17,7 @@ public class Node : IHeapItem<Node> {
 
     public int gCost;
     public int hCost;
-    public Node parent;
+    
 
     private int jumpValue = 0;
     public int JumpValue { get { return this.jumpValue; } set { this.jumpValue = value; } }
@@ -26,13 +26,24 @@ public class Node : IHeapItem<Node> {
     private int heapIndex;
     public int HeapIndex { get { return this.heapIndex; } set { this.heapIndex = value; } }
 
-    bool groundUnderSearchNode = true;
+    public bool groundUnderSearchNode = true;
+
+    // from thing
+    public Stack<Node> parent;
+    public SeekerStatus seekerStatus;
+    public ArrayList usedJumpValues;
+    public ArrayList pastSeekerStatus;
 
     public Node(int[,] room, int x, int y)
     {
         this.walkable = IsWalkable(x,y,room);
         this.X = x;
         this.Y = y;
+        this.jumpValue = 0;
+        parent = new Stack<Node>();
+        usedJumpValues = new ArrayList();
+        pastSeekerStatus = new ArrayList();
+        seekerStatus = SeekerStatus.Default;
     }
 
     private bool IsWalkable(int x, int y, int[,] room)
@@ -65,32 +76,29 @@ public class Node : IHeapItem<Node> {
         }
     }
 
-    public void CalculateJumpValue(Node node)
+    public int CalculateJumpValue(Node node)
     {
+        int newJump = 0;
         if(this.groundUnderSearchNode)
         {
-            this.jumpValue = 0;
-            return;
+            newJump = 0;
         }
 
         if(node.Y == this.Y)
         {
-            this.jumpValue = parent.jumpValue + 1;
-            return;
+            newJump = node.jumpValue + 1;
         }
 
         if (node.Y < this.Y)
         {
-            this.jumpValue = NextEven(parent.jumpValue);
-            return;
+            newJump = NextEven(node.jumpValue);
         }
 
         if (node.Y > this.Y)
         {
-            this.jumpValue = NextEven(parent.jumpValue);
-            return;
+            newJump = NextEven(node.jumpValue);
         }
-
+        return newJump;
     }
 
     private int NextEven(int n)
@@ -115,12 +123,17 @@ public class Node : IHeapItem<Node> {
 
     public bool CanMoveUp()
     {
-        return (this.jumpValue < PlayerMovementRestrictions.maxJumpHeight);
+        return (this.jumpValue < PlayerMovementRestrictions.maxJumpHeightValue);
     }
 
     public bool NodeAboveAnother(Node n)
     {
         return (this.Y > n.Y); 
+    }
+
+    public bool NodeUnderAnother(Node n)
+    {
+        return (this.Y < n.Y);
     }
 
     public bool NodeOnRight(Node n)

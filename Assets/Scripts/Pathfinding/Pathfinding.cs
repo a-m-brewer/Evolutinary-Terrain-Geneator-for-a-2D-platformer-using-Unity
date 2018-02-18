@@ -12,6 +12,7 @@ public class Pathfinding {
         this.grid = _grid;
     }
 
+    int i = 0;
     public void FindPath(Vector2 startPos, Vector2 endPos)
     {
         // return if start or end inaccessable
@@ -32,10 +33,13 @@ public class Pathfinding {
 
         while(openSet.Count > 0)
         {
+            i++;
             Node node = openSet.RemoveFirst();
 
-            if (node.parent != null)
-                node.CalculateJumpValue(node.parent);
+            //grid.WalkableGrid[node.Y, node.X] = i;
+
+            //if (node.parent.Count > 0)
+            //    node.CalculateJumpValue(node.parent.Peek());
 
             node.SetLowestValue(node.JumpValue);
 
@@ -55,22 +59,65 @@ public class Pathfinding {
                 {
                     if (!node.CanMoveUp())
                     {
-                        neighbour.Walkable = false;
+                        continue;
                     }
                 }
 
-                if(neighbour.NodeOnXAxis(node))
+                if (neighbour.NodeOnXAxis(node))
                 {
                     if (!node.CanMoveOnXAxis())
                     {
-                        neighbour.Walkable = false;
+                        continue;
                     }
                 }
 
 
-                if (!neighbour.Walkable || closedSet.Contains(neighbour))
+                if (!neighbour.Walkable) 
                 {
                     continue;
+                }
+
+                if (closedSet.Contains(neighbour))
+                {
+                    if(neighbour.NodeAboveAnother(node))
+                    {
+                        // if was falling in the past
+                        if(neighbour.pastSeekerStatus.Contains(SeekerStatus.Falling))
+                        {
+                            continue;
+                        }
+                        // if was jumping
+                        if(neighbour.pastSeekerStatus.Contains(SeekerStatus.Jumping))
+                        {
+                            int nextJumpValue = neighbour.CalculateJumpValue(neighbour.parent.Peek());
+                            bool canGo = true;
+
+                            foreach(int usedJumpValue in neighbour.usedJumpValues)
+                            {
+                                if (nextJumpValue >= usedJumpValue)
+                                {
+                                    canGo = false;
+                                    break;
+                                }
+                            }
+
+                            if(!canGo)
+                            {
+                                continue;
+                            } else
+                            {
+                                closedSet.Remove(neighbour);
+                            }
+                        } else
+                        {
+                            closedSet.Remove(neighbour);
+                        }
+
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
 
                 int newCostToNeighbour = node.gCost + GetDistance(node, neighbour);
@@ -78,14 +125,50 @@ public class Pathfinding {
                 {
                     neighbour.gCost = newCostToNeighbour;
                     neighbour.hCost = GetDistance(neighbour, endNode);
-                    neighbour.parent = node;
+                    
+                    if(!neighbour.parent.Contains(node))
+                    {
+                        neighbour.parent.Push(node);
+                        // mabye remove
+                        if (neighbour.parent.Count >= 3)
+                        {
+                            neighbour.parent.Pop();
+                        }
+                    }
+
+                    if (neighbour.NodeAboveAnother(node))
+                    {
+                        neighbour.JumpValue = neighbour.CalculateJumpValue(neighbour.parent.Peek());
+                        neighbour.seekerStatus = SeekerStatus.Jumping;
+                        neighbour.pastSeekerStatus.Add(SeekerStatus.Jumping);
+                        if(!neighbour.usedJumpValues.Contains(neighbour.JumpValue))
+                        {
+                            neighbour.usedJumpValues.Add(neighbour.JumpValue);
+                        }
+                    }
+                    else if(neighbour.groundUnderSearchNode)
+                    {
+                        if(!neighbour.pastSeekerStatus.Contains(SeekerStatus.Grounded))
+                        {
+                            neighbour.seekerStatus = SeekerStatus.Grounded;
+                        }
+                        neighbour.pastSeekerStatus.Add(SeekerStatus.Grounded);
+                    }
+                    else
+                    {
+                        neighbour.seekerStatus = SeekerStatus.Falling;
+                        if(!neighbour.pastSeekerStatus.Contains(SeekerStatus.Falling))
+                        {
+                            neighbour.pastSeekerStatus.Add(SeekerStatus.Falling);
+                        }
+                        neighbour.JumpValue = neighbour.CalculateJumpValue(neighbour.parent.Peek());
+                    }
 
                     if(!openSet.Contains(neighbour))
                     {
                         openSet.Add(neighbour);
                     } else
                     {
-                        // try here for adding new node?
                         openSet.UpdateItem(neighbour);
                     }
                 }
@@ -99,11 +182,17 @@ public class Pathfinding {
     {
         List<Node> path = new List<Node>();
         Node currNode = end;
+        Node lastParent = null;
 
         while(currNode != start)
         {
             path.Add(currNode);
-            currNode = currNode.parent;
+            if( currNode.parent.Count <= 0)
+            {
+                currNode.parent.Push(lastParent);
+            }
+            lastParent = currNode;
+            currNode = currNode.parent.Pop();
         }
         path.Reverse();
 

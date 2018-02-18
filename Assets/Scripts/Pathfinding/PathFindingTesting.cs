@@ -11,7 +11,6 @@ public class PathFindingTesting : MonoBehaviour {
     void Start () {
         Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
 
-        //population[poptotest].Data.ArchiveRoom();
         for (int i = 0; i < population.Length; i++)
         {
             Grid grid = new Grid(population[i].Data);
