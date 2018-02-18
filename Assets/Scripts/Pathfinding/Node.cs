@@ -21,7 +21,6 @@ public class Node : IHeapItem<Node> {
 
     private int jumpValue = 0;
     public int JumpValue { get { return this.jumpValue; } set { this.jumpValue = value; } }
-    public int lowestJumpValue = short.MaxValue;
 
     private int heapIndex;
     public int HeapIndex { get { return this.heapIndex; } set { this.heapIndex = value; } }
@@ -156,8 +155,4 @@ public class Node : IHeapItem<Node> {
         return (this.jumpValue % 2) == 0;
     }
 
-    public void SetLowestValue(int value)
-    {
-        lowestJumpValue = (lowestJumpValue < value) ? lowestJumpValue : value;
-    }
 }

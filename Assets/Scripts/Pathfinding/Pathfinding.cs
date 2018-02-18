@@ -36,13 +36,6 @@ public class Pathfinding {
             i++;
             Node node = openSet.RemoveFirst();
 
-            //grid.WalkableGrid[node.Y, node.X] = i;
-
-            //if (node.parent.Count > 0)
-            //    node.CalculateJumpValue(node.parent.Peek());
-
-            node.SetLowestValue(node.JumpValue);
-
             closedSet.Add(node);
 
             if (node == endNode)
@@ -52,7 +45,7 @@ public class Pathfinding {
                 return;
             }
 
-            foreach(Node neighbour in grid.GetNeighbours2(node))
+            foreach(Node neighbour in grid.GetVonNeumannNeighbourhood(node))
             {
 
                 if (neighbour.NodeAboveAnother(node))
@@ -129,7 +122,6 @@ public class Pathfinding {
                     if(!neighbour.parent.Contains(node))
                     {
                         neighbour.parent.Push(node);
-                        // mabye remove
                         if (neighbour.parent.Count >= 3)
                         {
                             neighbour.parent.Pop();

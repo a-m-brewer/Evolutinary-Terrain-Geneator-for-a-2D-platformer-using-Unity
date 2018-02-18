@@ -22,13 +22,16 @@ public class Grid {
         CreateGrid();
     }
 
+    /// <summary>
+    /// Setup the initial Nodes marking which parts of the map are walkable
+    /// for the search node
+    /// </summary>
     public void CreateGrid()
     {
         for(int y = 0; y < TileInformation.roomSizeY; y++)
         {
             for(int x = 0; x < TileInformation.roomSizeX; x++)
             {
-                int tile = room[y, x];
                 grid[y, x] = new Node(room, x, y);
                 
                 if (grid[y, x].Walkable)
@@ -43,6 +46,10 @@ public class Grid {
         }
     }
 
+    /// <summary>
+    /// Once the pathfinder has completed this will draw the path
+    /// that the algorithm took
+    /// </summary>
     public void DrawPath()
     {
         for(int y = 0; y < TileInformation.roomSizeY; y++)
@@ -60,38 +67,13 @@ public class Grid {
         }
     }
 
+
     public Node NodeAtPosition(int x, int y)
     {
         return grid[y, x];
     }
 
-    public List<Node> GetNeighbours(Node node)
-    {
-        List<Node> neighbours = new List<Node>();
-
-        for (int x = -1; x <= 1; x++)
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x == 0 && y == 0)
-                {
-                    continue;
-                }
-
-                int checkX = node.X + x;
-                int checkY = node.Y + y;
-
-                if (checkX >= 0 && checkX < TileInformation.roomSizeX && checkY >= 0 && checkY < TileInformation.roomSizeY)
-                {
-                    neighbours.Add(grid[checkY, checkX]);
-                }
-            }
-        }
-
-        return neighbours;
-    }
-
-    public List<Node> GetNeighbours2(Node node)
+    public List<Node> GetVonNeumannNeighbourhood(Node node)
     {
         List<Node> output = new List<Node>();
 
@@ -122,7 +104,6 @@ public class Grid {
         {
             output.Add(grid[downY, downX]);
         }
-
         return output;
     }
 }

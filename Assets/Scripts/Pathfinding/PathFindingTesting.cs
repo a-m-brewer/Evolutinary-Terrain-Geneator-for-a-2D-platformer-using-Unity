@@ -11,6 +11,21 @@ public class PathFindingTesting : MonoBehaviour {
     void Start () {
         Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
 
+        TestOne(population, 13);
+    }
+
+    int FindPosY(Grid grid, int x)
+    {
+        int y = 0;
+        while(grid.WalkableGrid[y, x] != 1 && y < TileInformation.roomSizeY)
+        {
+            y++;
+        }
+        return y;
+    }
+	
+    void TestAll(Room[] population)
+    {
         for (int i = 0; i < population.Length; i++)
         {
             Grid grid = new Grid(population[i].Data);
@@ -25,14 +40,16 @@ public class PathFindingTesting : MonoBehaviour {
         }
     }
 
-    int FindPosY(Grid grid, int x)
+    void TestOne(Room[] population, int roomIndex)
     {
-        int y = 0;
-        while(grid.WalkableGrid[y, x] != 1 && y < TileInformation.roomSizeY)
-        {
-            y++;
-        }
-        return y;
+        Grid grid = new Grid(population[roomIndex].Data);
+        grid.CreateGrid();
+
+        Pathfinding pf = new Pathfinding(grid);
+
+        pf.FindPath(new Vector2(0, FindPosY(grid, 0)), new Vector2(23, FindPosY(grid, 23)));
+        grid.DrawPath();
+        //grid.WalkableGrid.ArchiveRoom();
+        Debug.Log(pf.foundpath);
     }
-	
 }
