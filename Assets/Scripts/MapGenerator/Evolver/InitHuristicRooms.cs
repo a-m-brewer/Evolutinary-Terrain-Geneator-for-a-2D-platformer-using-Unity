@@ -7,6 +7,8 @@ public class InitHuristicRooms {
     private Room[] huristicRooms;
     public Room[] Rooms { get { return this.huristicRooms; } set { huristicRooms = value; } }
 
+    public Room bestRoom;
+
     public InitHuristicRooms(TextAsset rooms, EvaluateRoom evaluateRoom)
     {
         string[] loadRooms = LoadRooms(rooms, evaluateRoom);
@@ -53,9 +55,23 @@ public class InitHuristicRooms {
                 }
             }
             r[z] = new Room(toAdd, er);
+            // selectBest
+            SetBestRoom(r[z]);
         }
         return r;
 
+    }
+
+    public void SetBestRoom(Room toCheck)
+    {
+        if(bestRoom == null)
+        {
+            bestRoom = toCheck;
+            return;
+        } else if(bestRoom.Fitness < toCheck.Fitness)
+        {
+            bestRoom = toCheck;
+        }
     }
 
 }

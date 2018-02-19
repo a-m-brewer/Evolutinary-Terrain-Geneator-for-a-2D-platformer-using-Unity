@@ -16,10 +16,10 @@ public class GeneratorRules {
     public int PopulationSize { get { return this.populationSize; } }
 
     /// <summary>
-    /// 0: how much of the floor is a ground tile
+    /// 0: % ground to target
     /// 1: all gaps in the map floor are in limit
     /// 2: Length of gap (only used for tracking)
-    /// 3: tile 3 is a ground tile or not
+    /// 3: There is a path through the level
     /// 4: check if enemies on the map have a floor to spawn on
     /// </summary>
     public float[] evaluationResults = new float[5];
@@ -30,7 +30,7 @@ public class GeneratorRules {
         evaluationResults[0] = 0f;
         evaluationResults[1] = 1f;
         evaluationResults[2] = 0f;
-        evaluationResults[3] = IsTileGround(room.Data[(int) startTileIndex.y, (int) startTileIndex.x]);
+        evaluationResults[3] = CanNavigateRoom(room);
         evaluationResults[4] = 1f;
 
         float[] gapCheck = new float[2] { evaluationResults[1], evaluationResults[2] };
@@ -41,7 +41,6 @@ public class GeneratorRules {
             for (int x = 0; x < room.Data.GetLength(1); x++)
             {
                 evaluationResults[0] += RoomHasGroundEvaluator(y, room.Data[y, x]);
-
                 gapCheck = LegalGapCheck(x, gapCheck, room.Data[y, x]);
                 evaluationResults[1] = gapCheck[0];
                 evaluationResults[2] = gapCheck[1];
@@ -51,7 +50,28 @@ public class GeneratorRules {
         }
         return  evaluationResults;
     }
-    
+
+    /// <summary>
+    /// increase the mesurement of percentage of bottom row that is ground
+    /// </summary>
+    /// <param name="index">which tile in the room</param>
+    /// <param name="tile">the tiles data</param>
+    /// <returns></returns>
+    public float RoomHasGroundEvaluator(int index, int tile)
+    {
+        float perGroundFound = 1f / (TileInformation.roomSizeX);
+
+        if (index == 0)
+        {
+            if (tile == 1)
+            {
+                return perGroundFound;
+            }
+        }
+
+        return 0f;
+    }
+
     /// <summary>
     /// Check if a gap in a room is a jumpable distance for the player
     /// 0f = not suitable
@@ -97,27 +117,6 @@ public class GeneratorRules {
         }
 
         return gapInLimit;
-    }
-
-    /// <summary>
-    /// increase the mesurement of percentage of bottom row that is ground
-    /// </summary>
-    /// <param name="index">which tile in the room</param>
-    /// <param name="tile">the tiles data</param>
-    /// <returns></returns>
-    public float RoomHasGroundEvaluator(int index, int tile)
-    {
-        float perGroundFound = 1f / (TileInformation.roomSizeX);
-
-        if(index == 0)
-        {
-            if (tile == 1)
-            {
-                return perGroundFound;
-            }
-        }
-
-        return 0f;
     }
 
     /// <summary>
@@ -185,6 +184,58 @@ public class GeneratorRules {
         return this.mutationRate;
     }
 
+    /// <summary>
+    /// Use a* pathfinding that take gravity and player attributes into account in order
+    /// to find if the player could get through the level
+    /// </summary>
+    /// <param name="room"></param>
+    /// <returns></returns>
+    private float CanNavigateRoom(Room room)
+    {
+        Grid grid = new Grid(room.Data);
+        grid.CreateGrid();
 
+        Pathfinding pf = new Pathfinding(grid);
+
+        int startY = FindPosY(grid, 0);
+        int endY = FindPosY(grid, TileInformation.roomSizeX - 1);
+
+        // there is nowhere for the player to stand at the start and end of rooms
+        if (!(grid.NodeAtPosition(0, startY).groundUnderSearchNode 
+            && grid.NodeAtPosition(TileInformation.roomSizeX - 1, endY).groundUnderSearchNode)) {
+            return 0f;
+        }
+
+        pf.FindPath(new Vector2(0, FindPosY(grid, 0)), new Vector2(23, FindPosY(grid, 23)));
+        grid.DrawPath();
+
+        // if the a* pathfinder makes it to the target the map is navigatable for a player
+        if(pf.foundpath)
+        {
+            return 1f;
+        }
+
+        return 0f;
+    }
+
+    private int FindPosY(Grid grid, int x)
+    {
+        //int y = -1;
+        //while (grid.WalkableGrid[y, x] != 1 && y < TileInformation.roomSizeY)
+        //{
+        //    y++;
+        //    Debug.Log(y);
+        //}
+
+        for(int y = 0; y < TileInformation.roomSizeY; y++)
+        {
+            if(grid.WalkableGrid[y, x] == 1)
+            {
+                return y;
+            }
+        }
+
+        return TileInformation.roomSizeY - 1;
+    }
 
 }

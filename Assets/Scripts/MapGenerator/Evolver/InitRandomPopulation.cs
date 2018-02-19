@@ -11,6 +11,7 @@ public class InitRandomPopulation {
     GeneratorRules gr = new GeneratorRules();
 
     public Room[] population;
+    public Room bestRoom;
 
     public InitRandomPopulation(float percentGround, EvaluateRoom evaluateRoom)
     {
@@ -28,9 +29,24 @@ public class InitRandomPopulation {
         for (int i = 0; i < initMap.Length; i++)
         {
             initMap[i] = cr.Generate(evaluateRoom);
+            // check the best map
+            SetBestRoom(initMap[i]);
         }
        
         return initMap;
+    }
+
+    public void SetBestRoom(Room toCheck)
+    {
+        if(bestRoom == null)
+        {
+            bestRoom = toCheck;
+            return;
+        } else if(bestRoom.Fitness < toCheck.Fitness)
+        {
+            bestRoom = toCheck;
+            return;
+        }
     }
 
 }

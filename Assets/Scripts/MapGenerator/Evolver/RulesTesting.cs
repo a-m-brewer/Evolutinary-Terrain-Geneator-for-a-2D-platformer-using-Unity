@@ -31,11 +31,21 @@ public class RulesTesting : MonoBehaviour {
     Mutation mu = new Mutation();
     SelectRoom sr = new SelectRoom();
     GeneratorRules gr = new GeneratorRules();
+    
 
     // TODO: Cleanup this mess
     private void Start()
     {
+        Room[] hRooms = new InitHuristicRooms(huristicMaps, er).Rooms;
 
+        for(int i = 0;  i < hRooms.Length; i++ )
+        {
+            Debug.Log(i + " " + hRooms[i].Fitness);
+        }
+    }
+
+    private void GenerationTest()
+    {
         // init pop and evaluation
         Room[] population = ip.Generate(huristicMaps, er.GetGroundPercent(), er);
         //Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
@@ -52,7 +62,6 @@ public class RulesTesting : MonoBehaviour {
         testRooms[1] = mu.RandomReseting(testRooms[1], er);
         testRooms.Archive();
         Debug.Log("Mutation: " + testRooms[0].Fitness + " " + testRooms[1].Fitness);
-
     }
 
 }

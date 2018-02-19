@@ -69,6 +69,47 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
 
     }
 
+
+    // main method called to create a room 
+    public void EvoGenerateRoom(int rNumber, Transform parent, int[,] roomData)
+    {
+        // set the name of the game object to group map tiles with
+        string holderName = "RoomGen";
+        // Each time the room generates destroy the old game objects
+        if (transform.Find(holderName))
+        {
+            DestroyImmediate(transform.Find(holderName).gameObject);
+        }
+        // create the new holder
+        Transform mapHolder = new GameObject(holderName).transform;
+        mapHolder.parent = transform;
+        // each room needs to be offset so that it does not spawn the new room in the same
+        // position as the old one
+        float rOffset = CalculateRoomOffset(rNumber, (int)TileInformation.roomSizeX);
+        // work through the room and create all of the tiles for that room
+        for (int y = 0; y < TileInformation.roomSizeY; y++)
+        {
+            for (int x = 0; x < TileInformation.roomSizeX; x++)
+            {
+                // where the tile will be placed in the map
+                Vector3 tilePos = new Vector3(x + rOffset, y, 0);
+                // roomData holds what kind of tile should be spawned for an array index
+                // So check what this array says the current index should be
+                int toInstantiate = roomData[y, x];
+                // check if the tile is an enemy that needs a background tile placed behind it
+                if (NeedsBackgroundTile(toInstantiate))
+                {
+                    InstatiateBackground(tilePos, mapHolder);
+                }
+                // place the tile into the room
+                Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
+                // add to the overall difficulty of the room
+                AddToDifficulty(newTile);
+            }
+        }
+
+    }
+
     // places a new tile in the room at a certain place as well as a given type of tile worked out in generateroom
     private Transform SpawnNewTileInRoom(Transform maptile, Vector3 tilePosition, Transform parentTransform)
     {

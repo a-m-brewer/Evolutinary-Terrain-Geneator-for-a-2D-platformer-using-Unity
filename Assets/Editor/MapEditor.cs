@@ -20,3 +20,20 @@ public class MapEditor : Editor {
         }
     }
 }
+
+[CustomEditor (typeof(MapGenDisplay))]
+public class EvoMapEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        MapGenDisplay mgd = (MapGenDisplay)target;
+
+        if (GUILayout.Button("Increment Evolution"))
+        {
+            mgd.IncrementEvolutionOfRoomAndDisplayBest();
+            mgd.DisplayRoom();
+        }
+    }
+}
