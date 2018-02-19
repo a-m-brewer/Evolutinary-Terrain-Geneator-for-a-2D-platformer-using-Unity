@@ -27,7 +27,6 @@ public class PlayerMove : Player
         if(isGrounded && hasJumped)
         {
             s.Stop();
-            UnityEngine.Debug.Log(s.Elapsed.Milliseconds);
             hasJumped = false;
         }
     }

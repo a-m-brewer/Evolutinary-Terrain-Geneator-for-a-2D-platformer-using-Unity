@@ -41,7 +41,7 @@ public class EvaluateRoom {
     public float Evaluate(Room room)
     {
         float[] fromMainChecker = gr.MainChecker(room);
-        float score = (fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3]) / 4f;
+        float score = (fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3]);
 
         Debug.Log("Room Path Score: " + fromMainChecker[0] + "\n" +
                   "Close to Enemy: " + fromMainChecker[1] + "\n" +

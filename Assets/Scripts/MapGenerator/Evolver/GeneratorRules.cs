@@ -81,91 +81,12 @@ public class GeneratorRules {
                 trapCount = CountNumberOfID(room.Data, x, y, 3, trapCount);
             }
         }
+        Debug.Log(enemyCount);
         enemyCount = enemyCount + enemyWithGunCount;
-        evaluationResults[1] = ClosenessToTargetEnemyCount(enemyCount);
-        evaluationResults[2] = ClosenessToTargetCoinsCount(coinCount);
-        evaluationResults[3] = ClosenessToTargetTrapCount(trapCount);
 
         return evaluationResults;
     }
 
-    /// <summary>
-    /// increase the mesurement of percentage of bottom row that is ground
-    /// </summary>
-    /// <param name="index">which tile in the room</param>
-    /// <param name="tile">the tiles data</param>
-    /// <returns></returns>
-    public float RoomHasGroundEvaluator(int index, int tile)
-    {
-        float perGroundFound = 1f / (TileInformation.roomSizeX);
-
-        if (index == 0)
-        {
-            if (tile == 1)
-            {
-                return perGroundFound;
-            }
-        }
-
-        return 0f;
-    }
-
-    /// <summary>
-    /// Check if a gap in a room is a jumpable distance for the player
-    /// 0f = not suitable
-    /// 1f = suitable
-    /// </summary>
-    /// <param name="index">which tile in the map</param>
-    /// <param name="gapCheck">results of the function</param>
-    /// <param name="tile">data from that tile in the map</param>
-    /// <returns></returns>
-    private float[] LegalGapCheck(int index, float[] gapCheck, int tile)
-    {
-        if (index < TileInformation.roomSizeX)
-        {
-            gapCheck[1] = IncreaseGapSize(gapCheck[1], tile);
-            gapCheck[0] = GetGapsWithinLimit(gapCheck[1], gapCheck[0]);
-        }
-        return gapCheck;
-    }
-
-    /// <summary>
-    /// Increases the gap size if the current tile is gap tile
-    /// sets to if not gap set to 0
-    /// </summary>
-    /// <param name="prevGap"></param>
-    /// <param name="tile"></param>
-    /// <returns></returns>
-    private float IncreaseGapSize(float prevGap, int tile)
-    {
-        return (tile == 6) ? (prevGap += 1f) : 0f;
-    }
-
-    /// <summary>
-    /// if the gapsize is larger than the players jump give a score of 0
-    /// </summary>
-    /// <param name="gapSize">current size of the gap</param>
-    /// <param name="gapInLimit">the return value</param>
-    /// <returns></returns>
-    private float GetGapsWithinLimit(float gapSize, float gapInLimit)
-    {
-        if (maxGapSize < gapSize)
-        {
-            return 1f / (gapSize - this.maxGapSize);
-        }
-
-        return gapInLimit;
-    }
-
-    /// <summary>
-    /// return 1 if that tile is ground
-    /// </summary>
-    /// <param name="tile">data of a tile in a room</param>
-    /// <returns></returns>
-    public float IsTileGround(int tile)
-    {
-        return (tile == 1) ? 1f : 0f;
-    }
 
     /// <summary>
     /// How many rooms to generate per round
@@ -174,77 +95,6 @@ public class GeneratorRules {
     public int GetInitRandomPopulationSize()
     {
         return initRandomPopulationSize;
-    }
-
-    /// <summary>
-    /// Get the index of N rows bellow the tile inputed
-    /// </summary>
-    /// <param name="index">index you want to find the tile bellow</param>
-    /// <param name="rowsBellow">how many rows down</param>
-    /// <returns></returns>
-    private Vector2 GetNRowsBellowIndex(Vector2 index,int rowsBellow)
-    {
-        Vector2 rowBellowIndex = new Vector2(index.x, index.y - rowsBellow);
-        return rowBellowIndex;
-    }
-
-    /// <summary>
-    /// Makes sure that all enemies spawn above a ground tile
-    /// </summary>
-    /// <param name="index">which tile in the room</param>
-    /// <param name="room">the room data</param>
-    /// <param name="lastResult">return value</param>
-    /// <returns></returns>
-    public float GetBellowEnemyIsFloor(Vector2 index, int[,] room, float lastResult)
-    {
-        Vector2 newIndex = GetNRowsBellowIndex(index, 2);
-
-        if (room[(int)index.y, (int)index.x] == 4 ||
-            room[(int)index.y, (int)index.x] == 5)
-        {
-            if (newIndex.y < 0)
-            {
-                return 0f;
-            }
-
-            if (room[(int)newIndex.y, (int)newIndex.x] != 1)
-            {
-                return 0f;
-            }
-        }
-        
-        return lastResult;
-
-    }
-
-    public float SpaceAroundEnemyIsAir(int[,] _room, int _x, int _y, float lastResult)
-    {
-        if (_room[_y, _x] == 4 ||
-            _room[_y, _x] == 5)
-        {
-            float toAdd = 1f / 8f;
-            float score = 0f;
-            for (int y = _y - 1; y <= _y + 1; y++)
-            {
-                for (int x = _x - 1; x <= _x + 1; x++)
-                {
-                    if (WithinMapRange(x, y))
-                    {
-                        if (x == 0 && y == 0)
-                        {
-                            continue;
-                        }
-
-                        if (_room[y, x] == 0)
-                        {
-                            score += toAdd;
-                        }
-                    }
-                }
-            }
-            return toAdd;
-        }
-        return lastResult;
     }
 
     private bool WithinMapRange(int x, int y)
@@ -289,7 +139,7 @@ public class GeneratorRules {
             return 1f;
         }
         // how long it is until the end TODO: Mabye chance logic
-        return (pf.distanceToEnd == 1 || pf.distanceToEnd == 0) ? 0.5f : 1f / pf.distanceToEnd;
+        return 1f / pf.distanceToEnd;
     }
 
     private int FindPosY(Grid grid, int x)
@@ -313,28 +163,6 @@ public class GeneratorRules {
             return lastResult + 1;
         }
         return lastResult;
-    }
-
-    private float ClosenessToTargetEnemyCount(int enemyCount)
-    {
-        return ClosenessToATarget(this.targetEnemies, enemyCount);
-    }
-
-    private float ClosenessToTargetCoinsCount(int coinsCount)
-    {
-        return ClosenessToATarget(this.maxCoins, coinsCount);
-    }
-
-    private float ClosenessToTargetTrapCount(int trapCount)
-    {
-        return ClosenessToATarget(this.maxTraps, trapCount);
-    }
-
-    private float ClosenessToATarget(int target, int count)
-    {
-        float amountToSubtract = 1f / count;
-        int offset = Mathf.Abs(target - count);
-        return (offset == 0) ? 1f : 1f - (amountToSubtract * offset);
     }
 
 }
