@@ -16,52 +16,77 @@ public class GeneratorRules {
     public int PopulationSize { get { return this.populationSize; } }
 
     private float mutationRate;
-    private int maxEnemies;
+    private int targetEnemies;
     private int maxCoins;
     private int maxTraps;
 
-    
-
-    public GeneratorRules(float _mutationRate, int _maxEnemies, int _maxCoins, int _maxTraps)
+    public GeneratorRules(float _mutationRate, int _targetEnemies, int _maxCoins, int _maxTraps)
     {
         this.mutationRate = _mutationRate;
-        this.maxEnemies = _maxEnemies;
+        this.targetEnemies = _targetEnemies;
         this.maxCoins = _maxCoins;
         this.maxTraps = _maxTraps;
     }
 
-    /// <summary>
-    /// 0: % ground to target
-    /// 1: all gaps in the map floor are in limit
-    /// 2: Length of gap (only used for tracking)
-    /// 3: There is a path through the level
-    /// 4: check if enemies on the map have a floor to spawn on
-    /// </summary>
+    ///// <summary>
+    ///// 0: % ground to target
+    ///// 1: all gaps in the map floor are in limit
+    ///// 2: Length of gap (only used for tracking)
+    ///// 3: There is a path through the level
+    ///// 4: check if enemies on the map have a floor to spawn on
+    ///// </summary>
+    //public float[] MainChecker(Room room)
+    //{
+    //    float[] evaluationResults = new float[5];
+    //    evaluationResults[0] = 0f;
+    //    evaluationResults[1] = 1f;
+    //    evaluationResults[2] = 0f;
+    //    evaluationResults[3] = CanNavigateRoom(room);
+    //    evaluationResults[4] = 1f;
+
+    //    float[] gapCheck = new float[2] { evaluationResults[1], evaluationResults[2] };
+
+
+    //    for (int y = 0; y < room.Data.GetLength(0); y++)
+    //    {
+    //        for (int x = 0; x < room.Data.GetLength(1); x++)
+    //        {
+    //            evaluationResults[0] += RoomHasGroundEvaluator(y, room.Data[y, x]);
+    //            gapCheck = LegalGapCheck(x, gapCheck, room.Data[y, x]);
+    //            evaluationResults[1] = gapCheck[0];
+    //            evaluationResults[2] = gapCheck[1];
+
+    //            evaluationResults[4] = GetBellowEnemyIsFloor(new Vector2(x, y), room.Data, evaluationResults[4]); ;
+    //        }
+    //    }
+    //    return  evaluationResults;
+    //}
     public float[] MainChecker(Room room)
     {
-        float[] evaluationResults = new float[5];
-        evaluationResults[0] = 0f;
-        evaluationResults[1] = 1f;
-        evaluationResults[2] = 0f;
-        evaluationResults[3] = CanNavigateRoom(room);
-        evaluationResults[4] = 1f;
+        float[] evaluationResults = new float[4];
+        evaluationResults[0] = CanNavigateRoom(room);
 
-        float[] gapCheck = new float[2] { evaluationResults[1], evaluationResults[2] };
+        int enemyCount = 0;
+        int enemyWithGunCount = 0;
+        int coinCount = 0;
+        int trapCount = 0;
 
-
-        for (int y = 0; y < room.Data.GetLength(0); y++)
+        for(int y = 0; y < TileInformation.roomSizeY; y++)
         {
-            for (int x = 0; x < room.Data.GetLength(1); x++)
+            for(int x = 0; x < TileInformation.roomSizeX; x++)
             {
-                evaluationResults[0] += RoomHasGroundEvaluator(y, room.Data[y, x]);
-                gapCheck = LegalGapCheck(x, gapCheck, room.Data[y, x]);
-                evaluationResults[1] = gapCheck[0];
-                evaluationResults[2] = gapCheck[1];
-
-                evaluationResults[4] = GetBellowEnemyIsFloor(new Vector2(x, y), room.Data, evaluationResults[4]); ;
+                enemyCount = CountNumberOfID(room.Data, x, y, 4, enemyCount);
+                enemyWithGunCount = CountNumberOfID(room.Data, x, y, 5, enemyWithGunCount);
+                coinCount = CountNumberOfID(room.Data, x, y, 2, coinCount);
+                trapCount = CountNumberOfID(room.Data, x, y, 3, trapCount);
             }
         }
-        return  evaluationResults;
+        enemyCount = enemyCount + enemyWithGunCount;
+        evaluationResults[1] = ClosenessToTargetEnemyCount(enemyCount);
+        evaluationResults[2] = ClosenessToTargetCoinsCount(coinCount);
+        evaluationResults[3] = ClosenessToTargetTrapCount(trapCount);
+
+        return evaluationResults;
     }
 
     /// <summary>
@@ -281,19 +306,35 @@ public class GeneratorRules {
         return TileInformation.roomSizeY - 1;
     }
 
-    private int CountNumberOfEnemies(int[,] _room, int x, int y, int lastResult)
+    private int CountNumberOfID(int[,] _room, int x, int y, int idToCheck, int lastResult)
     {
-        if(_room[y, x] == 4 || _room[y, x] == 5)
+        if(_room[y, x] == idToCheck)
         {
             return lastResult + 1;
         }
         return lastResult;
     }
 
-    private float ClosenessToMaxEnemyCount(int enemyCount)
+    private float ClosenessToTargetEnemyCount(int enemyCount)
     {
-        int offset = Mathf.Abs(this.maxEnemies - enemyCount);
-        return (offset == 0) ? 1f : 1f / offset;
+        return ClosenessToATarget(this.targetEnemies, enemyCount);
+    }
+
+    private float ClosenessToTargetCoinsCount(int coinsCount)
+    {
+        return ClosenessToATarget(this.maxCoins, coinsCount);
+    }
+
+    private float ClosenessToTargetTrapCount(int trapCount)
+    {
+        return ClosenessToATarget(this.maxTraps, trapCount);
+    }
+
+    private float ClosenessToATarget(int target, int count)
+    {
+        float amountToSubtract = 1f / count;
+        int offset = Mathf.Abs(target - count);
+        return (offset == 0) ? 1f : 1f - (amountToSubtract * offset);
     }
 
 }

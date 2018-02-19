@@ -9,7 +9,7 @@ public class InitRandomPopulation {
 
     CreateRoom cr = new CreateRoom();
     GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
-                                           DefaultRuleArguments.maxEnemies,
+                                           DefaultRuleArguments.targetEnemies,
                                            DefaultRuleArguments.maxCoins,
                                            DefaultRuleArguments.maxTraps);
 

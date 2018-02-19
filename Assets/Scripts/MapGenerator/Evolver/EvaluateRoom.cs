@@ -9,7 +9,7 @@ public class EvaluateRoom {
 
     private float targetGroundPercentage;
     private GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
-                                                   DefaultRuleArguments.maxEnemies,
+                                                   DefaultRuleArguments.targetEnemies,
                                                    DefaultRuleArguments.maxCoins,
                                                    DefaultRuleArguments.maxTraps);
 
@@ -27,15 +27,27 @@ public class EvaluateRoom {
     /// </summary>
     /// <param name="room"></param>
     /// <returns></returns>
+    //public float Evaluate(Room room)
+    //{
+    //    float[] roomScoreRaw = gr.MainChecker(room);
+    //    float groundScore = EvaluationDistrobution(roomScoreRaw[0]);
+
+    //    float score = groundScore * roomScoreRaw[1] * roomScoreRaw[3] * roomScoreRaw[4];
+
+    //    // give maps that do not score a stake in the pool
+    //    // this is mainly used for initialisation where random generated levels often score 0
+    //    return (score == 0f) ? 0.01f : score;
+    //}
     public float Evaluate(Room room)
     {
-        float[] roomScoreRaw = gr.MainChecker(room);
-        float groundScore = EvaluationDistrobution(roomScoreRaw[0]);
+        float[] fromMainChecker = gr.MainChecker(room);
+        float score = (fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3]) / 4f;
 
-        float score = groundScore * roomScoreRaw[1] * roomScoreRaw[3] * roomScoreRaw[4];
+        Debug.Log("Room Path Score: " + fromMainChecker[0] + "\n" +
+                  "Close to Enemy: " + fromMainChecker[1] + "\n" +
+                  "Close to Coins: " + fromMainChecker[2] + "\n" +
+                  "Close to Traps: " + fromMainChecker[3]);
 
-        // give maps that do not score a stake in the pool
-        // this is mainly used for initialisation where random generated levels often score 0
         return (score == 0f) ? 0.01f : score;
     }
     

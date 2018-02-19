@@ -31,7 +31,7 @@ public class RulesTesting : MonoBehaviour {
     Mutation mu = new Mutation();
     SelectRoom sr = new SelectRoom();
     GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
-                                           DefaultRuleArguments.maxEnemies,
+                                           DefaultRuleArguments.targetEnemies,
                                            DefaultRuleArguments.maxCoins,
                                            DefaultRuleArguments.maxTraps);
 

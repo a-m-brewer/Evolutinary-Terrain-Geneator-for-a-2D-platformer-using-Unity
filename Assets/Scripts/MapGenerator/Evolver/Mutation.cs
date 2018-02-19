@@ -5,7 +5,7 @@ using UnityEngine;
 public class Mutation {
 
     GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
-                                           DefaultRuleArguments.maxEnemies,
+                                           DefaultRuleArguments.targetEnemies,
                                            DefaultRuleArguments.maxCoins,
                                            DefaultRuleArguments.maxTraps);
 
