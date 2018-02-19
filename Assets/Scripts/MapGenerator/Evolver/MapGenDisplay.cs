@@ -75,14 +75,19 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     {
         InitPopulation ip = new InitPopulation();
         roomPop = ip.Generate(huristicMaps, evaluateRoom.GetGroundPercent(), evaluateRoom);
-        //InitHuristicRooms ihr = new InitHuristicRooms(huristicMaps, evaluateRoom);
         chosenRoom = ip.bestRoom;
+
+        //InitRandomPopulation irp = new InitRandomPopulation(0.75f, evaluateRoom);
+        //roomPop = irp.Generate(evaluateRoom.GetGroundPercent(), evaluateRoom);
+        //chosenRoom = irp.bestRoom;
+
     }
 
     public void IncrementEvolutionOfRoomAndDisplayBest()
     {
-        Room[] np = new Room[100];
-        for (int p = 0; p < 100; p += 2)
+        int numRoomsInGeneration = 80;
+        Room[] np = new Room[numRoomsInGeneration];
+        for (int p = 0; p < numRoomsInGeneration; p += 2)
         {
             Room[] parents = selectRoom.SelectParents(roomPop);
             Room[] crossOver = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);

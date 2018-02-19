@@ -8,12 +8,27 @@ public class GeneratorRules {
     // remember pop sizes need to be even
     private int initRandomPopulationSize = 80;
     private int populationSize = 100;
-    private float mutationRate = 1f;
+    
     private float maxGapSize = 9;
 
     private Vector2 startTileIndex = new Vector2(2, 0);
 
     public int PopulationSize { get { return this.populationSize; } }
+
+    private float mutationRate;
+    private int maxEnemies;
+    private int maxCoins;
+    private int maxTraps;
+
+    
+
+    public GeneratorRules(float _mutationRate, int _maxEnemies, int _maxCoins, int _maxTraps)
+    {
+        this.mutationRate = _mutationRate;
+        this.maxEnemies = _maxEnemies;
+        this.maxCoins = _maxCoins;
+        this.maxTraps = _maxTraps;
+    }
 
     /// <summary>
     /// 0: % ground to target
@@ -22,11 +37,9 @@ public class GeneratorRules {
     /// 3: There is a path through the level
     /// 4: check if enemies on the map have a floor to spawn on
     /// </summary>
-    public float[] evaluationResults = new float[5];
-
     public float[] MainChecker(Room room)
     {
-
+        float[] evaluationResults = new float[5];
         evaluationResults[0] = 0f;
         evaluationResults[1] = 1f;
         evaluationResults[2] = 0f;
@@ -113,7 +126,7 @@ public class GeneratorRules {
     {
         if (maxGapSize < gapSize)
         {
-            return 0f;
+            return 1f / (gapSize - this.maxGapSize);
         }
 
         return gapInLimit;
@@ -179,6 +192,42 @@ public class GeneratorRules {
 
     }
 
+    public float SpaceAroundEnemyIsAir(int[,] _room, int _x, int _y, float lastResult)
+    {
+        if (_room[_y, _x] == 4 ||
+            _room[_y, _x] == 5)
+        {
+            float toAdd = 1f / 8f;
+            float score = 0f;
+            for (int y = _y - 1; y <= _y + 1; y++)
+            {
+                for (int x = _x - 1; x <= _x + 1; x++)
+                {
+                    if (WithinMapRange(x, y))
+                    {
+                        if (x == 0 && y == 0)
+                        {
+                            continue;
+                        }
+
+                        if (_room[y, x] == 0)
+                        {
+                            score += toAdd;
+                        }
+                    }
+                }
+            }
+            return toAdd;
+        }
+        return lastResult;
+    }
+
+    private bool WithinMapRange(int x, int y)
+    {
+        return (0 <= x && x < TileInformation.roomSizeX &&
+                0 <= y && y < TileInformation.roomSizeY);
+    }
+
     public float GetMutationRate()
     {
         return this.mutationRate;
@@ -214,18 +263,12 @@ public class GeneratorRules {
         {
             return 1f;
         }
-
-        return 0f;
+        // how long it is until the end TODO: Mabye chance logic
+        return (pf.distanceToEnd == 1 || pf.distanceToEnd == 0) ? 0.5f : 1f / pf.distanceToEnd;
     }
 
     private int FindPosY(Grid grid, int x)
     {
-        //int y = -1;
-        //while (grid.WalkableGrid[y, x] != 1 && y < TileInformation.roomSizeY)
-        //{
-        //    y++;
-        //    Debug.Log(y);
-        //}
 
         for(int y = 0; y < TileInformation.roomSizeY; y++)
         {
@@ -236,6 +279,21 @@ public class GeneratorRules {
         }
 
         return TileInformation.roomSizeY - 1;
+    }
+
+    private int CountNumberOfEnemies(int[,] _room, int x, int y, int lastResult)
+    {
+        if(_room[y, x] == 4 || _room[y, x] == 5)
+        {
+            return lastResult + 1;
+        }
+        return lastResult;
+    }
+
+    private float ClosenessToMaxEnemyCount(int enemyCount)
+    {
+        int offset = Mathf.Abs(this.maxEnemies - enemyCount);
+        return (offset == 0) ? 1f : 1f / offset;
     }
 
 }

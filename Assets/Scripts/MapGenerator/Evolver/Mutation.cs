@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Mutation {
 
-    GeneratorRules gr = new GeneratorRules();
+    GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
+                                           DefaultRuleArguments.maxEnemies,
+                                           DefaultRuleArguments.maxCoins,
+                                           DefaultRuleArguments.maxTraps);
 
     public Room RandomReseting(Room room, EvaluateRoom evaluateRoom)
     {

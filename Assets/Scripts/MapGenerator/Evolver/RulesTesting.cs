@@ -30,8 +30,11 @@ public class RulesTesting : MonoBehaviour {
     Crossover co = new Crossover();
     Mutation mu = new Mutation();
     SelectRoom sr = new SelectRoom();
-    GeneratorRules gr = new GeneratorRules();
-    
+    GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
+                                           DefaultRuleArguments.maxEnemies,
+                                           DefaultRuleArguments.maxCoins,
+                                           DefaultRuleArguments.maxTraps);
+
 
     // TODO: Cleanup this mess
     private void Start()

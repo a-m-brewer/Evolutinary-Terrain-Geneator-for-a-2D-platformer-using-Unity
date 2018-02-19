@@ -8,7 +8,10 @@ using UnityEngine;
 public class EvaluateRoom {
 
     private float targetGroundPercentage;
-    private GeneratorRules gr = new GeneratorRules();
+    private GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
+                                                   DefaultRuleArguments.maxEnemies,
+                                                   DefaultRuleArguments.maxCoins,
+                                                   DefaultRuleArguments.maxTraps);
 
     /// <summary>
     /// Init method for the class that will evaluate a rooms fitness
@@ -28,11 +31,6 @@ public class EvaluateRoom {
     {
         float[] roomScoreRaw = gr.MainChecker(room);
         float groundScore = EvaluationDistrobution(roomScoreRaw[0]);
-
-        //Debug.Log("Ground score to target: " + groundScore + "\n" +
-        //          "All jump gaps are jumpable: " + roomScoreRaw[1] + "\n" +
-        //          "A* path through the level: " + roomScoreRaw[3] + "\n" +
-        //          "Enemies have a ground tile: " + roomScoreRaw[4]);
 
         float score = groundScore * roomScoreRaw[1] * roomScoreRaw[3] * roomScoreRaw[4];
 

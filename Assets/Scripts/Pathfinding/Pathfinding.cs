@@ -6,6 +6,7 @@ public class Pathfinding {
 
     private Grid grid;
     public bool foundpath = false;
+    public int distanceToEnd = 0;
 
 	public Pathfinding(Grid _grid) 
     {
@@ -15,15 +16,16 @@ public class Pathfinding {
     int i = 0;
     public void FindPath(Vector2 startPos, Vector2 endPos)
     {
+
+        Node startNode = grid.NodeAtPosition((int)startPos.x, (int)startPos.y);
+        Node endNode = grid.NodeAtPosition((int)endPos.x, (int)endPos.y);
+
         // return if start or end inaccessable
-        if(grid.WalkableGrid[(int) startPos.y,(int) startPos.x] == 0
+        if (grid.WalkableGrid[(int)startPos.y, (int)startPos.x] == 0
             || grid.WalkableGrid[(int)endPos.y, (int)endPos.x] == 0)
         {
             return;
         }
-
-        Node startNode = grid.NodeAtPosition((int)startPos.x, (int)startPos.y);
-        Node endNode = grid.NodeAtPosition((int)endPos.x, (int)endPos.y);
 
         startNode.JumpValue = 0;
 
@@ -37,6 +39,8 @@ public class Pathfinding {
             Node node = openSet.RemoveFirst();
 
             closedSet.Add(node);
+
+            distanceToEnd = GetDistance(node, endNode);
 
             if (node == endNode)
             {

@@ -8,7 +8,10 @@ using UnityEngine;
 public class InitRandomPopulation {
 
     CreateRoom cr = new CreateRoom();
-    GeneratorRules gr = new GeneratorRules();
+    GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
+                                           DefaultRuleArguments.maxEnemies,
+                                           DefaultRuleArguments.maxCoins,
+                                           DefaultRuleArguments.maxTraps);
 
     public Room[] population;
     public Room bestRoom;
