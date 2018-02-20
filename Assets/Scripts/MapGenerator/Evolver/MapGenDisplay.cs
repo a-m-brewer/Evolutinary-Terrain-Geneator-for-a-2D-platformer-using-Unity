@@ -73,17 +73,17 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void InitMap()
     {
-        //InitPopulation ip = new InitPopulation();
-        //roomPop = ip.Generate(huristicMaps, evaluateRoom.GetGroundPercent(), evaluateRoom);
-        //chosenRoom = ip.bestRoom;
+        InitPopulation ip = new InitPopulation();
+        roomPop = ip.Generate(huristicMaps, evaluateRoom.GetGroundPercent(), evaluateRoom);
+        chosenRoom = ip.bestRoom;
 
         //InitRandomPopulation irp = new InitRandomPopulation(0.75f, evaluateRoom);
         //roomPop = irp.Generate(evaluateRoom.GetGroundPercent(), evaluateRoom);
         //chosenRoom = irp.bestRoom;
 
-        InitHuristicRooms ihr = new InitHuristicRooms(huristicMaps, evaluateRoom);
-        roomPop = ihr.Rooms;
-        chosenRoom = ihr.bestRoom;
+        //InitHuristicRooms ihr = new InitHuristicRooms(huristicMaps, evaluateRoom);
+        //roomPop = ihr.Rooms;
+        //chosenRoom = ihr.bestRoom;
 
     }
 

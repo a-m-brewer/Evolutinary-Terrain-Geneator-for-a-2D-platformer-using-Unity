@@ -45,11 +45,13 @@ public class PathFindingTesting : MonoBehaviour {
         Grid grid = new Grid(population[roomIndex].Data);
         grid.CreateGrid();
 
+        population[roomIndex].Data.ArchiveRoom();
+
         Pathfinding pf = new Pathfinding(grid);
 
         pf.FindPath(new Vector2(0, FindPosY(grid, 0)), new Vector2(23, FindPosY(grid, 23)));
         grid.DrawPath();
-        //grid.WalkableGrid.ArchiveRoom();
+        grid.WalkableGrid.ArchiveRoom();
         Debug.Log(pf.foundpath);
     }
 }
