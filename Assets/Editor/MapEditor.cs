@@ -24,8 +24,16 @@ public class MapEditor : Editor {
 [CustomEditor (typeof(MapGenDisplay))]
 public class EvoMapEditor : Editor
 {
+    SerializedProperty n;
+
+    private void OnEnable()
+    {
+        n = serializedObject.FindProperty("n");
+    }
+
     public override void OnInspectorGUI()
     {
+        serializedObject.UpdateIfRequiredOrScript();
         DrawDefaultInspector();
 
         MapGenDisplay mgd = (MapGenDisplay)target;
@@ -33,6 +41,14 @@ public class EvoMapEditor : Editor
         if (GUILayout.Button("Increment Evolution"))
         {
             mgd.IncrementEvolutionOfRoomAndDisplayBest();
+            mgd.DisplayRoom();
+        }
+
+        EditorGUILayout.IntSlider(n, 0, 99);
+        serializedObject.ApplyModifiedProperties();
+        if (GUILayout.Button("View Map N"))
+        {
+            mgd.SwitchToRoomNinPopulation(mgd.n);
             mgd.DisplayRoom();
         }
     }

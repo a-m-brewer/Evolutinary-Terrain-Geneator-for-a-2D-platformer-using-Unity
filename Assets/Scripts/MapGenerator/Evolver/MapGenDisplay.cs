@@ -31,7 +31,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     public int mapTargetDifficulty;
     public int actualDifficultyScore;
 
-    Room[] roomPop;
+    public Room[] roomPop;
     SelectRoom selectRoom = new SelectRoom();
     Crossover crossover = new Crossover();
     Mutation mutation = new Mutation();
@@ -128,6 +128,13 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
                 }
             }
         }
+        roomPop = np;
+    }
+
+    public int n = 0;
+    public void SwitchToRoomNinPopulation(int n)
+    {
+        chosenRoom = roomPop[n];
     }
 
     // add the difficulty of the each rooms to get the maps score

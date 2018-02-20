@@ -28,79 +28,36 @@ public class GeneratorRules {
         this.maxTraps = _maxTraps;
     }
 
-    ///// <summary>
-    ///// 0: % ground to target
-    ///// 1: all gaps in the map floor are in limit
-    ///// 2: Length of gap (only used for tracking)
-    ///// 3: There is a path through the level
-    ///// 4: check if enemies on the map have a floor to spawn on
-    ///// </summary>
-    //public float[] MainChecker(Room room)
-    //{
-    //    float[] evaluationResults = new float[5];
-    //    evaluationResults[0] = 0f;
-    //    evaluationResults[1] = 1f;
-    //    evaluationResults[2] = 0f;
-    //    evaluationResults[3] = CanNavigateRoom(room);
-    //    evaluationResults[4] = 1f;
-
-    //    float[] gapCheck = new float[2] { evaluationResults[1], evaluationResults[2] };
-
-
-    //    for (int y = 0; y < room.Data.GetLength(0); y++)
-    //    {
-    //        for (int x = 0; x < room.Data.GetLength(1); x++)
-    //        {
-    //            evaluationResults[0] += RoomHasGroundEvaluator(y, room.Data[y, x]);
-    //            gapCheck = LegalGapCheck(x, gapCheck, room.Data[y, x]);
-    //            evaluationResults[1] = gapCheck[0];
-    //            evaluationResults[2] = gapCheck[1];
-
-    //            evaluationResults[4] = GetBellowEnemyIsFloor(new Vector2(x, y), room.Data, evaluationResults[4]); ;
-    //        }
-    //    }
-    //    return  evaluationResults;
-    //}
     public float[] MainChecker(Room room)
     {
         float[] evaluationResults = new float[4];
         evaluationResults[0] = CanNavigateRoom(room);
 
-        int enemyCount = 0;
-        int enemyWithGunCount = 0;
-        int coinCount = 0;
-        int trapCount = 0;
-
         for(int y = 0; y < TileInformation.roomSizeY; y++)
         {
             for(int x = 0; x < TileInformation.roomSizeX; x++)
             {
-                enemyCount = CountNumberOfID(room.Data, x, y, 4, enemyCount);
-                enemyWithGunCount = CountNumberOfID(room.Data, x, y, 5, enemyWithGunCount);
-                coinCount = CountNumberOfID(room.Data, x, y, 2, coinCount);
-                trapCount = CountNumberOfID(room.Data, x, y, 3, trapCount);
+                if(room.Data[y, x] == 4 || room.Data[y,x] == 5)
+                {
+                    evaluationResults[1] += 1f;
+                }
+                if(room.Data[y, x] == 2)
+                {
+                    evaluationResults[2] += 1f;
+                }
+                if(room.Data[y, x] == 3)
+                {
+                    evaluationResults[3] += 1f;
+                }
+                
             }
         }
-        Debug.Log(enemyCount);
-        enemyCount = enemyCount + enemyWithGunCount;
+        
+        evaluationResults[1] = Gauss(evaluationResults[1], 1f, this.targetEnemies);
+        evaluationResults[2] = Gauss(evaluationResults[2], 1f, this.maxCoins);
+        evaluationResults[3] = Gauss(evaluationResults[3], 1f, this.maxTraps);
 
         return evaluationResults;
-    }
-
-
-    /// <summary>
-    /// How many rooms to generate per round
-    /// </summary>
-    /// <returns>size of the population</returns>
-    public int GetInitRandomPopulationSize()
-    {
-        return initRandomPopulationSize;
-    }
-
-    private bool WithinMapRange(int x, int y)
-    {
-        return (0 <= x && x < TileInformation.roomSizeX &&
-                0 <= y && y < TileInformation.roomSizeY);
     }
 
     public float GetMutationRate()
@@ -139,9 +96,15 @@ public class GeneratorRules {
             return 1f;
         }
         // how long it is until the end TODO: Mabye chance logic
-        return 1f / pf.distanceToEnd;
+        return Gauss(pf.distanceToEnd, 40f, 0f);
     }
 
+    /// <summary>
+    /// Find a place to put start or end node
+    /// </summary>
+    /// <param name="grid"></param>
+    /// <param name="x"></param>
+    /// <returns></returns>
     private int FindPosY(Grid grid, int x)
     {
 
@@ -156,13 +119,41 @@ public class GeneratorRules {
         return TileInformation.roomSizeY - 1;
     }
 
-    private int CountNumberOfID(int[,] _room, int x, int y, int idToCheck, int lastResult)
+    /// <summary>
+    /// Check if the array index you want to access is in the array space
+    /// </summary>
+    /// <param name="x">x index</param>
+    /// <param name="y">y index</param>
+    /// <returns>if in range</returns>
+    private bool WithinMapRange(int x, int y)
     {
-        if(_room[y, x] == idToCheck)
-        {
-            return lastResult + 1;
-        }
-        return lastResult;
+        return (0 <= x && x < TileInformation.roomSizeX &&
+                0 <= y && y < TileInformation.roomSizeY);
     }
 
+    /// <summary>
+    /// How many rooms to generate per round
+    /// </summary>
+    /// <returns>size of the population</returns>
+    public int GetInitRandomPopulationSize()
+    {
+        return initRandomPopulationSize;
+    }
+
+    /// <summary>
+    /// Get the gausian disribution like the one in MATLAB gaussmf
+    /// </summary>
+    /// <param name="X">The number you want to find the membership of</param>
+    /// <param name="len">length from the mean to the point at 0.5</param>
+    /// <param name="mean">The mid point that will equal 1</param>
+    /// <returns></returns>
+    private float Gauss(float X, float len, float mean)
+    {
+        float top = -(Mathf.Pow((X - mean), 2f));
+        float bot = 2 * (Mathf.Pow(len, 2f));
+        float toPower = top / bot;
+
+        float result = Mathf.Pow((float)System.Math.E, toPower);
+        return result;
+    }
 }
