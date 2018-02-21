@@ -25,22 +25,26 @@ public class EvaluateRoom {
     public float Evaluate(Room room)
     {
         float[] fromMainChecker = gr.MainChecker(room);
-
         float score = 0f;
-        for(int i = 0; i < fromMainChecker.Length; i++)
+        // if path can't be found return how close
+        if(fromMainChecker[0] < 1f)
         {
-            if (i == 1)
-            {
-                Debug.Log(i + ": " + fromMainChecker[i]);
-                continue;
-            }
-            score += fromMainChecker[i];
-            Debug.Log(i + ": " + fromMainChecker[i]);
+            Debug.Log("NO PATH " + fromMainChecker[0]);
+            score = fromMainChecker[0];
+        } else if(fromMainChecker[1] < 1f)
+        {
+            Debug.Log("ENEMIES NOT CLOSE TO LIMIT: " + fromMainChecker[1]);
+            score = fromMainChecker[0] + fromMainChecker[1];
+
+        } else if(fromMainChecker[4] < 1f)
+        {
+            Debug.Log("ENEMIES NOT ON FLOOR " + fromMainChecker[4]);
+            score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[4];
         }
 
-        score /= fromMainChecker.Length;
+        // TODO: Setup other rules
 
-        return (score == 0f) ? 0.01f : score;
+        return score;
     }
 
     public float[] EvaluatePopulation(Room[] pop)

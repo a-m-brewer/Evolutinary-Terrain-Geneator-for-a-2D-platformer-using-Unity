@@ -11,12 +11,12 @@ public class CreateRoom {
 
     private float[] chanceOfSpawning = new float[6]
     {
-        5f, // ground
+        7f, // ground
         20f, // gap
-        2f, // coin
+        1f, // coin
         1f, // trap
-        2f, // enemy
-        2f   // enemy with gun
+        0.5f, // enemy
+        0.25f   // enemy with gun
     };
 
     public Room Generate(EvaluateRoom evaluateRoom)

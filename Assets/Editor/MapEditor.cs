@@ -44,6 +44,15 @@ public class EvoMapEditor : Editor
             mgd.DisplayRoom();
         }
 
+        if (GUILayout.Button("Increment Evolution by 10"))
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                mgd.IncrementEvolutionOfRoomAndDisplayBest();
+            }
+            mgd.DisplayRoom();
+        }
+
         EditorGUILayout.IntSlider(n, 0, 99);
         serializedObject.ApplyModifiedProperties();
         if (GUILayout.Button("View Map N"))

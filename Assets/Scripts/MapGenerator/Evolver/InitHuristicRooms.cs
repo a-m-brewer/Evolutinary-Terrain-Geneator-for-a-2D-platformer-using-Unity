@@ -27,7 +27,6 @@ public class InitHuristicRooms {
         return wholeLevels; 
     }
 
-    // TODO: Somthing about this is fucked
     public Room[] LoadData(string[] rooms, EvaluateRoom er)
     {
 

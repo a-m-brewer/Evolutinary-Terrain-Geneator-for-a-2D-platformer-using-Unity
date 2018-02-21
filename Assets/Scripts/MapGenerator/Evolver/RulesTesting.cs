@@ -36,7 +36,6 @@ public class RulesTesting : MonoBehaviour {
                                            DefaultRuleArguments.maxTraps);
 
 
-    // TODO: Cleanup this mess
     private void Start()
     {
         Room[] hRooms = new InitHuristicRooms(huristicMaps, er).Rooms;

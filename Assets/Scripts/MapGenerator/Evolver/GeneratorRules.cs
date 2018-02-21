@@ -30,7 +30,8 @@ public class GeneratorRules {
 
     public float[] MainChecker(Room room)
     {
-        float[] evaluationResults = new float[4];
+        float[] evaluationResults = new float[5];
+
         evaluationResults[0] = CanNavigateRoom(room);
 
         for(int y = 0; y < TileInformation.roomSizeY; y++)
@@ -49,11 +50,16 @@ public class GeneratorRules {
                 {
                     evaluationResults[3] += 1f;
                 }
-                
+
+                evaluationResults[4] += TileOnGroundIncrement(room.Data, 4, 2, x, y);
+                evaluationResults[4] += TileOnGroundIncrement(room.Data, 5, 2, x, y);
+
             }
         }
-        
-        evaluationResults[1] = Gauss(evaluationResults[1], 1f, this.targetEnemies);
+        // count is the mean
+        evaluationResults[4] = Gauss(evaluationResults[4], 1f, evaluationResults[1]);
+
+        evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.targetEnemies);
         evaluationResults[2] = Gauss(evaluationResults[2], 1f, this.maxCoins);
         evaluationResults[3] = Gauss(evaluationResults[3], 1f, this.maxTraps);
 
@@ -155,5 +161,21 @@ public class GeneratorRules {
 
         float result = Mathf.Pow((float)System.Math.E, toPower);
         return result;
+    }
+
+    private float TileOnGroundIncrement(int[,] room, int tileType, int tilesBellow, int x, int y)
+    {
+        if (room[y, x] == tileType)
+        {
+            if (WithinMapRange(x, y - tilesBellow))
+            {
+                if (room[y - tilesBellow, x] == 1)
+                {
+                    return 1f;
+                }
+            }
+        }
+
+        return 0f;
     }
 }

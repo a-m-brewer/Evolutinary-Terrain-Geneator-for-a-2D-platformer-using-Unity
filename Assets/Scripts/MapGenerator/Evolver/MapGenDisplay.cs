@@ -31,7 +31,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     public int mapTargetDifficulty;
     public int actualDifficultyScore;
 
-    public Room[] roomPop;
+    public Population roomPop;
     SelectRoom selectRoom = new SelectRoom();
     Crossover crossover = new Crossover();
     Mutation mutation = new Mutation();
@@ -48,7 +48,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     // main method for creating a map that calls other methods
     public void DisplayRoom()
     {
-        Debug.Log(chosenRoom.Fitness);
+        Debug.Log("BEST MAP FITNESS: " + chosenRoom.Fitness);
         // chooses the set of rooms that are closest in difficulty to the desired difficulty of the map
         actualDifficultyScore = CalculateRoomDifficulty(chosenRoom.Data, room.GetComponent<RoomGenerator>().GetRoomTiles());
         // set the name of the game object to group map tiles with
@@ -73,27 +73,23 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void InitMap()
     {
-        InitPopulation ip = new InitPopulation();
-        roomPop = ip.Generate(huristicMaps, evaluateRoom.GetGroundPercent(), evaluateRoom);
-        chosenRoom = ip.bestRoom;
-
-        //InitRandomPopulation irp = new InitRandomPopulation(0.75f, evaluateRoom);
-        //roomPop = irp.Generate(evaluateRoom.GetGroundPercent(), evaluateRoom);
-        //chosenRoom = irp.bestRoom;
-
-        //InitHuristicRooms ihr = new InitHuristicRooms(huristicMaps, evaluateRoom);
-        //roomPop = ihr.Rooms;
-        //chosenRoom = ihr.bestRoom;
-
+        roomPop = new Population(evaluateRoom, 1, huristicMaps);
+        roomPop.bestRooms = SortBest(roomPop.bestRooms);
+        chosenRoom = roomPop.bestRooms[0];
     }
 
     public void IncrementEvolutionOfRoomAndDisplayBest()
     {
-        int numRoomsInGeneration = 80;
+        int numRoomsInGeneration = 100;
         Room[] np = new Room[numRoomsInGeneration];
-        for (int p = 0; p < numRoomsInGeneration; p += 2)
+        Room[] newBest = new Room[2];
+
+        np[0] = newBest[0] = roomPop.bestRooms[0];
+        np[1] = newBest[1] = roomPop.bestRooms[1];
+
+        for (int p = 2; p < numRoomsInGeneration; p += 2)
         {
-            Room[] parents = selectRoom.SelectParents(roomPop);
+            Room[] parents = selectRoom.SelectParents(roomPop.popRooms);
             Room[] crossOver = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
             Room[] mutationResults = new Room[2];
             mutationResults[0] = mutation.RandomReseting(crossOver[0], evaluateRoom);
@@ -101,40 +97,53 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
             np[p] = mutationResults[0];
             np[p + 1] = mutationResults[1];
 
-            if(np[p].Fitness < np[p + 1].Fitness)
-            {
-                if(p == 0)
-                {
-                    chosenRoom = np[p + 1];
-                } else
-                {
-                    if(chosenRoom.Fitness < np[p + 1].Fitness)
-                    {
-                        chosenRoom = np[p + 1];
-                    }
-                }
-            } else
-            {
-                if (p == 0)
-                {
-                    chosenRoom = np[p];
-                }
-                else
-                {
-                    if (chosenRoom.Fitness < np[p].Fitness)
-                    {
-                        chosenRoom = np[p];
-                    }
-                }
-            }
+            newBest = CalculateBest(newBest, np[p]);
+            newBest = SortBest(newBest);
+            newBest = CalculateBest(newBest, np[p + 1]);
+            newBest = SortBest(newBest);
         }
-        roomPop = np;
+        roomPop.popRooms = np;
+        roomPop.bestRooms = newBest;
+        chosenRoom = roomPop.bestRooms[0];
+    }
+
+
+    private Room[] SortBest(Room[] _room)
+    {
+        Room[] sorted = new Room[2];
+
+        if(_room[1].Fitness <= _room[0].Fitness)
+        {
+            return _room;
+        } else
+        {
+            sorted[0] = _room[1];
+            sorted[1] = _room[0];
+            return sorted;
+        }
+    }
+
+    private Room[] CalculateBest(Room[] currBest, Room toCheck)
+    {
+        Room[] newBest = new Room[2];
+        if(currBest[0].Fitness < toCheck.Fitness)
+        {
+            newBest[0] = toCheck;
+            newBest[1] = currBest[1];
+            return newBest;
+        } else if (currBest[1].Fitness < toCheck.Fitness)
+        {
+            newBest[0] = currBest[0];
+            newBest[1] = toCheck;
+            return newBest;
+        }
+        return currBest;
     }
 
     public int n = 0;
     public void SwitchToRoomNinPopulation(int n)
     {
-        chosenRoom = roomPop[n];
+        chosenRoom = roomPop.popRooms[n];
     }
 
     // add the difficulty of the each rooms to get the maps score

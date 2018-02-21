@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InitPopulation {
 
-    public Room bestRoom;
+    public Room[] bestRooms = new Room[2];
 
     public Room[] Generate(TextAsset huristicRooms, float percentGround, EvaluateRoom evaluateRoom)
     {
@@ -20,14 +20,9 @@ public class InitPopulation {
         Array.Copy(randomRooms, population, randomRooms.Length);
         Array.Copy(hRooms, 0, population, randomRooms.Length, hRooms.Length);
 
-        SetBestRoom(irp, ihr);
+        bestRooms[0] = irp.bestRoom;
+        bestRooms[1] = ihr.bestRoom;
 
         return population;
     }
-
-    public void SetBestRoom(InitRandomPopulation _irp, InitHuristicRooms _ihr)
-    {
-        bestRoom = (_irp.bestRoom.Fitness < _ihr.bestRoom.Fitness) ? _ihr.bestRoom : _irp.bestRoom;
-    }
-
 }
