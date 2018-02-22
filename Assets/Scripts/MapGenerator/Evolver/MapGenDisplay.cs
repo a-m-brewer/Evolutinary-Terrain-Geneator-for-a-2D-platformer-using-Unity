@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MapGenDisplay : MonoBehaviour, IDifficulty
 {
@@ -25,7 +26,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     }
     // a link to the file storing all of the roomData
     public TextAsset huristicMaps;
-    private Room chosenRoom;
+    public Room chosenRoom;
     private EvaluateRoom evaluateRoom = new EvaluateRoom(0.75f);
     // Difficultys
     public int mapTargetDifficulty;
@@ -35,6 +36,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     SelectRoom selectRoom = new SelectRoom();
     Crossover crossover = new Crossover();
     Mutation mutation = new Mutation();
+    MergeSortRoom msr = new MergeSortRoom();
 
     private void Start()
     {
@@ -74,70 +76,48 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     public void InitMap()
     {
         roomPop = new Population(evaluateRoom, 1, huristicMaps);
-        roomPop.bestRooms = SortBest(roomPop.bestRooms);
+        roomPop.topTwenty = msr.MergeSort(roomPop.popRooms.ToList());
+
+        roomPop.topTwenty.Reverse();
+        Debug.Log(roomPop.topTwenty[0].Fitness + " " + roomPop.topTwenty[roomPop.topTwenty.Count - 1].Fitness);
+
+        roomPop.topTwenty = roomPop.topTwenty.Take(20).ToList();
+        Debug.Log(roomPop.topTwenty[0].Fitness + " " + roomPop.topTwenty[roomPop.topTwenty.Count - 1].Fitness);
+
+        roomPop.bestRooms = roomPop.topTwenty.Take(2).ToArray();
+        Debug.Log(roomPop.bestRooms[0].Fitness + " " + roomPop.bestRooms[1].Fitness);
+
         chosenRoom = roomPop.bestRooms[0];
+        Debug.Log(chosenRoom.Fitness);
     }
 
     public void IncrementEvolutionOfRoomAndDisplayBest()
     {
-        int numRoomsInGeneration = 100;
-        Room[] np = new Room[numRoomsInGeneration];
-        Room[] newBest = new Room[2];
+        List<Room> np = new List<Room>();
 
-        np[0] = newBest[0] = roomPop.bestRooms[0];
-        np[1] = newBest[1] = roomPop.bestRooms[1];
+        np = roomPop.topTwenty.ToList();
 
-        for (int p = 2; p < numRoomsInGeneration; p += 2)
+        int numRoomsInGeneration = DefaultRuleArguments.populationSize;
+        for (int p = 20; p < numRoomsInGeneration; p += 2)
         {
             Room[] parents = selectRoom.SelectParents(roomPop.popRooms);
             Room[] crossOver = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
             Room[] mutationResults = new Room[2];
             mutationResults[0] = mutation.RandomReseting(crossOver[0], evaluateRoom);
             mutationResults[1] = mutation.RandomReseting(crossOver[1], evaluateRoom);
-            np[p] = mutationResults[0];
-            np[p + 1] = mutationResults[1];
 
-            newBest = CalculateBest(newBest, np[p]);
-            newBest = SortBest(newBest);
-            newBest = CalculateBest(newBest, np[p + 1]);
-            newBest = SortBest(newBest);
+            np.Add(mutationResults[0]);
+            np.Add(mutationResults[1]);
         }
-        roomPop.popRooms = np;
-        roomPop.bestRooms = newBest;
+
+        np = msr.MergeSort(np);
+        np.Reverse();
+
+        roomPop.popRooms = np.ToArray();
+        roomPop.topTwenty = np.Take(20).ToList();
+        roomPop.bestRooms = np.Take(2).ToArray();
+
         chosenRoom = roomPop.bestRooms[0];
-    }
-
-
-    private Room[] SortBest(Room[] _room)
-    {
-        Room[] sorted = new Room[2];
-
-        if(_room[1].Fitness <= _room[0].Fitness)
-        {
-            return _room;
-        } else
-        {
-            sorted[0] = _room[1];
-            sorted[1] = _room[0];
-            return sorted;
-        }
-    }
-
-    private Room[] CalculateBest(Room[] currBest, Room toCheck)
-    {
-        Room[] newBest = new Room[2];
-        if(currBest[0].Fitness < toCheck.Fitness)
-        {
-            newBest[0] = toCheck;
-            newBest[1] = currBest[1];
-            return newBest;
-        } else if (currBest[1].Fitness < toCheck.Fitness)
-        {
-            newBest[0] = currBest[0];
-            newBest[1] = toCheck;
-            return newBest;
-        }
-        return currBest;
     }
 
     public int n = 0;

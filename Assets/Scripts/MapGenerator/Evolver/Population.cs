@@ -5,6 +5,7 @@ using UnityEngine;
 public class Population {
     public Room[] bestRooms;
     public Room[] popRooms;
+    public List<Room> topTwenty;
 
     /// <summary>
     /// InitPopulation

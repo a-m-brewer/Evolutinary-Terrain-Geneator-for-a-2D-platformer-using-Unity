@@ -27,21 +27,21 @@ public class EvaluateRoom {
         float[] fromMainChecker = gr.MainChecker(room);
         float score = 0f;
         // if path can't be found return how close
-        if(fromMainChecker[0] < 1f)
+        // N < 1
+        if (fromMainChecker[0] < 1f)
         {
-            Debug.Log("NO PATH " + fromMainChecker[0]);
             score = fromMainChecker[0];
-        } else if(fromMainChecker[1] < 1f)
-        {
-            Debug.Log("ENEMIES NOT CLOSE TO LIMIT: " + fromMainChecker[1]);
-            score = fromMainChecker[0] + fromMainChecker[1];
-
-        } else if(fromMainChecker[4] < 1f)
-        {
-            Debug.Log("ENEMIES NOT ON FLOOR " + fromMainChecker[4]);
-            score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[4];
         }
-
+        // 1 <= N < 4 
+        else if (fromMainChecker[1] < 1f || fromMainChecker[2] < 1f || fromMainChecker[3] < 1f)
+        {
+            score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3];
+        }
+        // 4 <= N
+        else
+        {
+            score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3] + fromMainChecker[4];
+        }
         // TODO: Setup other rules
 
         return score;

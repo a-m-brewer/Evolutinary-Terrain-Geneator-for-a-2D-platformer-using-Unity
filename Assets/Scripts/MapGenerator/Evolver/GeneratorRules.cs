@@ -7,13 +7,10 @@ public class GeneratorRules {
     private int numGenerations = 1;
     // remember pop sizes need to be even
     private int initRandomPopulationSize = 80;
-    private int populationSize = 100;
     
     private float maxGapSize = 9;
 
     private Vector2 startTileIndex = new Vector2(2, 0);
-
-    public int PopulationSize { get { return this.populationSize; } }
 
     private float mutationRate;
     private int targetEnemies;
@@ -60,8 +57,8 @@ public class GeneratorRules {
         evaluationResults[4] = Gauss(evaluationResults[4], 1f, evaluationResults[1]);
 
         evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.targetEnemies);
-        evaluationResults[2] = Gauss(evaluationResults[2], 1f, this.maxCoins);
-        evaluationResults[3] = Gauss(evaluationResults[3], 1f, this.maxTraps);
+        evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxCoins);
+        evaluationResults[3] = Gauss(evaluationResults[3], 20f, this.maxTraps);
 
         return evaluationResults;
     }
@@ -99,9 +96,11 @@ public class GeneratorRules {
         // if the a* pathfinder makes it to the target the map is navigatable for a player
         if(pf.foundpath)
         {
+            Debug.Log("PATH FOUND");
             return 1f;
         }
         // how long it is until the end TODO: Mabye chance logic
+        Debug.Log("DIST TO END" + Gauss(pf.distanceToEnd, 40f, 0f));
         return Gauss(pf.distanceToEnd, 40f, 0f);
     }
 
