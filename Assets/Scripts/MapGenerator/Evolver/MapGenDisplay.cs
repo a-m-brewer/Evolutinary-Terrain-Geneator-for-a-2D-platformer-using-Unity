@@ -79,16 +79,16 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         roomPop.topTwenty = msr.MergeSort(roomPop.popRooms.ToList());
 
         roomPop.topTwenty.Reverse();
-        Debug.Log(roomPop.topTwenty[0].Fitness + " " + roomPop.topTwenty[roomPop.topTwenty.Count - 1].Fitness);
+        //Debug.Log(roomPop.topTwenty[0].Fitness + " " + roomPop.topTwenty[roomPop.topTwenty.Count - 1].Fitness);
 
         roomPop.topTwenty = roomPop.topTwenty.Take(20).ToList();
-        Debug.Log(roomPop.topTwenty[0].Fitness + " " + roomPop.topTwenty[roomPop.topTwenty.Count - 1].Fitness);
+        //Debug.Log(roomPop.topTwenty[0].Fitness + " " + roomPop.topTwenty[roomPop.topTwenty.Count - 1].Fitness);
 
         roomPop.bestRooms = roomPop.topTwenty.Take(2).ToArray();
-        Debug.Log(roomPop.bestRooms[0].Fitness + " " + roomPop.bestRooms[1].Fitness);
+        //Debug.Log(roomPop.bestRooms[0].Fitness + " " + roomPop.bestRooms[1].Fitness);
 
         chosenRoom = roomPop.bestRooms[0];
-        Debug.Log(chosenRoom.Fitness);
+        //Debug.Log(chosenRoom.Fitness);
     }
 
     public void IncrementEvolutionOfRoomAndDisplayBest()
@@ -173,6 +173,26 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         }
 
         return difficulty;
+    }
+
+    public void EditorDebugLog(double i)
+    {
+        Debug.Log(i);
+    }
+
+    public void InvokeRepeatingEvolution()
+    {
+        InvokeRepeating("ToInvoke", 0f, 0.3f);
+    }
+
+    public void ToInvoke()
+    {
+        if(chosenRoom.Fitness == 5f)
+        {
+            CancelInvoke("ToInvoke");
+        }
+        IncrementEvolutionOfRoomAndDisplayBest();
+        DisplayRoom();
     }
 }
 

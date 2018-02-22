@@ -8,7 +8,7 @@ public class Grid {
     private const int NOT_WALKABLE = 0;
     private const int PATH = 2;
 
-    private int[,] room = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
+    public int[,] room = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
     private Node[,] grid = new Node[TileInformation.roomSizeY, TileInformation.roomSizeX];
     private int[,] walkableGrid = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
 

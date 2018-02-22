@@ -86,7 +86,10 @@ public class GeneratorRules {
 
         // there is nowhere for the player to stand at the start and end of rooms
         if (!(grid.NodeAtPosition(0, startY).groundUnderSearchNode 
-            && grid.NodeAtPosition(TileInformation.roomSizeX - 1, endY).groundUnderSearchNode)) {
+            && grid.NodeAtPosition(TileInformation.roomSizeX - 1, endY).groundUnderSearchNode)
+            && grid.NodeAtPosition(0, startY).TileAboveWalkable(0, startY, grid.room) 
+            && grid.NodeAtPosition(TileInformation.roomSizeX - 1, endY).TileAboveWalkable(TileInformation.roomSizeX - 1, endY, grid.room))
+        {
             return 0f;
         }
 
@@ -96,12 +99,10 @@ public class GeneratorRules {
         // if the a* pathfinder makes it to the target the map is navigatable for a player
         if(pf.foundpath)
         {
-            Debug.Log("PATH FOUND");
             return 1f;
         }
-        // how long it is until the end TODO: Mabye chance logic
-        Debug.Log("DIST TO END" + Gauss(pf.distanceToEnd, 40f, 0f));
-        return Gauss(pf.distanceToEnd, 40f, 0f);
+
+        return (Gauss(pf.distanceToEnd, 40f, 0f) == 1f) ? (Gauss(pf.distanceToEnd - 1f, 40f, 0f)) : (Gauss(pf.distanceToEnd, 40f, 0f));
     }
 
     /// <summary>
@@ -113,15 +114,15 @@ public class GeneratorRules {
     private int FindPosY(Grid grid, int x)
     {
 
-        for(int y = 0; y < TileInformation.roomSizeY; y++)
+        for(int y = 0; y < TileInformation.roomSizeY - 1; y++)
         {
-            if(grid.WalkableGrid[y, x] == 1)
+            if(grid.WalkableGrid[y, x] == 1 && grid.WalkableGrid[y + 1, x] == 1)
             {
                 return y;
             }
         }
 
-        return TileInformation.roomSizeY - 1;
+        return TileInformation.roomSizeY - 2;
     }
 
     /// <summary>

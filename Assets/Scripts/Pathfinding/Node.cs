@@ -50,11 +50,30 @@ public class Node : IHeapItem<Node> {
         int currTile = room[y, x];
         groundUnderSearchNode = GroundUnderSearchTile(x, y, room);
         bool currTileWalkable = (!(currTile == 1) && !(currTile == 3) && !(currTile == 6));
-
-        bool toReturn = currTileWalkable;// && groundUnderSearchNode; 
-        //    toReturn = toReturn || CanMoveUp(); //&& groundUnderSearchNode;
+        bool tileAboveWalkable = TileAboveWalkable(x, y, room);
+        bool toReturn = currTileWalkable; //&& tileAboveWalkable;
 
         return toReturn;
+    }
+
+    public bool TileAboveWalkable(int x, int y, int[,] room) 
+    {
+        if(TileInRoomRange(x, y + 1))
+        {
+            int tileAbove = room[y + 1, x];
+            return (!(tileAbove == 1) && !(tileAbove == 3) && !(tileAbove == 6));
+        } else if(TileInRoomRange(x, y))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TileInRoomRange(int x, int y)
+    {
+        return (0 <= x && x < TileInformation.roomSizeX &&
+                0 <= y && y < TileInformation.roomSizeY);
     }
 
     private bool GroundUnderSearchTile(int x, int y, int[,] room)

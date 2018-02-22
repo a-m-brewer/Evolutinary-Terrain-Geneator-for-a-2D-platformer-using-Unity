@@ -42,7 +42,6 @@ public class EvaluateRoom {
         {
             score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3] + fromMainChecker[4];
         }
-        // TODO: Setup other rules
 
         return score;
     }

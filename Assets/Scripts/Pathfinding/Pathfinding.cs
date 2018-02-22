@@ -20,9 +20,11 @@ public class Pathfinding {
         Node startNode = grid.NodeAtPosition((int)startPos.x, (int)startPos.y);
         Node endNode = grid.NodeAtPosition((int)endPos.x, (int)endPos.y);
 
+        distanceToEnd = GetDistance(startNode, endNode);
         // return if start or end inaccessable
         if (grid.WalkableGrid[(int)startPos.y, (int)startPos.x] == 0
-            || grid.WalkableGrid[(int)endPos.y, (int)endPos.x] == 0)
+            || grid.WalkableGrid[(int)endPos.y, (int)endPos.x] == 0
+            || startNode.TileAboveWalkable(startNode.X, startNode.Y, grid.room))
         {
             return;
         }
@@ -69,7 +71,7 @@ public class Pathfinding {
                 }
 
 
-                if (!neighbour.Walkable) 
+                if (!neighbour.Walkable || !neighbour.TileAboveWalkable(neighbour.X, neighbour.Y, grid.room))
                 {
                     continue;
                 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Diagnostics;
 
 [CustomEditor (typeof(MapGeneratorMain))]
 public class MapEditor : Editor {
@@ -25,6 +26,7 @@ public class MapEditor : Editor {
 public class EvoMapEditor : Editor
 {
     SerializedProperty n;
+    bool canPress = true;
 
     private void OnEnable()
     {
@@ -40,18 +42,34 @@ public class EvoMapEditor : Editor
 
         if (GUILayout.Button("Increment Evolution"))
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             mgd.IncrementEvolutionOfRoomAndDisplayBest();
             mgd.DisplayRoom();
+            sw.Stop();
+            mgd.EditorDebugLog(sw.ElapsedMilliseconds);
         }
 
         if (GUILayout.Button("Increment Evolution by 10"))
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             for (int i = 0; i < 10; i++)
             {
                 mgd.IncrementEvolutionOfRoomAndDisplayBest();
             }
             mgd.DisplayRoom();
+            sw.Stop();
+            mgd.EditorDebugLog(sw.ElapsedMilliseconds);
         }
+
+        if (GUILayout.Button("Evolve Every 1 sec until Max") && canPress)
+        {
+            canPress = false;
+            mgd.InvokeRepeatingEvolution();
+        }
+
+        
 
         EditorGUILayout.IntSlider(n, 0, 99);
         serializedObject.ApplyModifiedProperties();
