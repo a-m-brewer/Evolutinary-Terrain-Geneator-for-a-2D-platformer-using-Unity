@@ -56,13 +56,16 @@ public class Node : IHeapItem<Node> {
         return toReturn;
     }
 
-    public bool TileAboveWalkable(int x, int y, int[,] room) 
+    public bool TileAboveWalkable(int x, int y, int[,] walkableGrid)
     {
-        if(TileInRoomRange(x, y + 1))
+        if (TileInRoomRange(x, y + 1))
         {
-            int tileAbove = room[y + 1, x];
-            return (!(tileAbove == 1) && !(tileAbove == 3) && !(tileAbove == 6));
-        } else if(TileInRoomRange(x, y))
+            if(walkableGrid[y + 1, x] == 1)
+            {
+                return true;
+            }
+        } else if (0 <= x && x < TileInformation.roomSizeX &&
+                   TileInformation.roomSizeY <= y)
         {
             return true;
         }

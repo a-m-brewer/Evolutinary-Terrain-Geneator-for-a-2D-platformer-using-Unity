@@ -27,9 +27,10 @@ public class GeneratorRules {
 
     public float[] MainChecker(Room room)
     {
-        float[] evaluationResults = new float[5];
+        float[] evaluationResults = new float[6];
 
         evaluationResults[0] = CanNavigateRoom(room);
+        
 
         for(int y = 0; y < TileInformation.roomSizeY; y++)
         {
@@ -38,6 +39,7 @@ public class GeneratorRules {
                 if(room.Data[y, x] == 4 || room.Data[y,x] == 5)
                 {
                     evaluationResults[1] += 1f;
+                    //evaluationResults[5] += AirAroundItem(x, y, room);
                 }
                 if(room.Data[y, x] == 2)
                 {
@@ -48,14 +50,15 @@ public class GeneratorRules {
                     evaluationResults[3] += 1f;
                 }
 
+
                 evaluationResults[4] += TileOnGroundIncrement(room.Data, 4, 2, x, y);
                 evaluationResults[4] += TileOnGroundIncrement(room.Data, 5, 2, x, y);
 
             }
         }
         // count is the mean
-        evaluationResults[4] = Gauss(evaluationResults[4], 1f, evaluationResults[1]);
-
+        evaluationResults[4] = Gauss(evaluationResults[4], 20f, evaluationResults[1]);
+        //evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[1]);
         evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.targetEnemies);
         evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxCoins);
         evaluationResults[3] = Gauss(evaluationResults[3], 20f, this.maxTraps);
@@ -66,6 +69,37 @@ public class GeneratorRules {
     public float GetMutationRate()
     {
         return this.mutationRate;
+    }
+
+    private float AirAroundItem(int x, int y, Room room)
+    {
+        float toReturn = 0f;
+        float toAdd = 1f / 8f;
+
+        for (int yi = y - 1; yi < y + 1; y++)
+        {
+            for(int xi = x - 1; xi < x + 1; x++)
+            {
+                if(0 <= xi && xi < TileInformation.roomSizeX &&
+                    0 <= yi && yi < TileInformation.roomSizeY)
+                {
+                    if(xi == 0 && yi == 0)
+                    {
+                        continue;
+                    }
+
+                    if((!(room.Data[yi, xi] == 1) && !(room.Data[yi, xi] == 3) && !(room.Data[yi, xi] == 6)))
+                    {
+                        toReturn += toAdd;
+                    }
+                } else
+                {
+                    toReturn += toAdd;
+                }
+            }
+        }
+
+        return toReturn;
     }
 
     /// <summary>
@@ -87,8 +121,8 @@ public class GeneratorRules {
         // there is nowhere for the player to stand at the start and end of rooms
         if (!(grid.NodeAtPosition(0, startY).groundUnderSearchNode 
             && grid.NodeAtPosition(TileInformation.roomSizeX - 1, endY).groundUnderSearchNode)
-            && grid.NodeAtPosition(0, startY).TileAboveWalkable(0, startY, grid.room) 
-            && grid.NodeAtPosition(TileInformation.roomSizeX - 1, endY).TileAboveWalkable(TileInformation.roomSizeX - 1, endY, grid.room))
+            && grid.NodeAtPosition(0, startY).TileAboveWalkable(0, startY, grid.WalkableGrid) 
+            && grid.NodeAtPosition(TileInformation.roomSizeX - 1, endY).TileAboveWalkable(TileInformation.roomSizeX - 1, endY, grid.WalkableGrid))
         {
             return 0f;
         }

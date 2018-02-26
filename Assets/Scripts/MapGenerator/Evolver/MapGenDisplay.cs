@@ -185,6 +185,11 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         InvokeRepeating("ToInvoke", 0f, 0.3f);
     }
 
+    public void CancelInvokeEvolution()
+    {
+        CancelInvoke("ToInvoke");
+    }
+
     public void ToInvoke()
     {
         if(chosenRoom.Fitness == 5f)

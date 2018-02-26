@@ -63,13 +63,16 @@ public class EvoMapEditor : Editor
             mgd.EditorDebugLog(sw.ElapsedMilliseconds);
         }
 
-        if (GUILayout.Button("Evolve Every 1 sec until Max") && canPress)
+        if (GUILayout.Button("Evolve Until Max") && canPress)
         {
             canPress = false;
             mgd.InvokeRepeatingEvolution();
         }
 
-        
+        if (GUILayout.Button("Cancel Invoke"))
+        {
+            mgd.CancelInvokeEvolution();
+        }
 
         EditorGUILayout.IntSlider(n, 0, 99);
         serializedObject.ApplyModifiedProperties();

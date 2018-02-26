@@ -11,7 +11,30 @@ public class PathFindingTesting : MonoBehaviour {
     void Start () {
         Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
 
-        TestOne(population, 13);
+
+        int[,] roomTest = new int[10, 24]
+        {
+            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+        };
+
+        Grid grid = new Grid(roomTest);
+        grid.CreateGrid();
+
+        Pathfinding pf = new Pathfinding(grid);
+
+        pf.FindPath(new Vector2(0, 7), new Vector2(23, 7));
+        grid.DrawPath();
+        grid.WalkableGrid.ArchiveRoom();
+        Debug.Log(pf.foundpath);
     }
 
     int FindPosY(Grid grid, int x)
