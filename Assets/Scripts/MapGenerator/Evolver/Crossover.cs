@@ -42,4 +42,37 @@ public class Crossover {
 
         return newRooms;
     }
+
+    public Room[] MultiPointCrossover(Room roomOne, Room roomTwo, int bias, EvaluateRoom er)
+    {
+        int[,] out1 = new int[roomOne.Data.GetLength(0), roomOne.Data.GetLength(1)];
+        int[,] out2 = new int[roomTwo.Data.GetLength(0), roomTwo.Data.GetLength(1)];
+
+        int blockSizeX = 6;
+        int blockSizeY = 5;
+
+        for (int y = 0; y < roomOne.Data.GetLength(0); y += blockSizeY)
+        {
+            for (int x = 0; x < roomOne.Data.GetLength(1); x += blockSizeX)
+            {
+                bool which = UsefulMethods.RandomChance(bias);
+                for (int row = y; row < y + blockSizeY; row++)
+                {
+                    for (int col = x; col < x + blockSizeX; col++)
+                    {
+                        out1[row, col] = (which) ? roomOne.Data[row, col] : roomTwo.Data[row, col];
+                        out2[row, col] = (!which) ? roomOne.Data[row, col] : roomTwo.Data[row, col];
+                    }
+                }
+            }
+        }
+
+        Room[] newRooms = new Room[2]
+        {
+            new Room(out1,er),
+            new Room(out2,er)
+        };
+
+        return newRooms;
+    }
 }

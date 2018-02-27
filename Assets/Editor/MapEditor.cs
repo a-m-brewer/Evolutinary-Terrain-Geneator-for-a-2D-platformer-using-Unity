@@ -74,6 +74,11 @@ public class EvoMapEditor : Editor
             mgd.CancelInvokeEvolution();
         }
 
+        if (GUILayout.Button("Archive Current Best Map"))
+        {
+            mgd.chosenRoom.Data.ArchiveRoom();
+        }
+
         EditorGUILayout.IntSlider(n, 0, 99);
         serializedObject.ApplyModifiedProperties();
         if (GUILayout.Button("View Map N"))

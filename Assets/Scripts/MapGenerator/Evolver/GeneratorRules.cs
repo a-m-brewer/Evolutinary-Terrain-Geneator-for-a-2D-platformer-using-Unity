@@ -6,7 +6,7 @@ public class GeneratorRules {
 
     private int numGenerations = 1;
     // remember pop sizes need to be even
-    private int initRandomPopulationSize = 80;
+    private int initRandomPopulationSize = DefaultRuleArguments.populationSize;
     
     private float maxGapSize = 9;
 
@@ -74,13 +74,13 @@ public class GeneratorRules {
     private float AirAroundItem(int x, int y, Room room)
     {
         float toReturn = 0f;
-        float toAdd = 1f / 6f;
+        float toAdd = 1f / 5f;
 
         for (int row = y - 1; row <= y; row++)
         {
             for (int col = x - 1; col <= x + 1; col++)
             {
-                if (row == 0 && col == 0)
+                if (row == y && col == x)
                 {
                     continue;
                 }
@@ -200,6 +200,15 @@ public class GeneratorRules {
         {
             if (WithinMapRange(x, y - tilesBellow))
             {
+
+                for(int z = y - 1; y - tilesBellow < z; z--)
+                {
+                    if(room[z, x] == 1  || room[z, x] == 3 || room[z, x] == 6)
+                    {
+                        return 0f;
+                    }
+                }
+
                 if (room[y - tilesBellow, x] == 1)
                 {
                     return 1f;

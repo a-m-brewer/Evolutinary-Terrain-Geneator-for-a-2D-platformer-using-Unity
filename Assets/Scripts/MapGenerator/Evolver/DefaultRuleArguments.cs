@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class DefaultRuleArguments
 {
-    public static float mutationRate = 1f;
+    public static float mutationRate = 0.5f;
     public static int targetEnemies = 4;
     public static int maxCoins = 6;
     public static int maxTraps = 4;

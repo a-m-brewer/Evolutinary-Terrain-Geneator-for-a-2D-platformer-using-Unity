@@ -34,4 +34,29 @@ public class Mutation {
 
         return new Room(output, evaluateRoom);
     }
+
+    public Room SwapMutation(Room room, EvaluateRoom evaluateRoom)
+    {
+        int[,] output = room.Data;
+
+        for (int y = 0; y < output.GetLength(0); y++)
+        {
+            for (int x = 0; x < output.GetLength(1); x++)
+            {
+                if (UsefulMethods.RandomChance(gr.GetMutationRate()))
+                {
+                    int toSwapX = Random.Range(0, TileInformation.roomSizeX - 1);
+                    int toSwapY = Random.Range(0, TileInformation.roomSizeY - 1);
+
+                    int toSwapTile = output[toSwapY, toSwapX];
+
+                    output[toSwapY, toSwapX] = output[y, x];
+
+                    output[y, x] = toSwapTile;
+                }
+            }
+        }
+
+        return new Room(output, evaluateRoom);
+    }
 }

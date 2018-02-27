@@ -110,9 +110,12 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         {
             Room[] parents = selectRoom.SelectParents(roomPop.popRooms);
             Room[] crossOver = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
+            //Room[] crossOver = crossover.MultiPointCrossover(parents[0], parents[1], 50, evaluateRoom);
             Room[] mutationResults = new Room[2];
             mutationResults[0] = mutation.RandomReseting(crossOver[0], evaluateRoom);
             mutationResults[1] = mutation.RandomReseting(crossOver[1], evaluateRoom);
+            //mutationResults[0] = mutation.SwapMutation(crossOver[0], evaluateRoom);
+            //mutationResults[1] = mutation.SwapMutation(crossOver[1], evaluateRoom);
 
             np.Add(mutationResults[0]);
             np.Add(mutationResults[1]);
