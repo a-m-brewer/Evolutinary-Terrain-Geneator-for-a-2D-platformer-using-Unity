@@ -97,8 +97,16 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
         np = roomPop.topTwenty.ToList();
 
+        int amountRandom = 5;
+
+        // add some random each generation
+        for(int r = 0; r < amountRandom; r++)
+        {
+            np.Add(new CreateRoom().Generate(evaluateRoom));
+        }
+
         int numRoomsInGeneration = DefaultRuleArguments.populationSize;
-        for (int p = 20; p < numRoomsInGeneration; p += 2)
+        for (int p = 20 + amountRandom; p < numRoomsInGeneration; p += 2)
         {
             Room[] parents = selectRoom.SelectParents(roomPop.popRooms);
             Room[] crossOver = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
@@ -192,7 +200,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void ToInvoke()
     {
-        if(chosenRoom.Fitness == 5f)
+        if(chosenRoom.Fitness == 6f)
         {
             CancelInvoke("ToInvoke");
         }

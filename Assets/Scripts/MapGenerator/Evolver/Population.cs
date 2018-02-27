@@ -22,13 +22,13 @@ public class Population {
                 this.bestRooms = new Room[2] { ihr.bestRoom, ihr.bestRoom };
                 break;
             case 1:
-                InitRandomPopulation irp = new InitRandomPopulation(0.75f, evaluateRoom);
-                this.popRooms = irp.Generate(evaluateRoom.GetGroundPercent(), evaluateRoom);
+                InitRandomPopulation irp = new InitRandomPopulation(evaluateRoom);
+                this.popRooms = irp.Generate(evaluateRoom);
                 this.bestRooms = new Room[2] { irp.bestRoom, irp.bestRoom };
                 break;
             case 2:
                 InitPopulation ip = new InitPopulation();
-                this.popRooms = ip.Generate(huristicMaps, evaluateRoom.GetGroundPercent(), evaluateRoom);
+                this.popRooms = ip.Generate(huristicMaps, evaluateRoom);
                 bestRooms = ip.bestRooms;
                 break;
             default:

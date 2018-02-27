@@ -39,7 +39,7 @@ public class GeneratorRules {
                 if(room.Data[y, x] == 4 || room.Data[y,x] == 5)
                 {
                     evaluationResults[1] += 1f;
-                    //evaluationResults[5] += AirAroundItem(x, y, room);
+                    evaluationResults[5] += AirAroundItem(x, y, room);
                 }
                 if(room.Data[y, x] == 2)
                 {
@@ -58,7 +58,7 @@ public class GeneratorRules {
         }
         // count is the mean
         evaluationResults[4] = Gauss(evaluationResults[4], 20f, evaluationResults[1]);
-        //evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[1]);
+        evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[1]);
         evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.targetEnemies);
         evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxCoins);
         evaluationResults[3] = Gauss(evaluationResults[3], 20f, this.maxTraps);
@@ -74,24 +74,21 @@ public class GeneratorRules {
     private float AirAroundItem(int x, int y, Room room)
     {
         float toReturn = 0f;
-        float toAdd = 1f / 8f;
+        float toAdd = 1f / 6f;
 
-        for (int yi = y - 1; yi < y + 1; y++)
+        for (int row = y - 1; row <= y; row++)
         {
-            for(int xi = x - 1; xi < x + 1; x++)
+            for (int col = x - 1; col <= x + 1; col++)
             {
-                if(0 <= xi && xi < TileInformation.roomSizeX &&
-                    0 <= yi && yi < TileInformation.roomSizeY)
+                if (row == 0 && col == 0)
                 {
-                    if(xi == 0 && yi == 0)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    if((!(room.Data[yi, xi] == 1) && !(room.Data[yi, xi] == 3) && !(room.Data[yi, xi] == 6)))
-                    {
+                if (WithinMapRange(col, row))
+                {
+                    if (!(room.Data[row, col] == 3) && !(room.Data[row, col] == 1) && !(room.Data[row, col] == 6))
                         toReturn += toAdd;
-                    }
                 } else
                 {
                     toReturn += toAdd;

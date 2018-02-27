@@ -7,9 +7,9 @@ public class InitPopulation {
 
     public Room[] bestRooms = new Room[2];
 
-    public Room[] Generate(TextAsset huristicRooms, float percentGround, EvaluateRoom evaluateRoom)
+    public Room[] Generate(TextAsset huristicRooms, EvaluateRoom evaluateRoom)
     {
-        InitRandomPopulation irp = new InitRandomPopulation(percentGround, evaluateRoom);
+        InitRandomPopulation irp = new InitRandomPopulation(evaluateRoom);
         Room[] randomRooms = irp.population;
 
         InitHuristicRooms ihr = new InitHuristicRooms(huristicRooms, evaluateRoom);

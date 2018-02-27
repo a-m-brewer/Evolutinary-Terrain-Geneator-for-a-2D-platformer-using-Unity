@@ -49,7 +49,7 @@ public class RulesTesting : MonoBehaviour {
     private void GenerationTest()
     {
         // init pop and evaluation
-        Room[] population = ip.Generate(huristicMaps, er.GetGroundPercent(), er);
+        Room[] population = ip.Generate(huristicMaps, er);
         //Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
 
         Room[] parents = sr.SelectParents(population);

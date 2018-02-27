@@ -40,7 +40,7 @@ public class EvaluateRoom {
         // 4 <= N
         else
         {
-            score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3] + fromMainChecker[4];
+            score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3] + fromMainChecker[4] + fromMainChecker[5];
         }
 
         return score;

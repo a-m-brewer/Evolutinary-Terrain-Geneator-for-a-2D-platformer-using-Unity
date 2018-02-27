@@ -16,16 +16,16 @@ public class InitRandomPopulation {
     public Room[] population;
     public Room bestRoom;
 
-    public InitRandomPopulation(float percentGround, EvaluateRoom evaluateRoom)
+    public InitRandomPopulation(EvaluateRoom evaluateRoom)
     {
-        population = Generate(percentGround, evaluateRoom);
+        population = Generate(evaluateRoom);
     }
 
     /// <summary>
     /// Method that generates the initial set of rooms to be evolved
     /// </summary>
     /// <returns>the set of rooms</returns>
-    public Room[] Generate(float percentGround, EvaluateRoom evaluateRoom)
+    public Room[] Generate(EvaluateRoom evaluateRoom)
     {
         Room[] initMap = new Room[gr.GetInitRandomPopulationSize()];
 
