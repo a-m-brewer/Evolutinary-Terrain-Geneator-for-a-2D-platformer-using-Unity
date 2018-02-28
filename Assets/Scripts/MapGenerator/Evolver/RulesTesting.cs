@@ -33,7 +33,8 @@ public class RulesTesting : MonoBehaviour {
     GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
                                            DefaultRuleArguments.targetEnemies,
                                            DefaultRuleArguments.maxCoins,
-                                           DefaultRuleArguments.maxTraps);
+                                           DefaultRuleArguments.maxTraps,
+                                           DefaultRuleArguments.checkpoints);
 
 
     private void Start()
@@ -52,7 +53,7 @@ public class RulesTesting : MonoBehaviour {
         Room[] population = ip.Generate(huristicMaps, er);
         //Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
 
-        Room[] parents = sr.SelectParents(population);
+        Room[] parents = sr.SelectParentsRoulette(population);
         parents.Archive();
         Debug.Log("Parents: " + parents[0].Fitness + " " + parents[1].Fitness);
 

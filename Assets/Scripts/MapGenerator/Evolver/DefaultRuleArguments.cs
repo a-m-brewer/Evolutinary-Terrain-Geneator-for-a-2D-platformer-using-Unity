@@ -9,4 +9,5 @@ public static class DefaultRuleArguments
     public static int maxCoins = 6;
     public static int maxTraps = 4;
     public static int populationSize = 100;
+    public static List<int[]> checkpoints = new List<int[]>();
 }

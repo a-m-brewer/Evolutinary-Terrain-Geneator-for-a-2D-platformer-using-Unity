@@ -11,7 +11,8 @@ public class InitRandomPopulation {
     GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
                                            DefaultRuleArguments.targetEnemies,
                                            DefaultRuleArguments.maxCoins,
-                                           DefaultRuleArguments.maxTraps);
+                                           DefaultRuleArguments.maxTraps,
+                                           DefaultRuleArguments.checkpoints);
 
     public Room[] population;
     public Room bestRoom;

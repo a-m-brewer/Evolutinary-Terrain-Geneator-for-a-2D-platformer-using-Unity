@@ -51,11 +51,34 @@ public class SelectRoom {
         return SelectRandomRoom(populationPool);
     }
 
-    public Room[] SelectParents(Room[] populationPool)
+    public Room TournamentSelection(Room[] populationPool, int tournamentSize)
+    {
+        List<Room> tournamentPop = new List<Room>();
+
+        for(int i = 0; i < tournamentSize; i++)
+        {
+            tournamentPop.Add(populationPool[Random.Range(0, populationPool.Length - 1)]);
+        }
+        MergeSortRoom msr = new MergeSortRoom();
+        tournamentPop =  msr.MergeSort(tournamentPop);
+        tournamentPop.Reverse();
+        
+        return tournamentPop[0];
+    }
+
+    public Room[] SelectParentsRoulette(Room[] populationPool)
     {
         Room[] parents = new Room[2];
         for (int i = 0; i < parents.Length; i++)
             parents[i] = RouletteWheelSelectionOfRoom(populationPool);
+        return parents;
+    }
+
+    public Room[] SelectParentsTournament(Room[] populationPool, int tournamentSize)
+    {
+        Room[] parents = new Room[2];
+        for (int i = 0; i < parents.Length; i++)
+            parents[i] = TournamentSelection(populationPool, tournamentSize);
         return parents;
     }
     

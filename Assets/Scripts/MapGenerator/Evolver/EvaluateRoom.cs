@@ -11,7 +11,8 @@ public class EvaluateRoom {
     private GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
                                                    DefaultRuleArguments.targetEnemies,
                                                    DefaultRuleArguments.maxCoins,
-                                                   DefaultRuleArguments.maxTraps);
+                                                   DefaultRuleArguments.maxTraps,
+                                                   DefaultRuleArguments.checkpoints);
 
     /// <summary>
     /// Init method for the class that will evaluate a rooms fitness
@@ -24,27 +25,42 @@ public class EvaluateRoom {
 
     public float Evaluate(Room room)
     {
-        float[] fromMainChecker = gr.MainChecker(room);
+        List<float> fromMainChecker = gr.MainChecker(room);
         float score = 0f;
         // if path can't be found return how close
         // N < 1
-        if (fromMainChecker[0] < 1f)
+        if (fromMainChecker[fromMainChecker.Count - 1] < 1f)
         {
-            score = fromMainChecker[0];
+            score = fromMainChecker[fromMainChecker.Count - 1];
         }
         // 1 <= N < 4 
-        else if (fromMainChecker[1] < 1f || fromMainChecker[2] < 1f || fromMainChecker[3] < 1f)
+        else if (fromMainChecker[0] < 1f || fromMainChecker[1] < 1f || fromMainChecker[2] < 1f)
         {
-            score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3];
+            float prevStage = fromMainChecker[fromMainChecker.Count - 1];
+            score = prevStage + fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2];
         }
         // 4 <= N
         else
         {
-            score = fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2] + fromMainChecker[3] + fromMainChecker[4] + fromMainChecker[5];
+            float prevStage = fromMainChecker[fromMainChecker.Count - 1] + fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2];
+            score = prevStage + fromMainChecker[3] + fromMainChecker[4] + fromMainChecker[5];
         }
 
         return score;
     }
+
+    //public float Evaluate(Room room)
+    //{
+    //    float[] fromMainChecker = gr.MainChecker(room);
+    //    float score = 0f;
+
+    //    for(int i = 0; i < fromMainChecker.Length; i++)
+    //    {
+    //        score += fromMainChecker[i];
+    //    }
+
+    //    return score;
+    //}
 
     public float[] EvaluatePopulation(Room[] pop)
     {

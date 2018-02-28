@@ -16,52 +16,58 @@ public class GeneratorRules {
     private int targetEnemies;
     private int maxCoins;
     private int maxTraps;
+    private List<int[]> checkpoints;
 
-    public GeneratorRules(float _mutationRate, int _targetEnemies, int _maxCoins, int _maxTraps)
+    public GeneratorRules(float _mutationRate, int _targetEnemies, int _maxCoins, int _maxTraps, List<int[]> _checkpoints)
     {
         this.mutationRate = _mutationRate;
         this.targetEnemies = _targetEnemies;
         this.maxCoins = _maxCoins;
         this.maxTraps = _maxTraps;
+        this.checkpoints = _checkpoints;
     }
 
-    public float[] MainChecker(Room room)
+    public List<float> MainChecker(Room room)
     {
-        float[] evaluationResults = new float[6];
+        List<float> evaluationResults = new List<float>();
+        for(int i = 0; i < 7; i++)
+        {
+            evaluationResults.Add(0f);
+        }
 
-        evaluationResults[0] = CanNavigateRoom(room);
-        
-
-        for(int y = 0; y < TileInformation.roomSizeY; y++)
+        for (int y = 0; y < TileInformation.roomSizeY; y++)
         {
             for(int x = 0; x < TileInformation.roomSizeX; x++)
             {
                 if(room.Data[y, x] == 4 || room.Data[y,x] == 5)
                 {
-                    evaluationResults[1] += 1f;
-                    evaluationResults[5] += AirAroundItem(x, y, room);
+                    evaluationResults[0] += 1f;
+                    evaluationResults[4] += AirAroundItem(x, y, room);
                 }
                 if(room.Data[y, x] == 2)
                 {
-                    evaluationResults[2] += 1f;
+                    evaluationResults[1] += 1f;
                 }
                 if(room.Data[y, x] == 3)
                 {
-                    evaluationResults[3] += 1f;
+                    evaluationResults[2] += 1f;
                 }
 
 
-                evaluationResults[4] += TileOnGroundIncrement(room.Data, 4, 2, x, y);
-                evaluationResults[4] += TileOnGroundIncrement(room.Data, 5, 2, x, y);
-
+                evaluationResults[3] += TileOnGroundIncrement(room.Data, 4, 2, x, y);
+                evaluationResults[3] += TileOnGroundIncrement(room.Data, 5, 2, x, y);
+                evaluationResults[5] += TileOnGroundIncrement(room.Data, 3, 1, x, y);
             }
         }
         // count is the mean
-        evaluationResults[4] = Gauss(evaluationResults[4], 20f, evaluationResults[1]);
-        evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[1]);
-        evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.targetEnemies);
-        evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxCoins);
-        evaluationResults[3] = Gauss(evaluationResults[3], 20f, this.maxTraps);
+        evaluationResults[3] = Gauss(evaluationResults[3], 20f, evaluationResults[0]);
+        evaluationResults[4] = Gauss(evaluationResults[4], 20f, evaluationResults[0]);
+        evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[2]);
+        evaluationResults[0] = Gauss(evaluationResults[0], 20f, this.targetEnemies);
+        evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.maxCoins);
+        evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxTraps);
+
+        evaluationResults.Add(CanNavigateRoom(room));
 
         return evaluationResults;
     }
@@ -129,6 +135,30 @@ public class GeneratorRules {
 
         // if the a* pathfinder makes it to the target the map is navigatable for a player
         if(pf.foundpath)
+        {
+            return 1f;
+        }
+
+        return (Gauss(pf.distanceToEnd, 40f, 0f) == 1f) ? (Gauss(pf.distanceToEnd - 1f, 40f, 0f)) : (Gauss(pf.distanceToEnd, 40f, 0f));
+    }
+
+    private float CanNavigateToPoint(Room room, int start_x, int start_y, int end_x, int end_y)
+    {
+        if(!WithinMapRange(start_x, start_y) || !WithinMapRange(end_x, end_y))
+        {
+            return 0f;
+        }
+
+        Grid grid = new Grid(room.Data);
+        grid.CreateGrid();
+
+        Pathfinding pf = new Pathfinding(grid);
+
+        pf.FindPath(new Vector2(start_x, start_y), new Vector2(end_x, end_y));
+        grid.DrawPath();
+
+        // if the a* pathfinder makes it to the target the map is navigatable for a player
+        if (pf.foundpath)
         {
             return 1f;
         }
