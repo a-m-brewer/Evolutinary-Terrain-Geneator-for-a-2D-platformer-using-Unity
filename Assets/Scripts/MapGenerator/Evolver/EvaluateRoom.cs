@@ -33,6 +33,10 @@ public class EvaluateRoom {
         {
             score = fromMainChecker[fromMainChecker.Count - 1];
         }
+        //else if(fromMainChecker[6] < 1f)
+        //{
+        //    score = fromMainChecker[fromMainChecker.Count - 1] + fromMainChecker[6];
+        //}
         // 1 <= N < 4 
         else if (fromMainChecker[0] < 1f || fromMainChecker[1] < 1f || fromMainChecker[2] < 1f)
         {

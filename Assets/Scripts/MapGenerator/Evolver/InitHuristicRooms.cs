@@ -54,6 +54,7 @@ public class InitHuristicRooms {
                 }
             }
             r[z] = new Room(toAdd, er);
+            Debug.Log("ROOM: " + z);
             // selectBest
             SetBestRoom(r[z]);
         }

@@ -16,7 +16,14 @@ public class GeneratorRules {
     private int targetEnemies;
     private int maxCoins;
     private int maxTraps;
+
     private List<int[]> checkpoints;
+
+    private List<int> platformSizes = new List<int>();
+    private int currIndex = -1;
+    int prevX = -1;
+    int prevY = -1;
+
 
     public GeneratorRules(float _mutationRate, int _targetEnemies, int _maxCoins, int _maxTraps, List<int[]> _checkpoints)
     {
@@ -30,10 +37,12 @@ public class GeneratorRules {
     public List<float> MainChecker(Room room)
     {
         List<float> evaluationResults = new List<float>();
-        for(int i = 0; i < 7; i++)
+        for(int i = 0; i < 8; i++)
         {
             evaluationResults.Add(0f);
         }
+
+        ResetList();
 
         for (int y = 0; y < TileInformation.roomSizeY; y++)
         {
@@ -53,19 +62,32 @@ public class GeneratorRules {
                     evaluationResults[2] += 1f;
                 }
 
+                CountPlatformTileLengths(room, x, y, prevX, prevY);
 
                 evaluationResults[3] += TileOnGroundIncrement(room.Data, 4, 2, x, y);
                 evaluationResults[3] += TileOnGroundIncrement(room.Data, 5, 2, x, y);
                 evaluationResults[5] += TileOnGroundIncrement(room.Data, 3, 1, x, y);
+
+                prevX = x;
+                prevY = y;
             }
         }
+
+        for (int i = 0; i < platformSizes.Count; i++)
+        {
+            //                               current platform  len  g1  g2  
+            evaluationResults[6] += Gauss2mf(platformSizes[i], 5f, 3f, 24f);
+        }
+
         // count is the mean
         evaluationResults[3] = Gauss(evaluationResults[3], 20f, evaluationResults[0]);
         evaluationResults[4] = Gauss(evaluationResults[4], 20f, evaluationResults[0]);
         evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[2]);
+
         evaluationResults[0] = Gauss(evaluationResults[0], 20f, this.targetEnemies);
         evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.maxCoins);
         evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxTraps);
+        evaluationResults[6] = Gauss(evaluationResults[6], 20f, platformSizes.Count);
 
         evaluationResults.Add(CanNavigateRoom(room));
 
@@ -75,6 +97,14 @@ public class GeneratorRules {
     public float GetMutationRate()
     {
         return this.mutationRate;
+    }
+
+    private void ResetList()
+    {
+        platformSizes = new List<int>();
+        currIndex = -1;
+        prevX = -1;
+        prevY = -1;
     }
 
     private float AirAroundItem(int x, int y, Room room)
@@ -224,6 +254,27 @@ public class GeneratorRules {
         return result;
     }
 
+    private float Gauss2mf(float X, float len, float mean1, float mean2)
+    {
+        float gauss1 = Gauss(X, len, mean1);
+        float gauss2 = Gauss(X, len, mean2);
+
+        if(mean1 <= X && X <= mean2)
+        {
+            return 1f;
+        }
+        else if(X < mean1)
+        {
+            return gauss1;
+        }
+        else if(mean2 < X)
+        {
+            return gauss2;
+        }
+
+        return 0f;
+    }
+
     private float TileOnGroundIncrement(int[,] room, int tileType, int tilesBellow, int x, int y)
     {
         if (room[y, x] == tileType)
@@ -248,4 +299,35 @@ public class GeneratorRules {
 
         return 0f;
     }
+
+    private void CountPlatformTileLengths(Room room, int currX, int currY, int prevX, int prevY)
+    {
+        if (currY != prevY && room.Data[currY, currX] == 1)
+        {
+            platformSizes.Add(0);
+            currIndex++;
+        }
+
+        //if (room.Data[currY, currX] == 1 && !WithinMapRange(prevX, prevY))
+        //{
+        //    Debug.Log("Da two");
+        //    platformSizes.Add(0);
+        //    currIndex++;
+        //}
+
+        if (WithinMapRange(prevX, prevY)) { 
+            if (currY == prevY && (room.Data[currY, currX] == 1 && room.Data[prevY, prevX] != 1))
+            {
+                platformSizes.Add(0);
+                currIndex++;
+            }
+        }
+
+        if(room.Data[currY, currX] == 1)
+        {
+            platformSizes[currIndex]++;
+        }
+
+    }
+
 }
