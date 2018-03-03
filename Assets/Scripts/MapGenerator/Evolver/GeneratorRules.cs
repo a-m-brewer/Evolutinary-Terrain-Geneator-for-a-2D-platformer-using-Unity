@@ -24,7 +24,6 @@ public class GeneratorRules {
     int prevX = -1;
     int prevY = -1;
 
-
     public GeneratorRules(float _mutationRate, int _targetEnemies, int _maxCoins, int _maxTraps, List<int[]> _checkpoints)
     {
         this.mutationRate = _mutationRate;
@@ -34,6 +33,14 @@ public class GeneratorRules {
         this.checkpoints = _checkpoints;
     }
 
+    /// <summary>
+    /// This is where all the methods created in this document are combined.
+    /// The idea is that due to the amount of checks that are done per evolution, the number of for loops
+    /// used per run should be kept to a minimum. That is why here there is one big for loop that contains all the
+    /// checks for this room.
+    /// </summary>
+    /// <param name="room">Current room</param>
+    /// <returns></returns>
     public List<float> MainChecker(Room room)
     {
         List<float> evaluationResults = new List<float>();
@@ -42,12 +49,16 @@ public class GeneratorRules {
             evaluationResults.Add(0f);
         }
 
+        List<Vector2> positionOfWorldItems = new List<Vector2>();
+
         ResetList();
 
         for (int y = 0; y < TileInformation.roomSizeY; y++)
         {
             for(int x = 0; x < TileInformation.roomSizeX; x++)
             {
+                positionOfWorldItems = FindWorldItems(positionOfWorldItems, room, x, y);
+
                 if(room.Data[y, x] == 4 || room.Data[y,x] == 5)
                 {
                     evaluationResults[0] += 1f;
@@ -89,16 +100,36 @@ public class GeneratorRules {
         evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxTraps);
         evaluationResults[6] = Gauss(evaluationResults[6], 20f, platformSizes.Count);
 
-        evaluationResults.Add(CanNavigateRoom(room));
+
+        Grid roomGrid = CreateGrid(room);
+        int startY = FindPosY(roomGrid, 0);
+
+        // if used as finding the path to possible 240 targets really slows evaluation down
+        if (evaluationResults[0] == 1f && evaluationResults[1] == 1f && evaluationResults[2] == 1f)
+        {
+            for (int j = 0; j < positionOfWorldItems.Count; j++)
+            {
+                evaluationResults.Add(CanNavigateToPoint(room, roomGrid, 0, startY, (int)positionOfWorldItems[j].x, (int)positionOfWorldItems[j].y));
+            }
+        }
+
+        evaluationResults.Add(CanNavigateRoom(room, roomGrid, startY));
 
         return evaluationResults;
     }
 
+    /// <summary>
+    /// Get how often to mutate
+    /// </summary>
+    /// <returns></returns>
     public float GetMutationRate()
     {
         return this.mutationRate;
     }
 
+    /// <summary>
+    /// Reset the values of the platform list
+    /// </summary>
     private void ResetList()
     {
         platformSizes = new List<int>();
@@ -107,8 +138,16 @@ public class GeneratorRules {
         prevY = -1;
     }
 
+    /// <summary>
+    /// Check if the tiles to the left and right of the player and it's feet are all not ground
+    /// </summary>
+    /// <param name="x">Current X coordinate</param>
+    /// <param name="y">Current Y coordinate</param>
+    /// <param name="room">Current room being evaluated</param>
+    /// <returns></returns>
     private float AirAroundItem(int x, int y, Room room)
     {
+        // Five tiles to check to score for each correct tile is 1/5 of 1
         float toReturn = 0f;
         float toAdd = 1f / 5f;
 
@@ -116,16 +155,18 @@ public class GeneratorRules {
         {
             for (int col = x - 1; col <= x + 1; col++)
             {
+                // if the current tile being check skip
                 if (row == y && col == x)
                 {
                     continue;
                 }
-
+                // If within map range and does not equal ground or gap add score
                 if (WithinMapRange(col, row))
                 {
-                    if (!(room.Data[row, col] == 3) && !(room.Data[row, col] == 1) && !(room.Data[row, col] == 6))
+                    if (!(room.Data[row, col] == 1) && !(room.Data[row, col] == 6))
                         toReturn += toAdd;
                 } else
+                // if outside of the map it doesn't matter so give score
                 {
                     toReturn += toAdd;
                 }
@@ -141,14 +182,12 @@ public class GeneratorRules {
     /// </summary>
     /// <param name="room"></param>
     /// <returns></returns>
-    private float CanNavigateRoom(Room room)
+    private float CanNavigateRoom(Room room, Grid grid, int _startY)
     {
-        Grid grid = new Grid(room.Data);
-        grid.CreateGrid();
 
         Pathfinding pf = new Pathfinding(grid);
 
-        int startY = FindPosY(grid, 0);
+        int startY = _startY;
         int endY = FindPosY(grid, TileInformation.roomSizeX - 1);
 
         // there is nowhere for the player to stand at the start and end of rooms
@@ -172,15 +211,29 @@ public class GeneratorRules {
         return (Gauss(pf.distanceToEnd, 40f, 0f) == 1f) ? (Gauss(pf.distanceToEnd - 1f, 40f, 0f)) : (Gauss(pf.distanceToEnd, 40f, 0f));
     }
 
-    private float CanNavigateToPoint(Room room, int start_x, int start_y, int end_x, int end_y)
+    private Grid CreateGrid(Room room)
+    {
+        Grid grid = new Grid(room.Data);
+        grid.CreateGrid();
+
+        return grid;
+    }
+
+    /// <summary>
+    /// Can the player get from one position in the map to another using A* Pathfinding.
+    /// </summary>
+    /// <param name="room"></param>
+    /// <param name="start_x"></param>
+    /// <param name="start_y"></param>
+    /// <param name="end_x"></param>
+    /// <param name="end_y"></param>
+    /// <returns></returns>
+    private float CanNavigateToPoint(Room room, Grid grid, int start_x, int start_y, int end_x, int end_y)
     {
         if(!WithinMapRange(start_x, start_y) || !WithinMapRange(end_x, end_y))
         {
             return 0f;
         }
-
-        Grid grid = new Grid(room.Data);
-        grid.CreateGrid();
 
         Pathfinding pf = new Pathfinding(grid);
 
@@ -254,6 +307,16 @@ public class GeneratorRules {
         return result;
     }
 
+    /// <summary>
+    /// Implementation of MATLABS gauss2mf function for finding if X is
+    /// close to two mean values. With X's between mean1 and mean2 returning
+    /// 1
+    /// </summary>
+    /// <param name="X">The item to find membership value of</param>
+    /// <param name="len">distance between full membership and half membership</param>
+    /// <param name="mean1">Lower value that will return full membership</param>
+    /// <param name="mean2">Higher value that will return full membership</param>
+    /// <returns></returns>
     private float Gauss2mf(float X, float len, float mean1, float mean2)
     {
         float gauss1 = Gauss(X, len, mean1);
@@ -275,6 +338,15 @@ public class GeneratorRules {
         return 0f;
     }
 
+    /// <summary>
+    /// Check for the current tiletype if it has a ground tile "tilesBellow" them.
+    /// </summary>
+    /// <param name="room">Current room being evaluated</param>
+    /// <param name="tileType">What type of tile to check</param>
+    /// <param name="tilesBellow">how many rows bellow to check</param>
+    /// <param name="x">X of tile</param>
+    /// <param name="y">Y of tile</param>
+    /// <returns></returns>
     private float TileOnGroundIncrement(int[,] room, int tileType, int tilesBellow, int x, int y)
     {
         if (room[y, x] == tileType)
@@ -300,21 +372,25 @@ public class GeneratorRules {
         return 0f;
     }
 
+    /// <summary>
+    /// Count the length of each platform in the map and store it's value in a list.
+    /// </summary>
+    /// <param name="room">Current room being evaluated</param>
+    /// <param name="currX">Current tiles X coordinate</param>
+    /// <param name="currY">Current tiles Y coordinate</param>
+    /// <param name="prevX">Previous tiles X coordinate</param>
+    /// <param name="prevY">Previous tiles Y coordinate</param>
     private void CountPlatformTileLengths(Room room, int currX, int currY, int prevX, int prevY)
     {
+        // if different row and current tile is ground start a new list item
         if (currY != prevY && room.Data[currY, currX] == 1)
         {
             platformSizes.Add(0);
             currIndex++;
         }
 
-        //if (room.Data[currY, currX] == 1 && !WithinMapRange(prevX, prevY))
-        //{
-        //    Debug.Log("Da two");
-        //    platformSizes.Add(0);
-        //    currIndex++;
-        //}
-
+        // if previous tile in map range and on the same row and if current tile is ground and 
+        // the previous tile is not. Start a new list item
         if (WithinMapRange(prevX, prevY)) { 
             if (currY == prevY && (room.Data[currY, currX] == 1 && room.Data[prevY, prevX] != 1))
             {
@@ -323,11 +399,42 @@ public class GeneratorRules {
             }
         }
 
+        // if the current tile is ground increase the platform length.
         if(room.Data[currY, currX] == 1)
         {
             platformSizes[currIndex]++;
         }
 
+    }
+
+    /// <summary>
+    /// Count the number of Traps, Coins and Enemies in a map and store their coordinates
+    /// </summary>
+    /// <param name="worldItemList">The list of c</param>
+    /// <param name="room"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    private List<Vector2> FindWorldItems(List<Vector2> worldItemList, Room room, int x, int y)
+    {
+        if(WithinMapRange(x, y))
+        {
+            if(IsWorldItem(room.Data[y, x]))
+            {
+                worldItemList.Add(new Vector2(x, y));
+            }
+        }
+        return worldItemList;
+    }
+
+    /// <summary>
+    /// is the current tile a Trap, coin or enemy
+    /// </summary>
+    /// <param name="tile"></param>
+    /// <returns></returns>
+    private bool IsWorldItem(int tile)
+    {
+        return tile != 0 && tile != 1 && tile != 6;
     }
 
 }

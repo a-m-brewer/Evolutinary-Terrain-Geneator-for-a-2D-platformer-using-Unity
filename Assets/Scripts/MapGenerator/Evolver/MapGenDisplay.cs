@@ -247,7 +247,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void ToInvoke()
     {
-        if(chosenRoom.Fitness == 9f)
+        if(chosenRoom.Fitness == 8f)
         {
             CancelInvoke("ToInvoke");
         }

@@ -33,22 +33,24 @@ public class EvaluateRoom {
         {
             score = fromMainChecker[fromMainChecker.Count - 1];
         }
-        //else if(fromMainChecker[6] < 1f)
-        //{
-        //    score = fromMainChecker[fromMainChecker.Count - 1] + fromMainChecker[6];
-        //}
-        // 1 <= N < 4 
         else if (fromMainChecker[0] < 1f || fromMainChecker[1] < 1f || fromMainChecker[2] < 1f)
         {
             float prevStage = fromMainChecker[fromMainChecker.Count - 1];
             score = prevStage + fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2];
         }
-        // 4 <= N
         else
         {
             float prevStage = fromMainChecker[fromMainChecker.Count - 1] + fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2];
-            score = prevStage + fromMainChecker[3] + fromMainChecker[4] + fromMainChecker[5];
+            score = prevStage + fromMainChecker[3] + fromMainChecker[4] + fromMainChecker[5] + fromMainChecker[6];
         }
+
+        //if(fromMainChecker.Count > 9)
+        //{
+        //    for (int k = 7; k < fromMainChecker.Count - 1; k++)
+        //    {
+        //        score += fromMainChecker[k];
+        //    }
+        //}
 
         return score;
     }
