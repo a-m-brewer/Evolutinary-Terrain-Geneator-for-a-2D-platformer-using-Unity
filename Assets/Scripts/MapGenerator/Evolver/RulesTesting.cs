@@ -26,7 +26,7 @@ public class RulesTesting : MonoBehaviour {
         };
 
     InitPopulation ip = new InitPopulation();
-    EvaluateRoom er = new EvaluateRoom(0.75f);
+    EvaluateRoom er = new EvaluateRoom();
     Crossover co = new Crossover();
     Mutation mu = new Mutation();
     SelectRoom sr = new SelectRoom();
@@ -57,12 +57,12 @@ public class RulesTesting : MonoBehaviour {
         parents.Archive();
         Debug.Log("Parents: " + parents[0].Fitness + " " + parents[1].Fitness);
 
-        Room[] testRooms = co.UniformCrossover(parents[0], parents[1], 50, er);
+        Room[] testRooms = co.UniformCrossover(parents[0], parents[1], 50, er, 1f);
         testRooms.Archive();
         Debug.Log("Crossover: " + testRooms[0].Fitness + " " + testRooms[1].Fitness);
 
-        testRooms[0] = mu.RandomReseting(testRooms[0], er);
-        testRooms[1] = mu.RandomReseting(testRooms[1], er);
+        testRooms[0] = mu.RandomReseting(testRooms[0], er, 1f);
+        testRooms[1] = mu.RandomReseting(testRooms[1], er, 1f);
         testRooms.Archive();
         Debug.Log("Mutation: " + testRooms[0].Fitness + " " + testRooms[1].Fitness);
     }

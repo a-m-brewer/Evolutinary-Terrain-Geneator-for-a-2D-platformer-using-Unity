@@ -8,7 +8,7 @@ public class MergeTesting : MonoBehaviour {
     public TextAsset huristicMaps;
 	// Use this for initialization
 	void Start () {
-        InitHuristicRooms ihr = new InitHuristicRooms(huristicMaps, new EvaluateRoom(0.75f));
+        InitHuristicRooms ihr = new InitHuristicRooms(huristicMaps, new EvaluateRoom());
         Room[] hRooms = ihr.Rooms;
 
         foreach(Room r in hRooms)

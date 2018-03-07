@@ -5,7 +5,7 @@ using UnityEngine;
 public class PathFindingTesting : MonoBehaviour {
 
     public TextAsset huristicMaps;
-    EvaluateRoom er = new EvaluateRoom(0.75f);
+    EvaluateRoom er = new EvaluateRoom();
 
     // Use this for initialization
     void Start () {

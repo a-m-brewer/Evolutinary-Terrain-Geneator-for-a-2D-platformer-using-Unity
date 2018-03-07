@@ -104,14 +104,14 @@ public class GeneratorRules {
         Grid roomGrid = CreateGrid(room);
         int startY = FindPosY(roomGrid, 0);
 
-        // if used as finding the path to possible 240 targets really slows evaluation down
-        if (evaluationResults[0] == 1f && evaluationResults[1] == 1f && evaluationResults[2] == 1f)
-        {
-            for (int j = 0; j < positionOfWorldItems.Count; j++)
-            {
-                evaluationResults.Add(CanNavigateToPoint(room, roomGrid, 0, startY, (int)positionOfWorldItems[j].x, (int)positionOfWorldItems[j].y));
-            }
-        }
+        //// if used as finding the path to possible 240 targets really slows evaluation down
+        //if (evaluationResults[0] == 1f && evaluationResults[1] == 1f && evaluationResults[2] == 1f)
+        //{
+        //    for (int j = 0; j < positionOfWorldItems.Count; j++)
+        //    {
+        //        evaluationResults.Add(CanNavigateToPoint(room, roomGrid, 0, startY, (int)positionOfWorldItems[j].x, (int)positionOfWorldItems[j].y));
+        //    }
+        //}
 
         evaluationResults.Add(CanNavigateRoom(room, roomGrid, startY));
 

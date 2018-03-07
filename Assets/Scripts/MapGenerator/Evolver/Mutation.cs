@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class Mutation {
 
-    GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
-                                           DefaultRuleArguments.targetEnemies,
-                                           DefaultRuleArguments.maxCoins,
-                                           DefaultRuleArguments.maxTraps,
-                                           DefaultRuleArguments.checkpoints);
-
-    public Room RandomReseting(Room room, EvaluateRoom evaluateRoom)
+    public Room RandomReseting(Room room, EvaluateRoom evaluateRoom, float muationChance)
     {
         int[,] output = room.Data;
 
@@ -18,7 +12,7 @@ public class Mutation {
         {
             for (int x = 0; x < output.GetLength(1); x++)
             {
-                if (UsefulMethods.RandomChance(gr.GetMutationRate()))
+                if (UsefulMethods.RandomChance(muationChance))
                 {
                     // only allow gap tiles if the array is setting the bottom layer
                     if (x < TileInformation.roomSizeX)
@@ -36,7 +30,7 @@ public class Mutation {
         return new Room(output, evaluateRoom);
     }
 
-    public Room SwapMutation(Room room, EvaluateRoom evaluateRoom)
+    public Room SwapMutation(Room room, EvaluateRoom evaluateRoom, float mutationChance)
     {
         int[,] output = room.Data;
 
@@ -44,7 +38,7 @@ public class Mutation {
         {
             for (int x = 0; x < output.GetLength(1); x++)
             {
-                if (UsefulMethods.RandomChance(gr.GetMutationRate()))
+                if (UsefulMethods.RandomChance(mutationChance))
                 {
                     int toSwapX = Random.Range(0, TileInformation.roomSizeX - 1);
                     int toSwapY = Random.Range(0, TileInformation.roomSizeY - 1);

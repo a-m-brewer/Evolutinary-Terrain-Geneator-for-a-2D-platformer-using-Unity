@@ -6,6 +6,7 @@ public class Population {
     public Room[] bestRooms;
     public Room[] popRooms;
     public List<Room> topTwenty;
+    public float averageFitness;
 
     /// <summary>
     /// InitPopulation

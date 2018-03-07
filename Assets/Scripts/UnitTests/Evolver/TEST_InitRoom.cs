@@ -8,7 +8,7 @@ public class TEST_InitRoom {
 	[Test]
 	public void TEST_GenerateARandomRoom() {
         CreateRoom cr = new CreateRoom();
-        EvaluateRoom evaluateRoom = new EvaluateRoom(0.75f);
+        EvaluateRoom evaluateRoom = new EvaluateRoom();
         Room ranRoom = cr.Generate(evaluateRoom);
 
         bool inRange = true;
@@ -33,7 +33,7 @@ public class TEST_InitRoom {
     public void TEST_CorrectLength()
     {
         CreateRoom cr = new CreateRoom();
-        EvaluateRoom evaluateRoom = new EvaluateRoom(0.75f);
+        EvaluateRoom evaluateRoom = new EvaluateRoom();
         Room ranRoom = cr.Generate(evaluateRoom);
 
         Assert.True((ranRoom.Data.Length == (TileInformation.roomSizeX * TileInformation.roomSizeY)));

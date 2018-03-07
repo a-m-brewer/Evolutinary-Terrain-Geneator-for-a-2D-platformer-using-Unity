@@ -27,7 +27,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     // a link to the file storing all of the roomData
     public TextAsset huristicMaps;
     public Room chosenRoom;
-    private EvaluateRoom evaluateRoom = new EvaluateRoom(0.75f);
+    private EvaluateRoom evaluateRoom = new EvaluateRoom();
     // Difficultys
     public int mapTargetDifficulty;
     public int actualDifficultyScore;
@@ -37,6 +37,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     Crossover crossover = new Crossover();
     Mutation mutation = new Mutation();
     MergeSortRoom msr = new MergeSortRoom();
+    private int generation = 0;
 
     private void Start()
     {
@@ -75,6 +76,9 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void InitMap()
     {
+        generation = 1;
+        Debug.Log("Current Generation: " + generation);
+
         roomPop = new Population(evaluateRoom, 1, huristicMaps);
         roomPop.topTwenty = msr.MergeSort(roomPop.popRooms.ToList());
 
@@ -89,27 +93,46 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
         chosenRoom = roomPop.bestRooms[0];
         //Debug.Log(chosenRoom.Fitness);
+
+        float roomFitnessAverage = 0;
+        foreach(Room r in roomPop.popRooms)
+        {
+            roomFitnessAverage += r.Fitness;
+        }
+        roomFitnessAverage /= roomPop.popRooms.Length;
+        roomPop.averageFitness = roomFitnessAverage;
+
     }
 
     public void IncrementEvolutionOfRoomAndDisplayBest()
     {
+        generation++;
+        Debug.Log("Current Generation: " + generation);
+
         List<Room> np = new List<Room>();
 
-        np = roomPop.topTwenty.ToList();
+        //np = roomPop.topTwenty.ToList();
 
-        int amountRandom = 5;
+        //int amountRandom = 0;
+        //int amountFromPreviousGeneration = roomPop.topTwenty.Count;
 
-        // add some random each generation
-        for(int r = 0; r < amountRandom; r++)
-        {
-            np.Add(new CreateRoom().Generate(evaluateRoom));
-        }
+        //// add some random each generation
+        //for(int r = 0; r < amountRandom; r++)
+        //{
+        //    np.Add(new CreateRoom().Generate(evaluateRoom));
+        //}
+
+        float averageFitness = 0f;
 
         int numRoomsInGeneration = DefaultRuleArguments.populationSize;
-        for (int p = 20 + amountRandom; p < numRoomsInGeneration; p += 2)
+        for (int p = 0; p < numRoomsInGeneration; p += 2)
         {
             np = EvoMode(np, 1, 0, 0);
+            averageFitness += (np[p].Fitness + np[p + 1].Fitness);
         }
+
+        // calculate average fitness
+        averageFitness /= numRoomsInGeneration;
 
         np = msr.MergeSort(np);
         np.Reverse();
@@ -117,6 +140,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         roomPop.popRooms = np.ToArray();
         roomPop.topTwenty = np.Take(20).ToList();
         roomPop.bestRooms = np.Take(2).ToArray();
+        roomPop.averageFitness = averageFitness;
 
         chosenRoom = roomPop.bestRooms[0];
     }
@@ -137,42 +161,73 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
                 break;
         }
         Room[] rcrossover;
+
+        float bestParentFitness = Mathf.Max(parents[0].Fitness, parents[1].Fitness);
+
+        Debug.Log("Best Parent: " + bestParentFitness + " Average Room Fitness: " + roomPop.averageFitness + " Best Room Fitness: " + chosenRoom.Fitness);
+
+        float crossoverRate = CalculateCrossoverRateForMember(roomPop.averageFitness, chosenRoom.Fitness, bestParentFitness);
+        Debug.Log(crossoverRate);
+
         switch(crossoverMode)
         {
             case 0:
-                rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
+                rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom, crossoverRate);
                 break;
             case 1:
-                rcrossover = crossover.MultiPointCrossover(parents[0], parents[1], 50, evaluateRoom);
+                rcrossover = crossover.MultiPointCrossover(parents[0], parents[1], 50, evaluateRoom, crossoverRate);
                 break;
             default:
-                rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
+                rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom, crossoverRate);
                 break;
 
         }
+
+        float mutationRateA = CalculateMutationRateForMember(roomPop.averageFitness, chosenRoom.Fitness, rcrossover[0].Fitness);
+        float mutationRateB = CalculateMutationRateForMember(roomPop.averageFitness, chosenRoom.Fitness, rcrossover[1].Fitness);
+
         Room[] mutationResults = new Room[2];
         switch(mutationMode)
         {
             case 0:
-                mutationResults[0] = mutation.RandomReseting(rcrossover[0], evaluateRoom);
-                mutationResults[1] = mutation.RandomReseting(rcrossover[1], evaluateRoom);
+                mutationResults[0] = mutation.RandomReseting(rcrossover[0], evaluateRoom, mutationRateA);
+                mutationResults[1] = mutation.RandomReseting(rcrossover[1], evaluateRoom, mutationRateB);
                 break;
             case 1:
-                mutationResults[0] = mutation.SwapMutation(rcrossover[0], evaluateRoom);
-                mutationResults[1] = mutation.SwapMutation(rcrossover[1], evaluateRoom);
+                mutationResults[0] = mutation.SwapMutation(rcrossover[0], evaluateRoom, mutationRateA);
+                mutationResults[1] = mutation.SwapMutation(rcrossover[1], evaluateRoom, mutationRateB);
                 break;
             default:
-                mutationResults[0] = mutation.RandomReseting(rcrossover[0], evaluateRoom);
-                mutationResults[1] = mutation.RandomReseting(rcrossover[1], evaluateRoom);
+                mutationResults[0] = mutation.RandomReseting(rcrossover[0], evaluateRoom, mutationRateA);
+                mutationResults[1] = mutation.RandomReseting(rcrossover[1], evaluateRoom, mutationRateB);
                 break;
         }
-
-        //mutationResults[0] = mutation.SwapMutation(crossOver[0], evaluateRoom);
-        //mutationResults[1] = mutation.SwapMutation(crossOver[1], evaluateRoom);
 
         pop.Add(mutationResults[0]);
         pop.Add(mutationResults[1]);
         return pop;
+    }
+
+    private float CalculateMutationRateForMember(float averagePopulationFitness, float bestFitnessOfPopulation, float mutatingFromFitness)
+    {
+        float k = 0.5f;
+        float result = k * (bestFitnessOfPopulation - mutatingFromFitness) / (bestFitnessOfPopulation - averagePopulationFitness);
+        if(mutatingFromFitness < averagePopulationFitness)
+        {
+            result = k;
+        }
+        return result * 100;
+    }
+
+    private float CalculateCrossoverRateForMember(float averagePopulationFitness, float bestFitnessOfPopulation, float bestFitnessOfParents)
+    {
+        float k = 1.0f;
+        float result = k * (bestFitnessOfPopulation - bestFitnessOfParents) / (bestFitnessOfPopulation - averagePopulationFitness);
+        if(bestFitnessOfParents < averagePopulationFitness)
+        {
+            result = k;
+        }
+        return result * 100;
     }
 
     public int n = 0;

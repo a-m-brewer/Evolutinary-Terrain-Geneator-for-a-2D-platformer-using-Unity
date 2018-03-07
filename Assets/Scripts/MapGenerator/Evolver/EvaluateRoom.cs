@@ -7,25 +7,25 @@ using UnityEngine;
 /// </summary>
 public class EvaluateRoom {
 
-    private float targetGroundPercentage;
-    private GeneratorRules gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
-                                                   DefaultRuleArguments.targetEnemies,
-                                                   DefaultRuleArguments.maxCoins,
-                                                   DefaultRuleArguments.maxTraps,
-                                                   DefaultRuleArguments.checkpoints);
+    private GeneratorRules gr;
 
     /// <summary>
     /// Init method for the class that will evaluate a rooms fitness
     /// </summary>
     /// <param name="groundPercent">amount of the ground that should be floor</param>
-    public EvaluateRoom(float groundPercent)
+    public EvaluateRoom()
     {
-        this.targetGroundPercentage = groundPercent;
+        gr = new GeneratorRules(DefaultRuleArguments.mutationRate,
+                                DefaultRuleArguments.targetEnemies,
+                                DefaultRuleArguments.maxCoins,
+                                DefaultRuleArguments.maxTraps,
+                                DefaultRuleArguments.checkpoints);
     }
 
     public float Evaluate(Room room)
     {
         List<float> fromMainChecker = gr.MainChecker(room);
+
         float score = 0f;
         // if path can't be found return how close
         // N < 1
@@ -77,10 +77,5 @@ public class EvaluateRoom {
             Debug.Log(i + " " + result[i]);
         }
         return result;
-    }
-
-    public float GetGroundPercent()
-    {
-        return this.targetGroundPercentage;
     }
 }
