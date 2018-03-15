@@ -44,29 +44,8 @@ public class EvaluateRoom {
             score = prevStage + fromMainChecker[3] + fromMainChecker[4] + fromMainChecker[5] + fromMainChecker[6];
         }
 
-        //if(fromMainChecker.Count > 9)
-        //{
-        //    for (int k = 7; k < fromMainChecker.Count - 1; k++)
-        //    {
-        //        score += fromMainChecker[k];
-        //    }
-        //}
-
         return score;
     }
-
-    //public float Evaluate(Room room)
-    //{
-    //    float[] fromMainChecker = gr.MainChecker(room);
-    //    float score = 0f;
-
-    //    for(int i = 0; i < fromMainChecker.Length; i++)
-    //    {
-    //        score += fromMainChecker[i];
-    //    }
-
-    //    return score;
-    //}
 
     public float[] EvaluatePopulation(Room[] pop)
     {
