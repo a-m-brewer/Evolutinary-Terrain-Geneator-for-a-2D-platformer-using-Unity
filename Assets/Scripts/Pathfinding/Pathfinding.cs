@@ -168,6 +168,8 @@ public class Pathfinding {
                     {
                         openSet.UpdateItem(neighbour);
                     }
+
+
                 }
             }
 
