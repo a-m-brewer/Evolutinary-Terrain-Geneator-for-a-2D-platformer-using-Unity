@@ -214,7 +214,6 @@ public class GeneratorRules {
     private Grid CreateGrid(Room room)
     {
         Grid grid = new Grid(room.Data);
-        grid.CreateGrid();
 
         return grid;
     }

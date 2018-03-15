@@ -21,8 +21,8 @@ public class PathFindingTesting : MonoBehaviour {
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},
             {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
         };
 
@@ -33,8 +33,8 @@ public class PathFindingTesting : MonoBehaviour {
 
         pf.FindPath(new Vector2(0, 7), new Vector2(23, 7));
         grid.DrawPath();
-        grid.WalkableGrid.ArchiveRoom();
-        Debug.Log(pf.foundpath);
+        //grid.WalkableGrid.ArchiveRoom();
+        Debug.Log(pf.distanceToEnd);
     }
 
     int FindPosY(Grid grid, int x)
