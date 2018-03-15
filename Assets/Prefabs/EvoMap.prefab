@@ -134,3 +134,6 @@ MonoBehaviour:
   huristicMaps: {fileID: 4900000, guid: bd03f6c1aa5bb854cbf030e10a050c09, type: 3}
   mapTargetDifficulty: 0
   actualDifficultyScore: 0
+  generation: 0
+  MAX_GENERATIONS: 500
+  n: 0

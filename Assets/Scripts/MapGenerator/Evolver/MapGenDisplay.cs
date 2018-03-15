@@ -37,6 +37,8 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     Crossover crossover = new Crossover();
     Mutation mutation = new Mutation();
     MergeSortRoom msr = new MergeSortRoom();
+    public int generation = 0;
+    public int MAX_GENERATIONS;
 
     private void Start()
     {
@@ -75,6 +77,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void InitMap()
     {
+        generation = 1;
         roomPop = new Population(evaluateRoom, 1, huristicMaps);
         roomPop.topTwenty = msr.MergeSort(roomPop.popRooms.ToList());
 
@@ -119,6 +122,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         roomPop.bestRooms = np.Take(2).ToArray();
 
         chosenRoom = roomPop.bestRooms[0];
+        generation++;
     }
 
     private List<Room> EvoMode(List<Room> pop, int selectMode, int crossoverMode, int mutationMode)
@@ -247,7 +251,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void ToInvoke()
     {
-        if(chosenRoom.Fitness == 8f)
+        if(chosenRoom.Fitness == 8f || generation == MAX_GENERATIONS)
         {
             CancelInvoke("ToInvoke");
         }
