@@ -18,11 +18,15 @@ public class GeneratorRules {
     private int maxTraps;
 
     private List<int[]> checkpoints;
+    public List<int[]> Checkpoints { get { return this.checkpoints; } }
 
     private List<int> platformSizes = new List<int>();
     private int currIndex = -1;
     int prevX = -1;
     int prevY = -1;
+
+    private int endOfNonWayPointEvaluation = 7;
+    public int WaypointStart { get { return this.endOfNonWayPointEvaluation; } }
 
     public GeneratorRules(float _mutationRate, int _targetEnemies, int _maxCoins, int _maxTraps, List<int[]> _checkpoints)
     {
@@ -44,7 +48,7 @@ public class GeneratorRules {
     public List<float> MainChecker(Room room)
     {
         List<float> evaluationResults = new List<float>();
-        for(int i = 0; i < 8; i++)
+        for(int i = 0; i < endOfNonWayPointEvaluation; i++)
         {
             evaluationResults.Add(0f);
         }
@@ -86,7 +90,6 @@ public class GeneratorRules {
 
         for (int i = 0; i < platformSizes.Count; i++)
         {
-            //                               current platform  len  g1  g2  
             evaluationResults[6] += Gauss2mf(platformSizes[i], 5f, 3f, 24f);
         }
 
@@ -104,7 +107,7 @@ public class GeneratorRules {
         Grid roomGrid = CreateGrid(room);
         int startY = FindPosY(roomGrid, 0);
 
-        evaluationResults.Add(CanNavigateRoom(room, roomGrid, startY));
+        evaluationResults.Add(AddCheckpoints(room, roomGrid, startY));
 
         return evaluationResults;
     }
@@ -425,6 +428,24 @@ public class GeneratorRules {
     private bool IsWorldItem(int tile)
     {
         return tile != 0 && tile != 1 && tile != 6;
+    }
+
+    private float AddCheckpoints(Room room, Grid grid, int startY)
+    {
+        int numCheckpoints = 1;
+        float result = 0f;
+        if(checkpoints.Count > 0)
+        {
+            numCheckpoints += checkpoints.Count;
+            foreach(int[] checkpoint in checkpoints)
+            {
+                result += CanNavigateToPoint(room, grid, 0, startY, checkpoint[0], checkpoint[1]) / numCheckpoints;
+            }
+        }
+
+        result += CanNavigateRoom(room, grid, startY) / numCheckpoints;
+
+        return result;
     }
 
 }

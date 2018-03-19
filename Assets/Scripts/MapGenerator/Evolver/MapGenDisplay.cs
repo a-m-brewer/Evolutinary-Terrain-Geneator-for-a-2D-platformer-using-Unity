@@ -251,7 +251,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void ToInvoke()
     {
-        if(chosenRoom.Fitness == 8f || generation == MAX_GENERATIONS)
+        if(generation == MAX_GENERATIONS)
         {
             CancelInvoke("ToInvoke");
         }

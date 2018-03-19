@@ -28,7 +28,7 @@ public class EvaluateRoom {
         List<float> fromMainChecker = gr.MainChecker(room);
         float score = 0f;
         // if path can't be found return how close
-        // N < 1
+
         if (fromMainChecker[fromMainChecker.Count - 1] < 1f)
         {
             score = fromMainChecker[fromMainChecker.Count - 1];
