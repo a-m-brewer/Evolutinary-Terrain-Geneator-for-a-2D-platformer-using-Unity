@@ -27,7 +27,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     // a link to the file storing all of the roomData
     public TextAsset huristicMaps;
     public Room chosenRoom;
-    private EvaluateRoom evaluateRoom = new EvaluateRoom(0.75f);
+    private EvaluateRoom evaluateRoom = new EvaluateRoom();
     // Difficultys
     public int mapTargetDifficulty;
     public int actualDifficultyScore;

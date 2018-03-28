@@ -14,15 +14,6 @@ public class EvaluateRoom {
                                                    DefaultRuleArguments.maxTraps,
                                                    DefaultRuleArguments.checkpoints);
 
-    /// <summary>
-    /// Init method for the class that will evaluate a rooms fitness
-    /// </summary>
-    /// <param name="groundPercent">amount of the ground that should be floor</param>
-    public EvaluateRoom(float groundPercent)
-    {
-        this.targetGroundPercentage = groundPercent;
-    }
-
     public float Evaluate(Room room)
     {
         List<float> fromMainChecker = gr.MainChecker(room);
@@ -45,21 +36,5 @@ public class EvaluateRoom {
         }
 
         return score;
-    }
-
-    public float[] EvaluatePopulation(Room[] pop)
-    {
-        float[] result = new float[pop.Length];
-        for (int i = 0; i < result.Length; i++)
-        {
-            result[i] = Evaluate(pop[i]);
-            Debug.Log(i + " " + result[i]);
-        }
-        return result;
-    }
-
-    public float GetGroundPercent()
-    {
-        return this.targetGroundPercentage;
     }
 }
