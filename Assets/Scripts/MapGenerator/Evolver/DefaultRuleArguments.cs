@@ -11,9 +11,6 @@ public static class DefaultRuleArguments
     public static int populationSize = 100;
     public static List<int[]> checkpoints = new List<int[]>()
     {
-        //new int[2] {2, 2},
-        //new int[2] {7, 5},
-        //new int[2] {15, 1}
-        new int[2] {9,0}
+        new int[2] {9,4}
     };
 }

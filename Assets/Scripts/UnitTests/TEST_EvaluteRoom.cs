@@ -8,7 +8,7 @@ public class TEST_EvaluateRoom {
 	[Test]
 	public void TEST_Evaluate() {
 
-        float expected = 0.5248624f;
+        float expected = 3.92963052f;
 
         EvaluateRoom evaluateRoom = new EvaluateRoom();
 

@@ -108,6 +108,7 @@ public class GeneratorRules {
         int startY = FindPosY(roomGrid, 0);
 
         evaluationResults.Add(AddCheckpoints(room, roomGrid, startY));
+        evaluationResults.Add(CanNavigateRoom(room, roomGrid, startY));
 
         return evaluationResults;
     }
@@ -432,7 +433,7 @@ public class GeneratorRules {
 
     private float AddCheckpoints(Room room, Grid grid, int startY)
     {
-        int numCheckpoints = 1;
+        int numCheckpoints = 0;
         float result = 0f;
         if(checkpoints.Count > 0)
         {
@@ -442,8 +443,6 @@ public class GeneratorRules {
                 result += CanNavigateToPoint(room, grid, 0, startY, checkpoint[0], checkpoint[1]) / numCheckpoints;
             }
         }
-
-        result += CanNavigateRoom(room, grid, startY) / numCheckpoints;
 
         return result;
     }

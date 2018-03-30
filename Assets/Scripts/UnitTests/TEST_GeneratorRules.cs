@@ -39,23 +39,22 @@ public class TEST_GeneratorRules {
         float[] expectedResults = new float[]
         {
             0.9801987f,
-            0.9801987f,
+            0.969233215f,
             0.9801987f,
             1,
             1,
             1,
             0.9997753f,
+            0,
             1
         };
 
-        bool result = false;
-
-        for (int i = 0; i < output.Count; i++)
+        foreach(float f in output)
         {
-            result = output[i] == expectedResults[i];
+            Debug.Log(f);
         }
 
-        Assert.True(result);
+        Assert.AreEqual(expectedResults, output);
 	}
 
 }
