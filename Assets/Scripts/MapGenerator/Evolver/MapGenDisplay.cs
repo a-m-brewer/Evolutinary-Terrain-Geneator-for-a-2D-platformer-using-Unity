@@ -39,6 +39,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     MergeSortRoom msr = new MergeSortRoom();
     public int generation = 0;
     public int MAX_GENERATIONS;
+    public int mapInitMode = 0;
 
     private void Start()
     {
@@ -78,7 +79,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     public void InitMap()
     {
         generation = 1;
-        roomPop = new Population(evaluateRoom, 1, huristicMaps);
+        roomPop = new Population(evaluateRoom, mapInitMode, huristicMaps);
         roomPop.topTwenty = msr.MergeSort(roomPop.popRooms.ToList());
 
         roomPop.topTwenty.Reverse();
@@ -186,7 +187,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     }
 
     // add the difficulty of the each rooms to get the maps score
-    void CalculateDifficulty()
+    public void CalculateDifficulty()
     {
         AddComponentWithTagToDifficulty("Room");
     }
