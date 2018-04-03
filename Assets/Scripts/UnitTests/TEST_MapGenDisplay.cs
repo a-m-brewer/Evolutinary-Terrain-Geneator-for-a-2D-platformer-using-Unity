@@ -26,19 +26,5 @@ public class TEST_MapGenDisplay {
         bool notInvoked = !mapGenDisplay.GetComponent<MapGenDisplay>().IsInvoking();
         Assert.True(invoked && notInvoked);
     }
-    //19 map 10 diff 35
-    //[Test]
-    //public void TEST_CalculateRoomDificulty()
-    //{
-    //    // Use the Assert class to test conditions.
-    //    var mapPrefab = Resources.Load("EvoMap") as GameObject;
-    //    mapPrefab.GetComponent<MapGenDisplay>().InitMap();
 
-    //    //mapPrefab.GetComponent<MapGenDisplay>().DisplayRoom();
-    //    // caculate the difficutly of the map that is created
-    //    mapPrefab.GetComponent<MapGenDisplay>().CalculateDifficulty();
-    //    mapPrefab.GetComponent<MapGenDisplay>().CalculateRoomDifficulty()
-
-    //    Assert.AreEqual(35, mapPrefab.GetComponent<MapGenDisplay>().chosenRoom.);
-    //}
 }

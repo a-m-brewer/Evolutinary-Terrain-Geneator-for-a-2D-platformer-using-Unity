@@ -90,7 +90,7 @@ public class GeneratorRules {
 
         for (int i = 0; i < platformSizes.Count; i++)
         {
-            evaluationResults[6] += Gauss2mf(platformSizes[i], 5f, 3f, 24f);
+            evaluationResults[6] += Gauss2mf(platformSizes[i], 2f, 3f, 24f);
         }
 
         // count is the mean
@@ -98,10 +98,10 @@ public class GeneratorRules {
         evaluationResults[4] = Gauss(evaluationResults[4], 20f, evaluationResults[0]);
         evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[2]);
 
-        evaluationResults[0] = Gauss(evaluationResults[0], 20f, this.targetEnemies);
+        evaluationResults[0] = Gauss(evaluationResults[0], 40f, this.targetEnemies);
         evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.maxCoins);
         evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxTraps);
-        evaluationResults[6] = Gauss(evaluationResults[6], 20f, platformSizes.Count);
+        evaluationResults[6] = Gauss(evaluationResults[6], 5f, platformSizes.Count);
 
 
         Grid roomGrid = CreateGrid(room);
@@ -435,6 +435,12 @@ public class GeneratorRules {
     {
         int numCheckpoints = 0;
         float result = 0f;
+
+        if(checkpoints.Count == 0)
+        {
+            return 1f;
+        }
+
         if(checkpoints.Count > 0)
         {
             numCheckpoints += checkpoints.Count;

@@ -39,7 +39,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     MergeSortRoom msr = new MergeSortRoom();
     public int generation = 0;
     public int MAX_GENERATIONS;
-    public int mapInitMode = 0;
+    public int mapInitMode = 1;
 
     private void Start()
     {
@@ -101,7 +101,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
         np = roomPop.topTwenty.ToList();
 
-        int amountRandom = 5;
+        int amountRandom = 0;
 
         // add some random each generation
         for(int r = 0; r < amountRandom; r++)

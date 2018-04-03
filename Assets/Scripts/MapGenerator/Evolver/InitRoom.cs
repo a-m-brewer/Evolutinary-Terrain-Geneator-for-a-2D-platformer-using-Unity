@@ -11,13 +11,26 @@ public class CreateRoom {
 
     private float[] chanceOfSpawning = new float[6]
     {
-        7f, // ground
+        10f, // ground
         20f, // gap
         1f, // coin
         1f, // trap
         0.5f, // enemy
         0.25f   // enemy with gun
     };
+
+    public Room GenerateCompleteRandom(EvaluateRoom evaluateRoom)
+    {
+        int[,] randomRoom = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
+        for (int y = 0; y < TileInformation.roomSizeY; y++)
+        {
+            for (int x = 0; x < TileInformation.roomSizeX; x++)
+            {
+                randomRoom[y, x] = Random.Range(0, 6);
+            }
+        }
+        return new Room(randomRoom, evaluateRoom);
+    }
 
     public Room Generate(EvaluateRoom evaluateRoom)
     {

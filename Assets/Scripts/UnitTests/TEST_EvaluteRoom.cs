@@ -29,7 +29,7 @@ public class TEST_EvaluateRoom {
 
         Room room = new Room(roomData, evaluateRoom);
 
-        float evaluateResults = evaluateRoom.Evaluate(room);
+        float evaluateResults = evaluateRoom.EvaluateAll(room);
         Assert.AreEqual(expected, evaluateResults);
 	}
 }
