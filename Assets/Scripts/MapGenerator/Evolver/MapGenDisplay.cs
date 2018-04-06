@@ -112,7 +112,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         int numRoomsInGeneration = DefaultRuleArguments.populationSize;
         for (int p = 20 + amountRandom; p < numRoomsInGeneration; p += 2)
         {
-            np = EvoMode(np, 1, 0, 0);
+            np = EvoMode(np, 1, 2, 2);
         }
 
         np = msr.MergeSort(np);
@@ -150,6 +150,9 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
             case 1:
                 rcrossover = crossover.MultiPointCrossover(parents[0], parents[1], 50, evaluateRoom);
                 break;
+            case 2:
+                rcrossover = crossover.OnePointCrossover(parents[0], parents[1], evaluateRoom);
+                break;
             default:
                 rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
                 break;
@@ -166,12 +169,15 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
                 mutationResults[0] = mutation.SwapMutation(rcrossover[0], evaluateRoom);
                 mutationResults[1] = mutation.SwapMutation(rcrossover[1], evaluateRoom);
                 break;
+            case 2:
+                mutationResults[0] = mutation.ScrambleMutation(rcrossover[0], evaluateRoom);
+                mutationResults[1] = mutation.ScrambleMutation(rcrossover[1], evaluateRoom);
+                break;
             default:
                 mutationResults[0] = mutation.RandomReseting(rcrossover[0], evaluateRoom);
                 mutationResults[1] = mutation.RandomReseting(rcrossover[1], evaluateRoom);
                 break;
         }
-
         //mutationResults[0] = mutation.SwapMutation(crossOver[0], evaluateRoom);
         //mutationResults[1] = mutation.SwapMutation(crossOver[1], evaluateRoom);
 

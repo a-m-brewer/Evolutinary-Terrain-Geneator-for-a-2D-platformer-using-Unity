@@ -67,4 +67,31 @@ public class Mutation {
 
         return new Room(output, evaluateRoom);
     }
+
+    public Room ScrambleMutation(Room room, EvaluateRoom evaluateRoom)
+    {
+        int[,] output = room.Data;
+
+        int randomY = Random.Range(0, 9);
+
+        int startX = Random.Range(0, TileInformation.roomSizeX - 1);
+        int endX = Random.Range(startX + 1, TileInformation.roomSizeX);
+
+        List<int> scrambled = new List<int>();
+
+        for(int x = startX; x < endX; x++)
+        {
+            scrambled.Add(output[randomY, x]);
+        }
+
+        scrambled = UsefulMethods.Shuffle<int>(scrambled);
+
+        for (int x = startX; x < endX; x++)
+        {
+            output[randomY, x] = scrambled[0];
+            scrambled.Remove(scrambled[0]);
+        }
+
+        return new Room(output, evaluateRoom);
+    }
 }
