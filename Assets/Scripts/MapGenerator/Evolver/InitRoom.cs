@@ -36,21 +36,15 @@ public class CreateRoom {
     {
         int[,] randomRoom = new int[TileInformation.roomSizeY,TileInformation.roomSizeX];
 
-        string roomString = "";
-
         for (int y = 0; y < randomRoom.GetLength(0); y++)
         {
             for (int x = 0; x < randomRoom.GetLength(1); x++)
             {
                 randomRoom[y, x] = SetTile(new Vector2(x, y));
-                roomString += randomRoom[y, x];
             }
-            roomString += "\n";
         }
 
-        roomString += "\n\n";
-
-        return new Room(randomRoom, roomString, evaluateRoom);
+        return new Room(randomRoom, evaluateRoom);
     }
 
     private int SetTile(Vector2 index)
@@ -62,7 +56,7 @@ public class CreateRoom {
         for (int i = 0; i < chanceOfSpawning.Length; i++)
         {
             int tileType = i + 1;
-            toPlace = TryPlaceTile(chanceOfSpawning[0], tileType, toPlace);
+            toPlace = TryPlaceTile(chanceOfSpawning[i], tileType, toPlace);
         }
 
         if (index.x < TileInformation.roomSizeX && toPlace == ERROR_NO_TILE)
