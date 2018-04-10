@@ -28,6 +28,9 @@ public class GeneratorRules {
     private int endOfNonWayPointEvaluation = 7;
     public int WaypointStart { get { return this.endOfNonWayPointEvaluation; } }
 
+
+    public int[,] walkablePath = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
+
     public GeneratorRules(float _mutationRate, int _targetEnemies, int _maxCoins, int _maxTraps, List<int[]> _checkpoints)
     {
         this.mutationRate = _mutationRate;
@@ -131,6 +134,7 @@ public class GeneratorRules {
         currIndex = -1;
         prevX = -1;
         prevY = -1;
+        walkablePath = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
     }
 
     /// <summary>
@@ -196,6 +200,8 @@ public class GeneratorRules {
 
         pf.FindPath(new Vector2(0, FindPosY(grid, 0)), new Vector2(23, FindPosY(grid, 23)));
         grid.DrawPath();
+
+        walkablePath = grid.WalkableGrid;
 
         // if the a* pathfinder makes it to the target the map is navigatable for a player
         if(pf.foundpath)

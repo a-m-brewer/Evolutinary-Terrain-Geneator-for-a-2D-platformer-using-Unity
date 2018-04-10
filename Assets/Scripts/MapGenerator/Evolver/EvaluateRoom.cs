@@ -13,10 +13,12 @@ public class EvaluateRoom {
                                                    DefaultRuleArguments.maxCoins,
                                                    DefaultRuleArguments.maxTraps,
                                                    DefaultRuleArguments.checkpoints);
+    public int[,] walkableGrid;
 
     public float Evaluate(Room room)
     {
         List<float> fromMainChecker = gr.MainChecker(room);
+        walkableGrid = gr.walkablePath;
         float score = 0f;
         // if path can't be found return how close
 

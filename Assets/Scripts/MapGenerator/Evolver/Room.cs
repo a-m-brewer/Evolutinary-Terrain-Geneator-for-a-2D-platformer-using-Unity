@@ -13,12 +13,16 @@ public class Room  {
     private Vector2 roomSize;
     public Vector2 RoomSize { get { return this.roomSize; } }
 
+    public int[,] walkableGrid;
+
     public Room(int[,] dataToHold, string roomString, EvaluateRoom er)
     {
         this.roomSize = new Vector2(dataToHold.GetLength(1), dataToHold.GetLength(0));
         this.Data = dataToHold;
         this.RString = roomString;
         this.Fitness = er.Evaluate(this);
+        this.walkableGrid = er.walkableGrid;
+
     }
 
     public Room(int[,] dataToHold, EvaluateRoom er)
@@ -26,6 +30,7 @@ public class Room  {
         this.roomSize = new Vector2(dataToHold.GetLength(1), dataToHold.GetLength(0));
         this.Data = dataToHold;
         this.Fitness = er.Evaluate(this);
+        this.walkableGrid = er.walkableGrid;
     }
 
     

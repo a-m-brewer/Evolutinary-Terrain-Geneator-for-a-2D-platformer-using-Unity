@@ -72,7 +72,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         Transform newRoom;
         newRoom = Instantiate(room, rPos, Quaternion.Euler(Vector3.right));
         newRoom.parent = mapHolder;
-        newRoom.GetComponent<RoomGenerator>().EvoGenerateRoom(0, mapHolder, chosenRoom.Data);
+        newRoom.GetComponent<RoomGenerator>().EvoGenerateRoom(0, mapHolder, chosenRoom);
 
     }
 
