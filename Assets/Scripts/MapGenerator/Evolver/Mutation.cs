@@ -10,6 +10,13 @@ public class Mutation {
                                            DefaultRuleArguments.maxTraps,
                                            DefaultRuleArguments.checkpoints);
 
+    public float mutationRate = 0f;
+
+    public Mutation()
+    {
+        mutationRate = gr.GetMutationRate();
+    }
+
     public Room RandomReseting(Room room, EvaluateRoom evaluateRoom)
     {
         int[,] output = room.Data;
@@ -18,7 +25,7 @@ public class Mutation {
         {
             for (int x = 0; x < output.GetLength(1); x++)
             {
-                if (UsefulMethods.RandomChance(gr.GetMutationRate()))
+                if (UsefulMethods.RandomChance(mutationRate))
                 {
                     // only allow gap tiles if the array is setting the bottom layer
                     if (x < TileInformation.roomSizeX)
@@ -44,7 +51,7 @@ public class Mutation {
         {
             for (int x = 0; x < output.GetLength(1); x++)
             {
-                if (UsefulMethods.RandomChance(gr.GetMutationRate()))
+                if (UsefulMethods.RandomChance(mutationRate))
                 {
                     int toSwapX = Random.Range(0, TileInformation.roomSizeX - 1);
                     int toSwapY = Random.Range(0, TileInformation.roomSizeY - 1);

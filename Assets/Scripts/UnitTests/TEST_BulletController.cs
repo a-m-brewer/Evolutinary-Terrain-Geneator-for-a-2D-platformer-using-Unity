@@ -19,6 +19,15 @@ public class TEST_BulletController {
     }
 
     [Test]
+    public void TEST_GetDamageOfBullet()
+    {
+        var bullet = new GameObject().AddComponent<BulletController>();
+        float damage = 1f;
+        bullet.SetDamage(damage);
+        Assert.AreEqual(damage, bullet.GetDamage());
+    }
+
+    [Test]
     public void TEST_SetParentTag()
     {
         var bullet = new GameObject().AddComponent<BulletController>();

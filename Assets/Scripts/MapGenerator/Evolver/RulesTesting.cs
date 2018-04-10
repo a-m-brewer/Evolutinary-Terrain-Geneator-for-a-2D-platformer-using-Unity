@@ -26,7 +26,7 @@ public class RulesTesting : MonoBehaviour {
         };
 
     InitPopulation ip = new InitPopulation();
-    EvaluateRoom er = new EvaluateRoom(0.75f);
+    EvaluateRoom er = new EvaluateRoom();
     Crossover co = new Crossover();
     Mutation mu = new Mutation();
     SelectRoom sr = new SelectRoom();

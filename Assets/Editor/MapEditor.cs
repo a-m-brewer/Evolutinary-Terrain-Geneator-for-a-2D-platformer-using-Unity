@@ -79,6 +79,11 @@ public class EvoMapEditor : Editor
             mgd.chosenRoom.Data.ArchiveRoom();
         }
 
+        if (GUILayout.Button("Archive Current Best Map Path"))
+        {
+            mgd.chosenRoom.walkableGrid.ArchiveRoom();
+        }
+
         EditorGUILayout.IntSlider(n, 0, 99);
         serializedObject.ApplyModifiedProperties();
         if (GUILayout.Button("View Map N"))

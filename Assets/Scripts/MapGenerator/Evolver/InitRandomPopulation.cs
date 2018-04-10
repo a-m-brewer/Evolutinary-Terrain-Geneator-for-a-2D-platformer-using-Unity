@@ -40,7 +40,7 @@ public class InitRandomPopulation {
         return initMap;
     }
 
-    public void SetBestRoom(Room toCheck)
+    private void SetBestRoom(Room toCheck)
     {
         if(bestRoom == null)
         {

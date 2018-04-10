@@ -9,13 +9,18 @@ public class InitHuristicRooms {
 
     public Room bestRoom;
 
+    public InitHuristicRooms()
+    {
+
+    }
+
     public InitHuristicRooms(TextAsset rooms, EvaluateRoom evaluateRoom)
     {
         string[] loadRooms = LoadRooms(rooms, evaluateRoom);
         this.Rooms = LoadData(loadRooms, evaluateRoom);
     }
 
-    public string[] LoadRooms(TextAsset inFile, EvaluateRoom er)
+    private string[] LoadRooms(TextAsset inFile, EvaluateRoom er)
     {
         string[] wholeLevels = new string[1];
 
@@ -61,7 +66,7 @@ public class InitHuristicRooms {
 
     }
 
-    public void SetBestRoom(Room toCheck)
+    private void SetBestRoom(Room toCheck)
     {
         if(bestRoom == null)
         {

@@ -18,11 +18,18 @@ public class GeneratorRules {
     private int maxTraps;
 
     private List<int[]> checkpoints;
+    public List<int[]> Checkpoints { get { return this.checkpoints; } }
 
     private List<int> platformSizes = new List<int>();
     private int currIndex = -1;
     int prevX = -1;
     int prevY = -1;
+
+    private int endOfNonWayPointEvaluation = 7;
+    public int WaypointStart { get { return this.endOfNonWayPointEvaluation; } }
+
+
+    public int[,] walkablePath = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
 
     public GeneratorRules(float _mutationRate, int _targetEnemies, int _maxCoins, int _maxTraps, List<int[]> _checkpoints)
     {
@@ -44,7 +51,7 @@ public class GeneratorRules {
     public List<float> MainChecker(Room room)
     {
         List<float> evaluationResults = new List<float>();
-        for(int i = 0; i < 8; i++)
+        for(int i = 0; i < endOfNonWayPointEvaluation; i++)
         {
             evaluationResults.Add(0f);
         }
@@ -86,8 +93,7 @@ public class GeneratorRules {
 
         for (int i = 0; i < platformSizes.Count; i++)
         {
-            //                               current platform  len  g1  g2  
-            evaluationResults[6] += Gauss2mf(platformSizes[i], 5f, 3f, 24f);
+            evaluationResults[6] += Gauss2mf(platformSizes[i], 2f, 3f, 24f);
         }
 
         // count is the mean
@@ -95,15 +101,16 @@ public class GeneratorRules {
         evaluationResults[4] = Gauss(evaluationResults[4], 20f, evaluationResults[0]);
         evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[2]);
 
-        evaluationResults[0] = Gauss(evaluationResults[0], 20f, this.targetEnemies);
+        evaluationResults[0] = Gauss(evaluationResults[0], 40f, this.targetEnemies);
         evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.maxCoins);
         evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxTraps);
-        evaluationResults[6] = Gauss(evaluationResults[6], 20f, platformSizes.Count);
+        evaluationResults[6] = Gauss(evaluationResults[6], 5f, platformSizes.Count);
 
 
         Grid roomGrid = CreateGrid(room);
         int startY = FindPosY(roomGrid, 0);
 
+        evaluationResults.Add(AddCheckpoints(room, roomGrid, startY));
         evaluationResults.Add(CanNavigateRoom(room, roomGrid, startY));
 
         return evaluationResults;
@@ -127,6 +134,7 @@ public class GeneratorRules {
         currIndex = -1;
         prevX = -1;
         prevY = -1;
+        walkablePath = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
     }
 
     /// <summary>
@@ -192,6 +200,8 @@ public class GeneratorRules {
 
         pf.FindPath(new Vector2(0, FindPosY(grid, 0)), new Vector2(23, FindPosY(grid, 23)));
         grid.DrawPath();
+
+        walkablePath = grid.WalkableGrid;
 
         // if the a* pathfinder makes it to the target the map is navigatable for a player
         if(pf.foundpath)
@@ -425,6 +435,28 @@ public class GeneratorRules {
     private bool IsWorldItem(int tile)
     {
         return tile != 0 && tile != 1 && tile != 6;
+    }
+
+    private float AddCheckpoints(Room room, Grid grid, int startY)
+    {
+        int numCheckpoints = 0;
+        float result = 0f;
+
+        if(checkpoints.Count == 0)
+        {
+            return 1f;
+        }
+
+        if(checkpoints.Count > 0)
+        {
+            numCheckpoints += checkpoints.Count;
+            foreach(int[] checkpoint in checkpoints)
+            {
+                result += CanNavigateToPoint(room, grid, 0, startY, checkpoint[0], checkpoint[1]) / numCheckpoints;
+            }
+        }
+
+        return result;
     }
 
 }

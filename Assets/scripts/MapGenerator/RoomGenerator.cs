@@ -71,7 +71,7 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
 
 
     // main method called to create a room 
-    public void EvoGenerateRoom(int rNumber, Transform parent, int[,] roomData)
+    public void EvoGenerateRoom(int rNumber, Transform parent, Room roomData)
     {
         // set the name of the game object to group map tiles with
         string holderName = "RoomGen";
@@ -95,14 +95,31 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
                 Vector3 tilePos = new Vector3(x + rOffset, y, 0);
                 // roomData holds what kind of tile should be spawned for an array index
                 // So check what this array says the current index should be
-                int toInstantiate = roomData[y, x];
+                int toInstantiate = roomData.Data[y, x];
                 // check if the tile is an enemy that needs a background tile placed behind it
                 if (NeedsBackgroundTile(toInstantiate))
                 {
-                    InstatiateBackground(tilePos, mapHolder);
+                    Transform background = InstatiateBackground(tilePos, mapHolder);
+                    if(roomData.walkableGrid[y, x] == 2)
+                    {
+                        background.GetComponent<SpriteRenderer>().color = Color.black;
+                    }
                 }
                 // place the tile into the room
                 Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
+
+                if (roomData.walkableGrid[y, x] == 2)
+                {       
+                    if(newTile.GetComponent<SpriteRenderer>() == null)
+                    {
+                        newTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.black;
+                    }
+                    else
+                    {
+                        newTile.GetComponent<SpriteRenderer>().color = Color.black;
+                    }
+                }
+
                 // add to the overall difficulty of the room
                 AddToDifficulty(newTile);
             }

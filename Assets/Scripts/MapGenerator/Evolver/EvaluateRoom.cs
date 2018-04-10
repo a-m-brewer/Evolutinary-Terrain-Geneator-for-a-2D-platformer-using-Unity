@@ -14,52 +14,42 @@ public class EvaluateRoom {
                                                    DefaultRuleArguments.maxTraps,
                                                    DefaultRuleArguments.checkpoints);
 
-    /// <summary>
-    /// Init method for the class that will evaluate a rooms fitness
-    /// </summary>
-    /// <param name="groundPercent">amount of the ground that should be floor</param>
-    public EvaluateRoom(float groundPercent)
-    {
-        this.targetGroundPercentage = groundPercent;
-    }
+    public int[,] walkableGrid;
 
     public float Evaluate(Room room)
     {
         List<float> fromMainChecker = gr.MainChecker(room);
+        walkableGrid = gr.walkablePath;
         float score = 0f;
         // if path can't be found return how close
-        // N < 1
-        if (fromMainChecker[fromMainChecker.Count - 1] < 1f)
+
+        if (fromMainChecker[fromMainChecker.Count - 1] < 1f || fromMainChecker[fromMainChecker.Count - 2] < 1f)
         {
-            score = fromMainChecker[fromMainChecker.Count - 1];
+            score = fromMainChecker[fromMainChecker.Count - 1] + fromMainChecker[fromMainChecker.Count - 2];
         }
         else if (fromMainChecker[0] < 1f || fromMainChecker[1] < 1f || fromMainChecker[2] < 1f)
         {
-            float prevStage = fromMainChecker[fromMainChecker.Count - 1];
+            float prevStage = fromMainChecker[fromMainChecker.Count - 1] + fromMainChecker[fromMainChecker.Count - 2];
             score = prevStage + fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2];
         }
         else
         {
-            float prevStage = fromMainChecker[fromMainChecker.Count - 1] + fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2];
+            float prevStage = fromMainChecker[fromMainChecker.Count - 1] + fromMainChecker[fromMainChecker.Count - 2] + fromMainChecker[0] + fromMainChecker[1] + fromMainChecker[2];
             score = prevStage + fromMainChecker[3] + fromMainChecker[4] + fromMainChecker[5] + fromMainChecker[6];
+            //score = prevStage + fromMainChecker[6];
         }
 
         return score;
     }
 
-    public float[] EvaluatePopulation(Room[] pop)
+    public float EvaluateAll(Room room)
     {
-        float[] result = new float[pop.Length];
-        for (int i = 0; i < result.Length; i++)
+        List<float> fromMainChecker = gr.MainChecker(room);
+        float score = 0f;
+        foreach(float f in fromMainChecker)
         {
-            result[i] = Evaluate(pop[i]);
-            Debug.Log(i + " " + result[i]);
+            score += f;
         }
-        return result;
-    }
-
-    public float GetGroundPercent()
-    {
-        return this.targetGroundPercentage;
+        return score;
     }
 }

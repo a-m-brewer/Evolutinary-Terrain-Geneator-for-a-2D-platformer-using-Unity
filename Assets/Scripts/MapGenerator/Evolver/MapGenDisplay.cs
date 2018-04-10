@@ -27,7 +27,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     // a link to the file storing all of the roomData
     public TextAsset huristicMaps;
     public Room chosenRoom;
-    private EvaluateRoom evaluateRoom = new EvaluateRoom(0.75f);
+    private EvaluateRoom evaluateRoom = new EvaluateRoom();
     // Difficultys
     public int mapTargetDifficulty;
     public int actualDifficultyScore;
@@ -37,6 +37,9 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     Crossover crossover = new Crossover();
     Mutation mutation = new Mutation();
     MergeSortRoom msr = new MergeSortRoom();
+    public int generation = 0;
+    public int MAX_GENERATIONS;
+    public int mapInitMode = 1;
 
     private void Start()
     {
@@ -69,13 +72,14 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         Transform newRoom;
         newRoom = Instantiate(room, rPos, Quaternion.Euler(Vector3.right));
         newRoom.parent = mapHolder;
-        newRoom.GetComponent<RoomGenerator>().EvoGenerateRoom(0, mapHolder, chosenRoom.Data);
+        newRoom.GetComponent<RoomGenerator>().EvoGenerateRoom(0, mapHolder, chosenRoom);
 
     }
 
     public void InitMap()
     {
-        roomPop = new Population(evaluateRoom, 1, huristicMaps);
+        generation = 1;
+        roomPop = new Population(evaluateRoom, mapInitMode, huristicMaps);
         roomPop.topTwenty = msr.MergeSort(roomPop.popRooms.ToList());
 
         roomPop.topTwenty.Reverse();
@@ -97,7 +101,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
         np = roomPop.topTwenty.ToList();
 
-        int amountRandom = 5;
+        int amountRandom = 0;
 
         // add some random each generation
         for(int r = 0; r < amountRandom; r++)
@@ -119,6 +123,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         roomPop.bestRooms = np.Take(2).ToArray();
 
         chosenRoom = roomPop.bestRooms[0];
+        generation++;
     }
 
     private List<Room> EvoMode(List<Room> pop, int selectMode, int crossoverMode, int mutationMode)
@@ -182,7 +187,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     }
 
     // add the difficulty of the each rooms to get the maps score
-    void CalculateDifficulty()
+    public void CalculateDifficulty()
     {
         AddComponentWithTagToDifficulty("Room");
     }
@@ -247,7 +252,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void ToInvoke()
     {
-        if(chosenRoom.Fitness == 8f)
+        if(generation == MAX_GENERATIONS)
         {
             CancelInvoke("ToInvoke");
         }
