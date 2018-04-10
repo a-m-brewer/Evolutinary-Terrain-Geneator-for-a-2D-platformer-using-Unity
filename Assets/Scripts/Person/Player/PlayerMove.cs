@@ -26,14 +26,12 @@ public class PlayerMove : Player
 
         if(isGrounded && hasJumped)
         {
-            s.Stop();
             hasJumped = false;
         }
     }
 
     void MovePlayer()
     {
-        //moveX = 0f;
 
         moveX = Input.GetAxisRaw("Horizontal");
 
@@ -45,9 +43,6 @@ public class PlayerMove : Player
                 
 
                 hasJumped = true;
-
-                s = new Stopwatch();
-                s.Start();
 
                 isGrounded = false;
             }

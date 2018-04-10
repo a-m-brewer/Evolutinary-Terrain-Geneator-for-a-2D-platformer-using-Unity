@@ -112,7 +112,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         int numRoomsInGeneration = DefaultRuleArguments.populationSize;
         for (int p = 20 + amountRandom; p < numRoomsInGeneration; p += 2)
         {
-            np = EvoMode(np, 1, 2, 2);
+            np = EvoMode(np, 1, 0, 0);
         }
 
         np = msr.MergeSort(np);
