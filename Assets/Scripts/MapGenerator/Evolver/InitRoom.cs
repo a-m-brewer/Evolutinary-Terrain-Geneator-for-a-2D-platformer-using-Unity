@@ -11,7 +11,7 @@ public class CreateRoom {
 
     private float[] chanceOfSpawning = new float[6]
     {
-        10f, // ground
+        40f, // ground
         20f, // gap
         1f, // coin
         1f, // trap
@@ -49,25 +49,20 @@ public class CreateRoom {
 
     private int SetTile(Vector2 index)
     {
+        // Start with a number that is not a tile
         int toPlace = ERROR_NO_TILE;
-        
+        // If it is on the lowest level choose between ground and gap tiles
         toPlace = InitGround((int)index.y);
-        
+        // Loop through each tile type and try to place one of them.
         for (int i = 0; i < chanceOfSpawning.Length; i++)
         {
             int tileType = i + 1;
             toPlace = TryPlaceTile(chanceOfSpawning[i], tileType, toPlace);
         }
-
-        if (index.x < TileInformation.roomSizeX && toPlace == ERROR_NO_TILE)
-            toPlace = GAP;
-
+        // if can't place a tile by random chance place the background tile
         if (toPlace == ERROR_NO_TILE)
             toPlace = BACKGROUND;
-
-        if (index == TileInformation.spawnPoint)
-            toPlace = GROUND;
-        
+        // return new tile gene e.g. return background tile (0)
         return toPlace;
     }
 
