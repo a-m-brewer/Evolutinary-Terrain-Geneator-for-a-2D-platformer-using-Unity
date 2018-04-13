@@ -39,7 +39,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     MergeSortRoom msr = new MergeSortRoom();
     public int generation = 0;
     public int MAX_GENERATIONS;
-    public int mapInitMode = 1;
+    private int mapInitMode = 0;
 
     private void Start()
     {

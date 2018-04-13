@@ -91,6 +91,19 @@ public class Enemy : Person, IDifficulty {
         Vector2 enemyVelocity = GetRigidBody().velocity;
         enemyVelocity.x = enemyTransform.right.x * movementSpeed;
         GetRigidBody().velocity = enemyVelocity;
+
+        if (!anim.GetBool("Damaged"))
+        {
+            if (enemyVelocity.x != 0f)
+            {
+                anim.SetBool("Walk", true);
+            }
+            else
+            {
+                anim.SetBool("Walk", false);
+            }
+        }
+
     }
 
     private bool EnemyIsGrounded(Vector2 foe)
@@ -101,8 +114,8 @@ public class Enemy : Person, IDifficulty {
 
     private bool EnemyIsBlocked(Vector2 foe)
     {
-        Debug.DrawLine(foe, foe + enemyTransform.right.ToVector2() * 0.3f, Color.white);
-        return Physics2D.Linecast(foe, foe + enemyTransform.right.ToVector2() * 0.03f, enemyMask);
+        Debug.DrawLine(foe, foe + enemyTransform.right.ToVector2() * 0.2f, Color.white);
+        return Physics2D.Linecast(foe, foe + enemyTransform.right.ToVector2() * 0.1f, enemyMask);
     }
 
     private void RotateEnemy()

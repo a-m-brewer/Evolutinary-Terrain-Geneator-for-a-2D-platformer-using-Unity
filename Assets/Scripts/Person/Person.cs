@@ -53,6 +53,14 @@ public class Person : MonoBehaviour{
         }
     }
 
+    private void Update()
+    {  
+        if(isGrounded)
+        {
+            anim.SetBool("Jump", false);
+        }
+    }
+
     public void Jump()
     {
         if(isGrounded)
@@ -60,6 +68,7 @@ public class Person : MonoBehaviour{
             if (gameObject.GetComponent<PlayerMonitor>() != null)
                 gameObject.GetComponent<PlayerMonitor>().IncreaseJumps();
 
+            anim.SetBool("Jump", true);
             //personRB.AddForce(new Vector2(0, jumpPower));
             personRB.velocity = new Vector2(personRB.velocity.x, jumpPower);
             
@@ -114,6 +123,7 @@ public class Person : MonoBehaviour{
     // N seconds
     public IEnumerator TriggerHurtAnimation()
     {
+        anim.SetBool("Walk", false);
         // Start Animation
         anim.SetBool("Damaged", true);
         // Wait For Invisiblity to end

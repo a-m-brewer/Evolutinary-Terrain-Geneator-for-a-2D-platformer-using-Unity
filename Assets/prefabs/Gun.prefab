@@ -87,8 +87,7 @@ MonoBehaviour:
   canHit:
     serializedVersion: 2
     m_Bits: 4294966523
-  bulletTrail: {fileID: 4122777673276562, guid: 1f7e2d4323f97de489f8ff224a976089,
-    type: 2}
+  firePoint: {fileID: 0}
   bulletPrefab: {fileID: 1887952409430610, guid: 1f7e2d4323f97de489f8ff224a976089,
     type: 2}
 --- !u!212 &212721287323608996
@@ -123,7 +122,7 @@ SpriteRenderer:
   m_SortingLayerID: -701374859
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e4b4d18c4cde2ea449d895b741f44364, type: 3}
+  m_Sprite: {fileID: 21300070, guid: d8906696fdda4504ebb723a1ea25c20d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

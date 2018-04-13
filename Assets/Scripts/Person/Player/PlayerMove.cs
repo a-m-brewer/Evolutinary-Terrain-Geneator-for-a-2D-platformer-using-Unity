@@ -35,12 +35,25 @@ public class PlayerMove : Player
 
         moveX = Input.GetAxisRaw("Horizontal");
 
+        if (moveX != 0f && isGrounded)
+        {
+            anim.SetBool("Walk", true);
+        }
+        else
+        {
+            anim.SetBool("Walk", false);
+        }
+
+        if(isGrounded)
+        {
+            anim.SetBool("Jump", false);
+        }
+
         if (!GetIsTrapped())
         {
             if (Input.GetButtonDown("Jump"))
             {
-                Jump();
-                
+                Jump();              
 
                 hasJumped = true;
 
@@ -49,8 +62,10 @@ public class PlayerMove : Player
 
             // Player direction
             DirectionCheck();
+
             // Physics    
             GetRigidBody().velocity =  new Vector2(moveX * movementSpeed, GetRigidBody().velocity.y);
+
         }
 
         if (Input.GetKeyDown(KeyCode.E))
