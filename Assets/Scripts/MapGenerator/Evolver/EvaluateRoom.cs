@@ -15,7 +15,23 @@ public class EvaluateRoom {
                                                    DefaultRuleArguments.checkpoints);
     public int[,] walkableGrid;
 
-    public float Evaluate(Room room)
+
+    public float Evaluate(int type, Room room)
+    {
+        switch(type)
+        {
+            case 0:
+                return EvaluateWithTiers(room);
+            case 1:
+                return EvaluateAll(room);
+            case 2:
+                return EvaluateWithWeights(room);
+            default:
+                return EvaluateWithTiers(room);
+        }
+    }
+
+    public float EvaluateWithTiers(Room room)
     {
         List<float> fromMainChecker = gr.MainChecker(room);
         walkableGrid = gr.walkablePath;
@@ -49,6 +65,19 @@ public class EvaluateRoom {
         {
             score += f;
         }
+        return score;
+    }
+
+    public float EvaluateWithWeights(Room room)
+    {
+        List<float> fromMainChecker = gr.MainChecker(room);
+        float score = 0f;
+
+        for(int i = 0; i < fromMainChecker.Count; i++)
+        {
+            score += fromMainChecker[i] * DefaultRuleArguments.ruleWeights[i];
+        }
+
         return score;
     }
 }

@@ -123,7 +123,7 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
                         }
                     } else
                     {
-                        Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
+                        Transform newTile = SpawnNewTileInRoom(aboveGround, tilePos, mapHolder);
                     }
                 } 
                 else

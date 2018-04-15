@@ -13,7 +13,7 @@ public class Player : Person {
     private void Start()
     {
         movementSpeed = 10f;
-        jumpPower = 13.75f;
+        jumpPower = 16f;
         health = 3;
         SetBadGuyTag("Enemy");
         SetOriginalHealth(health);

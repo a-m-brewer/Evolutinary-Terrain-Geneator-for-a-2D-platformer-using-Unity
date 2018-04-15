@@ -10,6 +10,6 @@ public static class PlayerMovementRestrictions {
 
     public static float cMaxFallSpeedUnity = cMaxFallSpeed / 32f;
 
-    public static int maxJumpHeight = 3;
+    public static int maxJumpHeight = 2;
     public static int maxJumpHeightValue = 2 * maxJumpHeight;
 }

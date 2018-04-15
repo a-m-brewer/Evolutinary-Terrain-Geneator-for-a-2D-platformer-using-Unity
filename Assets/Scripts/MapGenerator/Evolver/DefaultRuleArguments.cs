@@ -11,7 +11,22 @@ public static class DefaultRuleArguments
     public static int populationSize = 100;
     public static List<int[]> checkpoints = new List<int[]>()
     {
-        new int[2] {3,7},
-        new int[2] {9,4}
+        new int[2] {7, 3},
     };
+
+    public static int evaluationMode = 0;
+
+    public static float[] ruleWeights = new float[9]
+    {
+        1f,
+        1f,
+        1f,
+        1f,
+        1f,
+        1f,
+        1f,
+        1f,
+        20f
+    };
+    
 }

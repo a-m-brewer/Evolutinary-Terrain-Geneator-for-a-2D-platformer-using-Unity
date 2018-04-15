@@ -97,13 +97,13 @@ public class GeneratorRules {
         }
 
         // count is the mean
-        evaluationResults[3] = Gauss(evaluationResults[3], 20f, evaluationResults[0]);
-        evaluationResults[4] = Gauss(evaluationResults[4], 20f, evaluationResults[0]);
-        evaluationResults[5] = Gauss(evaluationResults[5], 20f, evaluationResults[2]);
+        evaluationResults[3] = Gauss(evaluationResults[3], 5f, evaluationResults[0]);
+        evaluationResults[4] = Gauss(evaluationResults[4], 5f, evaluationResults[0]);
+        evaluationResults[5] = Gauss(evaluationResults[5], 5f, evaluationResults[2]);
 
-        evaluationResults[0] = Gauss(evaluationResults[0], 40f, this.targetEnemies);
+        evaluationResults[0] = Gauss(evaluationResults[0], 10f, this.targetEnemies);
         evaluationResults[1] = Gauss(evaluationResults[1], 20f, this.maxCoins);
-        evaluationResults[2] = Gauss(evaluationResults[2], 20f, this.maxTraps);
+        evaluationResults[2] = Gauss(evaluationResults[2], 10f, this.maxTraps);
         evaluationResults[6] = Gauss(evaluationResults[6], 5f, platformSizes.Count);
 
 
@@ -457,6 +457,19 @@ public class GeneratorRules {
         }
 
         return result;
+    }
+
+    private int GetDistance(int start_x, int start_y, int end_x, int end_y)
+    {
+        int distX = Mathf.Abs(start_x - end_x);
+        int distY = Mathf.Abs(start_y - end_y);
+
+        if (distX > distY)
+        {
+            return 14 * distY + 10 * (distX - distY);
+        }
+
+        return 14 * distX + 10 * (distY - distX);
     }
 
 }

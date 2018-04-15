@@ -39,7 +39,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     MergeSortRoom msr = new MergeSortRoom();
     public int generation = 0;
     public int MAX_GENERATIONS;
-    private int mapInitMode = 0;
+    public int mapInitMode = 1;
 
     private void Start()
     {
@@ -97,22 +97,14 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void IncrementEvolutionOfRoomAndDisplayBest()
     {
-        List<Room> np = new List<Room>();
-
-        np = roomPop.topTwenty.ToList();
-
-        int amountRandom = 0;
-
-        // add some random each generation
-        for(int r = 0; r < amountRandom; r++)
-        {
-            np.Add(new CreateRoom().Generate(evaluateRoom));
-        }
+        List<Room> np = roomPop.topTwenty;
+        //List<Room> np = new List<Room>();
 
         int numRoomsInGeneration = DefaultRuleArguments.populationSize;
-        for (int p = 20 + amountRandom; p < numRoomsInGeneration; p += 2)
+
+        for (int p = 20; p < numRoomsInGeneration; p += 2)
         {
-            np = EvoMode(np, 1, 0, 0);
+            np = EvoMode(np, 1, 2, 2);
         }
 
         np = msr.MergeSort(np);
@@ -135,7 +127,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
                 parents = selectRoom.SelectParentsRoulette(roomPop.popRooms);
                 break;
             case 1:
-                parents = selectRoom.SelectParentsTournament(roomPop.popRooms, 4);
+                parents = selectRoom.SelectParentsTournament(roomPop.popRooms, 10);
                 break;
             default:
                 parents = selectRoom.SelectParentsRoulette(roomPop.popRooms);
