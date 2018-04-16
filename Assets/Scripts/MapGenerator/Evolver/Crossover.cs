@@ -12,7 +12,7 @@ public class Crossover {
     /// <param name="roomTwo">The Second room</param>
     /// <param name="bias">How likely it is to choose the first room out of 100</param>
     /// <returns></returns>
-    public Room[] UniformCrossover(Room roomOne, Room roomTwo, int bias, EvaluateRoom er)
+    public Room[] UniformCrossover(Room roomOne, Room roomTwo, int bias)
     {
         int[,] out1 = new int[roomOne.Data.GetLength(0), roomOne.Data.GetLength(1)];
         int[,] out2 = new int[roomTwo.Data.GetLength(0), roomTwo.Data.GetLength(1)];
@@ -36,14 +36,14 @@ public class Crossover {
 
         Room[] newRooms = new Room[2]
         {
-            new Room(out1,er),
-            new Room(out2,er)
+            new Room(out1),
+            new Room(out2)
         };
 
         return newRooms;
     }
 
-    public Room[] MultiPointCrossover(Room roomOne, Room roomTwo, int bias, EvaluateRoom er)
+    public Room[] MultiPointCrossover(Room roomOne, Room roomTwo, int bias)
     {
         int[,] out1 = new int[roomOne.Data.GetLength(0), roomOne.Data.GetLength(1)];
         int[,] out2 = new int[roomTwo.Data.GetLength(0), roomTwo.Data.GetLength(1)];
@@ -69,14 +69,14 @@ public class Crossover {
 
         Room[] newRooms = new Room[2]
         {
-            new Room(out1,er),
-            new Room(out2,er)
+            new Room(out1),
+            new Room(out2)
         };
 
         return newRooms;
     }
 
-    public Room[] OnePointCrossover(Room roomOne, Room roomTwo, EvaluateRoom evaluateRoom)
+    public Room[] OnePointCrossover(Room roomOne, Room roomTwo)
     {
         int[,] out1 = new int[roomOne.Data.GetLength(0), roomOne.Data.GetLength(1)];
         int[,] out2 = new int[roomTwo.Data.GetLength(0), roomTwo.Data.GetLength(1)];
@@ -102,8 +102,8 @@ public class Crossover {
 
         Room[] newRooms = new Room[2]
         {
-            new Room(out1, evaluateRoom),
-            new Room(out2, evaluateRoom)
+            new Room(out1),
+            new Room(out2)
         };
 
         return newRooms;

@@ -37,11 +37,11 @@ public class TEST_Crossover {
         };
 
         var evaluateRoom = new EvaluateRoom();
-        var roomOne = new Room(room1, evaluateRoom);
-        var roomTwo = new Room(room2, evaluateRoom);
+        var roomOne = new Room(room1);
+        var roomTwo = new Room(room2);
 
         Crossover co = new Crossover();
-        Room[] crossover = co.UniformCrossover(roomOne, roomTwo, 50, evaluateRoom);
+        Room[] crossover = co.UniformCrossover(roomOne, roomTwo, 50);
         bool result = false;
         for(int y = 0; y < roomOne.Data.GetLength(0); y++)
         {
@@ -89,11 +89,11 @@ public class TEST_Crossover {
         };
 
         var evaluateRoom = new EvaluateRoom();
-        var roomOne = new Room(room1, evaluateRoom);
-        var roomTwo = new Room(room2, evaluateRoom);
+        var roomOne = new Room(room1);
+        var roomTwo = new Room(room2);
 
         Crossover co = new Crossover();
-        Room[] crossover = co.MultiPointCrossover(roomOne, roomTwo, 50, evaluateRoom);
+        Room[] crossover = co.MultiPointCrossover(roomOne, roomTwo, 50);
 
         int blockSizeX = 6;
         int blockSizeY = 5;

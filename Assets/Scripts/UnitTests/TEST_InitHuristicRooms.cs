@@ -49,7 +49,7 @@ public class TEST_InitHuristicRooms {
 
         InitHuristicRooms initHuristicRooms = new InitHuristicRooms();
 
-        Room[] testRooms = initHuristicRooms.LoadData(rooms, evaluateRoom);
+        Room[] testRooms = initHuristicRooms.LoadData(rooms);
 
         bool rightLength = testRooms.Length == 3;
 

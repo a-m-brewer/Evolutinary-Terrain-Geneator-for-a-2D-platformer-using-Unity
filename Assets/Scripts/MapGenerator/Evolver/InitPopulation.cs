@@ -7,12 +7,12 @@ public class InitPopulation {
 
     public Room[] bestRooms = new Room[2];
 
-    public Room[] Generate(TextAsset huristicRooms, EvaluateRoom evaluateRoom)
+    public Room[] Generate(TextAsset huristicRooms)
     {
-        InitRandomPopulation irp = new InitRandomPopulation(evaluateRoom);
+        InitRandomPopulation irp = new InitRandomPopulation();
         Room[] randomRooms = irp.population;
 
-        InitHuristicRooms ihr = new InitHuristicRooms(huristicRooms, evaluateRoom);
+        InitHuristicRooms ihr = new InitHuristicRooms(huristicRooms);
         Room[] hRooms = ihr.Rooms;
 
         // join both together

@@ -9,7 +9,7 @@ public class PathFindingTesting : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
+        Room[] population = new InitHuristicRooms(huristicMaps).Rooms;
 
 
         int[,] roomTest = new int[10, 24]

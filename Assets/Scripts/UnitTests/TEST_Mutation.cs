@@ -22,11 +22,11 @@ public class TEST_Mutation {
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         };
-        Room room = new Room(roomData, evaluateRoom);
+        Room room = new Room(roomData);
 
         //mutation.mutationRate = 100f;
 
-        Room mutatedRoom = mutation.RandomReseting(room, evaluateRoom);
+        Room mutatedRoom = mutation.RandomReseting(room);
 
         bool result = room.Data[0, 0] != mutatedRoom.Data[0, 0];
         Debug.Log(roomData[0, 0]  + " " + mutatedRoom.Data[0, 0]);

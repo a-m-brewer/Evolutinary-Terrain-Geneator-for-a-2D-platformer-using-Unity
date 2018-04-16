@@ -32,7 +32,7 @@ public class TEST_GeneratorRules {
 
         EvaluateRoom evaluateRoom = new EvaluateRoom();
 
-        Room r = new Room(roomData, evaluateRoom);
+        Room r = new Room(roomData);
 
         List<float> output = gr.MainChecker(r);
 

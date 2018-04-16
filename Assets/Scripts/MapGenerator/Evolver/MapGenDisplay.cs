@@ -79,7 +79,13 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
     public void InitMap()
     {
         generation = 1;
-        roomPop = new Population(evaluateRoom, mapInitMode, huristicMaps);
+        roomPop = new Population(mapInitMode, huristicMaps);
+
+        foreach(Room r in roomPop.popRooms)
+        {
+            r.Fitness = evaluateRoom.Evaluate(DefaultRuleArguments.evaluationMode, r);
+        }
+
         roomPop.topTwenty = msr.MergeSort(roomPop.popRooms.ToList());
 
         roomPop.topTwenty.Reverse();
@@ -137,16 +143,16 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         switch(crossoverMode)
         {
             case 0:
-                rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
+                rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50);
                 break;
             case 1:
-                rcrossover = crossover.MultiPointCrossover(parents[0], parents[1], 50, evaluateRoom);
+                rcrossover = crossover.MultiPointCrossover(parents[0], parents[1], 50);
                 break;
             case 2:
-                rcrossover = crossover.OnePointCrossover(parents[0], parents[1], evaluateRoom);
+                rcrossover = crossover.OnePointCrossover(parents[0], parents[1]);
                 break;
             default:
-                rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50, evaluateRoom);
+                rcrossover = crossover.UniformCrossover(parents[0], parents[1], 50);
                 break;
 
         }
@@ -154,24 +160,27 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         switch(mutationMode)
         {
             case 0:
-                mutationResults[0] = mutation.RandomReseting(rcrossover[0], evaluateRoom);
-                mutationResults[1] = mutation.RandomReseting(rcrossover[1], evaluateRoom);
+                mutationResults[0] = mutation.RandomReseting(rcrossover[0]);
+                mutationResults[1] = mutation.RandomReseting(rcrossover[1]);
                 break;
             case 1:
-                mutationResults[0] = mutation.SwapMutation(rcrossover[0], evaluateRoom);
-                mutationResults[1] = mutation.SwapMutation(rcrossover[1], evaluateRoom);
+                mutationResults[0] = mutation.SwapMutation(rcrossover[0]);
+                mutationResults[1] = mutation.SwapMutation(rcrossover[1]);
                 break;
             case 2:
-                mutationResults[0] = mutation.ScrambleMutation(rcrossover[0], evaluateRoom);
-                mutationResults[1] = mutation.ScrambleMutation(rcrossover[1], evaluateRoom);
+                mutationResults[0] = mutation.ScrambleMutation(rcrossover[0]);
+                mutationResults[1] = mutation.ScrambleMutation(rcrossover[1]);
                 break;
             default:
-                mutationResults[0] = mutation.RandomReseting(rcrossover[0], evaluateRoom);
-                mutationResults[1] = mutation.RandomReseting(rcrossover[1], evaluateRoom);
+                mutationResults[0] = mutation.RandomReseting(rcrossover[0]);
+                mutationResults[1] = mutation.RandomReseting(rcrossover[1]);
                 break;
         }
         //mutationResults[0] = mutation.SwapMutation(crossOver[0], evaluateRoom);
         //mutationResults[1] = mutation.SwapMutation(crossOver[1], evaluateRoom);
+
+        mutationResults[0].Fitness = evaluateRoom.Evaluate(DefaultRuleArguments.evaluationMode, mutationResults[0]);
+        mutationResults[1].Fitness = evaluateRoom.Evaluate(DefaultRuleArguments.evaluationMode, mutationResults[1]);
 
         pop.Add(mutationResults[0]);
         pop.Add(mutationResults[1]);
@@ -240,7 +249,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void InvokeRepeatingEvolution()
     {
-        InvokeRepeating("ToInvoke", 0f, 0.8f);
+        InvokeRepeating("ToInvoke", 0f, 0.3f);
     }
 
     public void CancelInvokeEvolution()
@@ -255,7 +264,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
             CancelInvoke("ToInvoke");
         }
         IncrementEvolutionOfRoomAndDisplayBest();
-        //DisplayRoom();
+        DisplayRoom();
     }
 }
 

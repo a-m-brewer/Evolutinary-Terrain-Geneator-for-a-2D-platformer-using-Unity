@@ -17,7 +17,7 @@ public class Mutation {
         mutationRate = gr.GetMutationRate();
     }
 
-    public Room RandomReseting(Room room, EvaluateRoom evaluateRoom)
+    public Room RandomReseting(Room room)
     {
         int[,] output = room.Data;
 
@@ -40,10 +40,10 @@ public class Mutation {
             }
         }
 
-        return new Room(output, evaluateRoom);
+        return new Room(output);
     }
 
-    public Room SwapMutation(Room room, EvaluateRoom evaluateRoom)
+    public Room SwapMutation(Room room)
     {
         int[,] output = room.Data;
 
@@ -65,10 +65,10 @@ public class Mutation {
             }
         }
 
-        return new Room(output, evaluateRoom);
+        return new Room(output);
     }
 
-    public Room ScrambleMutation(Room room, EvaluateRoom evaluateRoom)
+    public Room ScrambleMutation(Room room)
     {
         int[,] output = room.Data;
 
@@ -92,6 +92,6 @@ public class Mutation {
             scrambled.Remove(scrambled[0]);
         }
 
-        return new Room(output, evaluateRoom);
+        return new Room(output);
     }
 }

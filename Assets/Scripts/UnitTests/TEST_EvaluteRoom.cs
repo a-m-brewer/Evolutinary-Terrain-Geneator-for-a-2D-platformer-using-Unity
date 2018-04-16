@@ -27,7 +27,7 @@ public class TEST_EvaluateRoom {
             { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         };
 
-        Room room = new Room(roomData, evaluateRoom);
+        Room room = new Room(roomData);
 
         float evaluateResults = evaluateRoom.EvaluateAll(room);
         Assert.AreEqual(expected, evaluateResults);

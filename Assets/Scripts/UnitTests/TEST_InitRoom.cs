@@ -12,7 +12,7 @@ public class TEST_InitRoom {
 
         CreateRoom createRoom = new CreateRoom();
 
-        Room room = createRoom.Generate(evaluateRoom);
+        Room room = createRoom.Generate();
 
         bool length = room.Data.GetLength(0) == 10 && room.Data.GetLength(1) == 24;
 

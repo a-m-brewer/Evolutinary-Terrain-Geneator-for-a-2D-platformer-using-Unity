@@ -56,7 +56,7 @@ public class GeneratorRules {
             evaluationResults.Add(0f);
         }
 
-        List<Vector2> positionOfWorldItems = new List<Vector2>();
+        //List<Vector2> positionOfWorldItems = new List<Vector2>();
 
         ResetList();
 
@@ -64,7 +64,7 @@ public class GeneratorRules {
         {
             for(int x = 0; x < TileInformation.roomSizeX; x++)
             {
-                positionOfWorldItems = FindWorldItems(positionOfWorldItems, room, x, y);
+                //positionOfWorldItems = FindWorldItems(positionOfWorldItems, room, x, y);
 
                 if(room.Data[y, x] == 4 || room.Data[y,x] == 5)
                 {
@@ -110,7 +110,8 @@ public class GeneratorRules {
         Grid roomGrid = CreateGrid(room);
         int startY = FindPosY(roomGrid, 0);
 
-        evaluationResults.Add(CalculateWorldItemPathScore(room, roomGrid, startY, positionOfWorldItems));
+        //evaluationResults.Add(CalculateWorldItemPathScore(room, roomGrid, startY, positionOfWorldItems));
+        evaluationResults.Add(1f);
 
         evaluationResults.Add(AddCheckpoints(room, roomGrid, startY));
         evaluationResults.Add(CanNavigateRoom(room, roomGrid, startY));

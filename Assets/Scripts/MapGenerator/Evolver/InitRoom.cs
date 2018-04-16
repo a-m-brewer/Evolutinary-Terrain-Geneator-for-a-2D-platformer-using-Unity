@@ -19,7 +19,7 @@ public class CreateRoom {
         1f   // enemy with gun
     };
 
-    public Room GenerateCompleteRandom(EvaluateRoom evaluateRoom)
+    public Room GenerateCompleteRandom()
     {
         int[,] randomRoom = new int[TileInformation.roomSizeY, TileInformation.roomSizeX];
         for (int y = 0; y < TileInformation.roomSizeY; y++)
@@ -29,10 +29,10 @@ public class CreateRoom {
                 randomRoom[y, x] = Random.Range(0, 6);
             }
         }
-        return new Room(randomRoom, evaluateRoom);
+        return new Room(randomRoom);
     }
 
-    public Room Generate(EvaluateRoom evaluateRoom)
+    public Room Generate()
     {
         int[,] randomRoom = new int[TileInformation.roomSizeY,TileInformation.roomSizeX];
 
@@ -44,7 +44,7 @@ public class CreateRoom {
             }
         }
 
-        return new Room(randomRoom, evaluateRoom);
+        return new Room(randomRoom);
     }
 
     private int SetTile(Vector2 index)

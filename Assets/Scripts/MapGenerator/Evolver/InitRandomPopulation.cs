@@ -17,22 +17,22 @@ public class InitRandomPopulation {
     public Room[] population;
     public Room bestRoom;
 
-    public InitRandomPopulation(EvaluateRoom evaluateRoom)
+    public InitRandomPopulation()
     {
-        population = Generate(evaluateRoom);
+        population = Generate();
     }
 
     /// <summary>
     /// Method that generates the initial set of rooms to be evolved
     /// </summary>
     /// <returns>the set of rooms</returns>
-    public Room[] Generate(EvaluateRoom evaluateRoom)
+    public Room[] Generate()
     {
         Room[] initMap = new Room[gr.GetInitRandomPopulationSize()];
 
         for (int i = 0; i < initMap.Length; i++)
         {
-            initMap[i] = cr.Generate(evaluateRoom);
+            initMap[i] = cr.Generate();
             // check the best map
             SetBestRoom(initMap[i]);
         }

@@ -12,23 +12,23 @@ public class Population {
     /// </summary>
     /// <param name="evaluateRoom"></param>
     /// <param name="setting">0: huristic, 1: random, 2: both</param>
-    public Population(EvaluateRoom evaluateRoom, int setting, TextAsset huristicMaps)
+    public Population(int setting, TextAsset huristicMaps)
     {
         switch(setting)
         {
             case 0:
-                InitHuristicRooms ihr = new InitHuristicRooms(huristicMaps, evaluateRoom);
+                InitHuristicRooms ihr = new InitHuristicRooms(huristicMaps);
                 this.popRooms = ihr.Rooms;
                 this.bestRooms = new Room[2] { ihr.bestRoom, ihr.bestRoom };
                 break;
             case 1:
-                InitRandomPopulation irp = new InitRandomPopulation(evaluateRoom);
-                this.popRooms = irp.Generate(evaluateRoom);
+                InitRandomPopulation irp = new InitRandomPopulation();
+                this.popRooms = irp.Generate();
                 this.bestRooms = new Room[2] { irp.bestRoom, irp.bestRoom };
                 break;
             case 2:
                 InitPopulation ip = new InitPopulation();
-                this.popRooms = ip.Generate(huristicMaps, evaluateRoom);
+                this.popRooms = ip.Generate(huristicMaps);
                 bestRooms = ip.bestRooms;
                 break;
             default:

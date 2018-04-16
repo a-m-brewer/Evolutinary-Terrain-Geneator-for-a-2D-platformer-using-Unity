@@ -14,7 +14,7 @@ public class TEST_InitPopulation {
 
         InitPopulation initPopulation = new InitPopulation();
 
-        Room[] testRooms = initPopulation.Generate(textAsset, evaluateRoom);
+        Room[] testRooms = initPopulation.Generate(textAsset);
 
         int[,] endRoom = new int[10, 24]
         {

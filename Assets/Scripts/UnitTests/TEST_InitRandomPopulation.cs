@@ -10,9 +10,9 @@ public class TEST_InitRandomPopulation {
         // Use the Assert class to test conditions.
         EvaluateRoom evaluateRoom = new EvaluateRoom();
 
-        InitRandomPopulation initRandomPopulation = new InitRandomPopulation(evaluateRoom);
+        InitRandomPopulation initRandomPopulation = new InitRandomPopulation();
 
-        Room[] testRooms = initRandomPopulation.Generate(evaluateRoom);
+        Room[] testRooms = initRandomPopulation.Generate();
 
         bool length = testRooms[0].Data.GetLength(0) == 10 && testRooms[0].Data.GetLength(1) == 24;
 

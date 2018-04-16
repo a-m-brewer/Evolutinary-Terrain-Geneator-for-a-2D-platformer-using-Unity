@@ -14,13 +14,13 @@ public class InitHuristicRooms {
 
     }
 
-    public InitHuristicRooms(TextAsset rooms, EvaluateRoom evaluateRoom)
+    public InitHuristicRooms(TextAsset rooms)
     {
-        string[] loadRooms = LoadRooms(rooms, evaluateRoom);
-        this.Rooms = LoadData(loadRooms, evaluateRoom);
+        string[] loadRooms = LoadRooms(rooms);
+        this.Rooms = LoadData(loadRooms);
     }
 
-    private string[] LoadRooms(TextAsset inFile, EvaluateRoom er)
+    private string[] LoadRooms(TextAsset inFile)
     {
         string[] wholeLevels = new string[1];
 
@@ -32,7 +32,7 @@ public class InitHuristicRooms {
         return wholeLevels; 
     }
 
-    public Room[] LoadData(string[] rooms, EvaluateRoom er)
+    public Room[] LoadData(string[] rooms)
     {
 
         string[][] levels = new string[rooms.Length][];
@@ -58,7 +58,7 @@ public class InitHuristicRooms {
                     int.TryParse(final[z][y][x], out toAdd[y, x]);
                 }
             }
-            r[z] = new Room(toAdd, er);
+            r[z] = new Room(toAdd);
             // selectBest
             SetBestRoom(r[z]);
         }

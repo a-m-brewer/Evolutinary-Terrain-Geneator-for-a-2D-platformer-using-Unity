@@ -39,7 +39,7 @@ public class RulesTesting : MonoBehaviour {
 
     private void Start()
     {
-        Room[] hRooms = new InitHuristicRooms(huristicMaps, er).Rooms;
+        Room[] hRooms = new InitHuristicRooms(huristicMaps).Rooms;
 
         for(int i = 0;  i < hRooms.Length; i++ )
         {
@@ -50,19 +50,19 @@ public class RulesTesting : MonoBehaviour {
     private void GenerationTest()
     {
         // init pop and evaluation
-        Room[] population = ip.Generate(huristicMaps, er);
+        Room[] population = ip.Generate(huristicMaps);
         //Room[] population = new InitHuristicRooms(huristicMaps, er).Rooms;
 
         Room[] parents = sr.SelectParentsRoulette(population);
         parents.Archive();
         Debug.Log("Parents: " + parents[0].Fitness + " " + parents[1].Fitness);
 
-        Room[] testRooms = co.UniformCrossover(parents[0], parents[1], 50, er);
+        Room[] testRooms = co.UniformCrossover(parents[0], parents[1], 50);
         testRooms.Archive();
         Debug.Log("Crossover: " + testRooms[0].Fitness + " " + testRooms[1].Fitness);
 
-        testRooms[0] = mu.RandomReseting(testRooms[0], er);
-        testRooms[1] = mu.RandomReseting(testRooms[1], er);
+        testRooms[0] = mu.RandomReseting(testRooms[0]);
+        testRooms[1] = mu.RandomReseting(testRooms[1]);
         testRooms.Archive();
         Debug.Log("Mutation: " + testRooms[0].Fitness + " " + testRooms[1].Fitness);
     }

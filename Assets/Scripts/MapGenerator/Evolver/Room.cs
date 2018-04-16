@@ -15,22 +15,17 @@ public class Room  {
 
     public int[,] walkableGrid;
 
-    public Room(int[,] dataToHold, string roomString, EvaluateRoom er)
+    public Room(int[,] dataToHold, string roomString)
     {
         this.roomSize = new Vector2(dataToHold.GetLength(1), dataToHold.GetLength(0));
         this.Data = dataToHold;
         this.RString = roomString;
-        this.Fitness = er.Evaluate(DefaultRuleArguments.evaluationMode, this);
-        this.walkableGrid = er.walkableGrid;
-
     }
 
-    public Room(int[,] dataToHold, EvaluateRoom er)
+    public Room(int[,] dataToHold)
     {
         this.roomSize = new Vector2(dataToHold.GetLength(1), dataToHold.GetLength(0));
         this.Data = dataToHold;
-        this.Fitness = er.Evaluate(DefaultRuleArguments.evaluationMode, this);
-        this.walkableGrid = er.walkableGrid;
     }
 
     
