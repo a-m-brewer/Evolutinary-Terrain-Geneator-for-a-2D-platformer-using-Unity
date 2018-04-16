@@ -104,7 +104,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
         for (int p = 20; p < numRoomsInGeneration; p += 2)
         {
-            np = EvoMode(np, 1, 2, 2);
+            np = EvoMode(np, 0, 0, 0);
         }
 
         np = msr.MergeSort(np);
@@ -240,7 +240,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
     public void InvokeRepeatingEvolution()
     {
-        InvokeRepeating("ToInvoke", 0f, 0.3f);
+        InvokeRepeating("ToInvoke", 0f, 0.8f);
     }
 
     public void CancelInvokeEvolution()
@@ -255,7 +255,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
             CancelInvoke("ToInvoke");
         }
         IncrementEvolutionOfRoomAndDisplayBest();
-        DisplayRoom();
+        //DisplayRoom();
     }
 }
 

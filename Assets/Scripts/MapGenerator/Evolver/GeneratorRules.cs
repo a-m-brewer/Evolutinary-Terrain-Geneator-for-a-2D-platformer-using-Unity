@@ -110,6 +110,8 @@ public class GeneratorRules {
         Grid roomGrid = CreateGrid(room);
         int startY = FindPosY(roomGrid, 0);
 
+        evaluationResults.Add(CalculateWorldItemPathScore(room, roomGrid, startY, positionOfWorldItems));
+
         evaluationResults.Add(AddCheckpoints(room, roomGrid, startY));
         evaluationResults.Add(CanNavigateRoom(room, roomGrid, startY));
 
@@ -459,17 +461,26 @@ public class GeneratorRules {
         return result;
     }
 
-    private int GetDistance(int start_x, int start_y, int end_x, int end_y)
+    private float CalculateWorldItemPathScore(Room room, Grid grid, int startY, List<Vector2> worldItemsCoordinates)
     {
-        int distX = Mathf.Abs(start_x - end_x);
-        int distY = Mathf.Abs(start_y - end_y);
-
-        if (distX > distY)
+        int count = worldItemsCoordinates.Count;
+        float score = 0f;
+        foreach(Vector2 wic in worldItemsCoordinates)
         {
-            return 14 * distY + 10 * (distX - distY);
+            score += WorldItemOnPathScore(room, grid, startY, wic);
         }
+        score /= count;
+        return score;
+    }
 
-        return 14 * distX + 10 * (distY - distX);
+    private float WorldItemOnPathScore(Room room, Grid grid, int startY ,Vector2 worldItemCoordinates)
+    {
+        float distanceScore = CanNavigateToPoint(room, grid, 0, startY, 
+            (int) worldItemCoordinates.x, (int) worldItemCoordinates.y);
+        float increment = 1f / 24f;
+        float getDistX = worldItemCoordinates.x;
+
+        return distanceScore - (getDistX * increment);
     }
 
 }
