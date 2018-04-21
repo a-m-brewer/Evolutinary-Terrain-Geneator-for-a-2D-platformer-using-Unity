@@ -14,7 +14,7 @@ public static class DefaultRuleArguments
         new int[2] {7, 3},
     };
 
-    public static int evaluationMode = 2;
+    public static int evaluationMode = 0;
 
     public static float[] ruleWeights = new float[10]
     {

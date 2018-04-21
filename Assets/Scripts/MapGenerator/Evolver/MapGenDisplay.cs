@@ -110,7 +110,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
 
         for (int p = 20; p < numRoomsInGeneration; p += 2)
         {
-            np = EvoMode(np, 0, 0, 0);
+            np = EvoMode(np, 1, 0, 0);
         }
 
         np = msr.MergeSort(np);
