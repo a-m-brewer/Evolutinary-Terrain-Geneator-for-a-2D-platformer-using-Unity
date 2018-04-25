@@ -48,6 +48,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         DisplayRoom();
         // caculate the difficutly of the map that is created
         CalculateDifficulty();
+
     }
 
     // main method for creating a map that calls other methods
@@ -84,6 +85,7 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         foreach(Room r in roomPop.popRooms)
         {
             r.Fitness = evaluateRoom.Evaluate(DefaultRuleArguments.evaluationMode, r);
+            r.walkableGrid = evaluateRoom.walkableGrid;
         }
 
         roomPop.topTwenty = msr.MergeSort(roomPop.popRooms.ToList());
@@ -180,7 +182,9 @@ public class MapGenDisplay : MonoBehaviour, IDifficulty
         //mutationResults[1] = mutation.SwapMutation(crossOver[1], evaluateRoom);
 
         mutationResults[0].Fitness = evaluateRoom.Evaluate(DefaultRuleArguments.evaluationMode, mutationResults[0]);
+        mutationResults[0].walkableGrid = evaluateRoom.walkableGrid;
         mutationResults[1].Fitness = evaluateRoom.Evaluate(DefaultRuleArguments.evaluationMode, mutationResults[1]);
+        mutationResults[1].walkableGrid = evaluateRoom.walkableGrid;
 
         pop.Add(mutationResults[0]);
         pop.Add(mutationResults[1]);

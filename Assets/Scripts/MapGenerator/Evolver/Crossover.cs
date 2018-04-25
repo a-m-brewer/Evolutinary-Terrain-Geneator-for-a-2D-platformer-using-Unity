@@ -6,7 +6,7 @@ public class Crossover {
 
     /// <summary>
     /// Cross over two rooms using uniform crossover
-    /// https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_crossover.htm
+    ///
     /// </summary>
     /// <param name="roomOne">The first room</param>
     /// <param name="roomTwo">The Second room</param>

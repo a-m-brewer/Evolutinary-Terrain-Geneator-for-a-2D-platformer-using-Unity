@@ -103,13 +103,13 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
                 if (NeedsBackgroundTile(toInstantiate))
                 {
                     Transform background = InstatiateBackground(tilePos, mapHolder);
-                    //if(roomData.walkableGrid[y, x] == 2)
-                    //{
-                    //    background.GetComponent<SpriteRenderer>().color = Color.black;
-                    //}
+                    if (roomData.walkableGrid[y, x] == 2)
+                    {
+                        background.GetComponent<SpriteRenderer>().color = Color.black;
+                    }
                 }
                 // place the tile into the room
-
+                
                 if (toInstantiate == 1)
                 {
                     if(y + 1 < TileInformation.roomSizeY)
@@ -117,37 +117,46 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
                         if(roomData.Data[y + 1, x] != 1)
                         {
                             Transform newTile = SpawnNewTileInRoom(aboveGround, tilePos, mapHolder);
+                            DrawPath(newTile, roomData, x, y);
                         } else
                         {
                             Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
+                            DrawPath(newTile, roomData, x, y);
                         }
                     } else
                     {
                         Transform newTile = SpawnNewTileInRoom(aboveGround, tilePos, mapHolder);
+                        DrawPath(newTile, roomData, x, y);
                     }
                 } 
                 else
                 {
                     Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
+                    DrawPath(newTile, roomData, x , y);
                 }
 
-                //if (roomData.walkableGrid[y, x] == 2)
-                //{       
-                //    if(newTile.GetComponent<SpriteRenderer>() == null)
-                //    {
-                //        newTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.black;
-                //    }
-                //    else
-                //    {
-                //        newTile.GetComponent<SpriteRenderer>().color = Color.black;
-                //    }
-                //}
+
 
                 // add to the overall difficulty of the room
                 //AddToDifficulty(newTile);
             }
         }
 
+    }
+
+    private void DrawPath(Transform newTile, Room roomData, int x, int y)
+    {
+        if (roomData.walkableGrid[y, x] == 2)
+        {
+            if (newTile.GetComponent<SpriteRenderer>() == null)
+            {
+                newTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.black;
+            }
+            else
+            {
+                newTile.GetComponent<SpriteRenderer>().color = Color.black;
+            }
+        }
     }
 
     // places a new tile in the room at a certain place as well as a given type of tile worked out in generateroom

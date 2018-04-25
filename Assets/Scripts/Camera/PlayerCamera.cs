@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour {
 
     public Transform player;
-    public MapGeneratorMain map;
+    public MapGenDisplay map;
     public float speed = 10f;
     public Vector3 offset;
     [Range(0f, 1f)]
@@ -35,7 +35,7 @@ public class PlayerCamera : MonoBehaviour {
         SetNewPosition(smoothedPos);
     }
 
-    private void CameraSetup(Camera cam, Transform p, MapGeneratorMain m, Vector3 off)
+    private void CameraSetup(Camera cam, Transform p, MapGenDisplay m, Vector3 off)
     {
         floorPos = GetFloorPosition(p);
         minCamPos = GetMinCamPos(off, cam);
@@ -57,9 +57,9 @@ public class PlayerCamera : MonoBehaviour {
         return (GetHalfCameraSize(cam) - off.x) - 0.5f;
     }
 
-    private float GetMaxCamPos(MapGeneratorMain m, Camera cam)
+    private float GetMaxCamPos(MapGenDisplay m, Camera cam)
     {
-        return m.GetMapSize() - GetHalfCameraSize(cam);
+        return 23.5f - GetHalfCameraSize(cam);
     }
 
     private float GetOffsetY(Vector3 off, Transform p, float fp, float offsetPercent)

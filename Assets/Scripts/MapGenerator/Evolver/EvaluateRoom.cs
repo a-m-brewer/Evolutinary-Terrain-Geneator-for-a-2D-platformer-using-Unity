@@ -61,7 +61,8 @@ public class EvaluateRoom {
     {
         List<float> fromMainChecker = gr.MainChecker(room);
         float score = 0f;
-        foreach(float f in fromMainChecker)
+        walkableGrid = gr.walkablePath;
+        foreach (float f in fromMainChecker)
         {
             score += f;
         }
@@ -72,8 +73,9 @@ public class EvaluateRoom {
     {
         List<float> fromMainChecker = gr.MainChecker(room);
         float score = 0f;
+        walkableGrid = gr.walkablePath;
 
-        for(int i = 0; i < fromMainChecker.Count; i++)
+        for (int i = 0; i < fromMainChecker.Count; i++)
         {
             score += fromMainChecker[i] * DefaultRuleArguments.ruleWeights[i];
         }

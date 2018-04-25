@@ -34,6 +34,8 @@ public class Pathfinding {
         HashSet<Node> closedSet = new HashSet<Node>();
         openSet.Add(startNode);
 
+        i = 0;
+
         while(openSet.Count > 0)
         {
             i++;
@@ -205,9 +207,9 @@ public class Pathfinding {
 
         if(distX > distY)
         {
-            return 14 * distY + 10 * (distX - distY);
+            return 20 * distY + 10 * (distX - distY);
         }
 
-        return 14 * distX + 10 * (distY - distX);
+        return 20 * distX + 10 * (distY - distX);
     }
 }

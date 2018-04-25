@@ -346,18 +346,18 @@ public class GeneratorRules {
     /// </summary>
     /// <param name="room">Current room being evaluated</param>
     /// <param name="tileType">What type of tile to check</param>
-    /// <param name="tilesBellow">how many rows bellow to check</param>
+    /// <param name="tilesBelow">how many rows bellow to check</param>
     /// <param name="x">X of tile</param>
     /// <param name="y">Y of tile</param>
     /// <returns></returns>
-    private float TileOnGroundIncrement(int[,] room, int tileType, int tilesBellow, int x, int y)
+    private float TileOnGroundIncrement(int[,] room, int tileType, int tilesBelow, int x, int y)
     {
         if (room[y, x] == tileType)
         {
-            if (WithinMapRange(x, y - tilesBellow))
+            if (WithinMapRange(x, y - tilesBelow))
             {
 
-                for(int z = y - 1; y - tilesBellow < z; z--)
+                for(int z = y - 1; y - tilesBelow < z; z--)
                 {
                     if(room[z, x] == 1  || room[z, x] == 3 || room[z, x] == 6)
                     {
@@ -365,7 +365,7 @@ public class GeneratorRules {
                     }
                 }
 
-                if (room[y - tilesBellow, x] == 1)
+                if (room[y - tilesBelow, x] == 1)
                 {
                     return 1f;
                 }

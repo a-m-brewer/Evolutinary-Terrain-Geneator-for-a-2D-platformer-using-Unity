@@ -1,11 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/// <summary>
-/// Influenced by 
-/// https://github.com/SebLague/Pathfinding/tree/master/Episode%2004%20-%20heap/Assets/Scripts
-/// TODO: Remember to reference
-/// </summary>
+
 public class Node : IHeapItem<Node> {
 
     private bool walkable;
