@@ -103,45 +103,52 @@ public class RoomGenerator : MonoBehaviour, IDifficulty
                 if (NeedsBackgroundTile(toInstantiate))
                 {
                     Transform background = InstatiateBackground(tilePos, mapHolder);
-                    if (roomData.walkableGrid[y, x] == 2)
-                    {
-                        background.GetComponent<SpriteRenderer>().color = Color.black;
-                    }
                 }
                 // place the tile into the room
-                
-                if (toInstantiate == 1)
-                {
-                    if(y + 1 < TileInformation.roomSizeY)
-                    {
-                        if(roomData.Data[y + 1, x] != 1)
-                        {
-                            Transform newTile = SpawnNewTileInRoom(aboveGround, tilePos, mapHolder);
-                            DrawPath(newTile, roomData, x, y);
-                        } else
-                        {
-                            Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
-                            DrawPath(newTile, roomData, x, y);
-                        }
-                    } else
-                    {
-                        Transform newTile = SpawnNewTileInRoom(aboveGround, tilePos, mapHolder);
-                        DrawPath(newTile, roomData, x, y);
-                    }
-                } 
-                else
-                {
-                    Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
-                    DrawPath(newTile, roomData, x , y);
-                }
-
-
-
+                Transform newTile = PlaceTile(toInstantiate, x, y, roomData, tilePos, mapHolder, false);
                 // add to the overall difficulty of the room
                 //AddToDifficulty(newTile);
             }
         }
 
+    }
+
+    private Transform PlaceTile(int toInstantiate, int x, int y, Room roomData, Vector3 tilePos, Transform mapHolder, bool debug)
+    {
+        if (toInstantiate == 1)
+        {
+            if (y + 1 < TileInformation.roomSizeY)
+            {
+                if (roomData.Data[y + 1, x] != 1)
+                {
+                    Transform newTile = SpawnNewTileInRoom(aboveGround, tilePos, mapHolder);
+                    if (debug)
+                        DrawPath(newTile, roomData, x, y);
+                    return newTile;
+                }
+                else
+                {
+                    Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
+                    if (debug)
+                        DrawPath(newTile, roomData, x, y);
+                    return newTile;
+                }
+            }
+            else
+            {
+                Transform newTile = SpawnNewTileInRoom(aboveGround, tilePos, mapHolder);
+                if (debug)
+                    DrawPath(newTile, roomData, x, y);
+                return newTile;
+            }
+        }
+        else
+        {
+            Transform newTile = SpawnNewTileInRoom(roomTiles[toInstantiate], tilePos, mapHolder);
+            if (debug)
+                DrawPath(newTile, roomData, x, y);
+            return newTile;
+        }
     }
 
     private void DrawPath(Transform newTile, Room roomData, int x, int y)
